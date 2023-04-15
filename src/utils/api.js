@@ -18,6 +18,87 @@ const api = {
     getPost(postId) {
         return axios(`${this.HOST_NAME}/posts/${postId}`);
     },
+    addRead(postId, userId, location, tag) {
+        return axios.post(`${this.HOST_NAME}/posts/${postId}/reads`, { userId, location, tag });
+    },
+    likePost(postId, location, tag, like, jwtToken) {
+        return axios.post(
+            `${this.HOST_NAME}/posts/${postId}/like`,
+            { location, tag, like },
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${jwtToken}`,
+                },
+            }
+        );
+    },
+    savePost(postId, location, tag, save, jwtToken) {
+        return axios.post(
+            `${this.HOST_NAME}/posts/${postId}/save`,
+            { location, tag, save },
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${jwtToken}`,
+                },
+            }
+        );
+    },
+    getLikeSaveStatus(jwtToken) {
+        return axios(`${this.HOST_NAME}/posts-user-status`, {
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${jwtToken}`,
+            },
+        });
+    },
+    getMapPosts() {
+        return axios(`${this.HOST_NAME}/map-posts`);
+    },
+    getUserPosts(userId, jwtToken) {
+        return axios(`${this.HOST_NAME}/user/${userId}/posts`, {
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${jwtToken}`,
+            },
+        });
+    },
+    getUserVisited(jwtToken) {
+        return axios(`${this.HOST_NAME}/user/visited`, {
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${jwtToken}`,
+            },
+        });
+    },
+
+    createPost(post, jwtToken) {
+        return axios.post(`${this.HOST_NAME}/post`, post, {
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${jwtToken}`,
+            },
+        });
+    },
+    signup(data) {
+        return axios.post(`${this.HOST_NAME}/user/signup`, data);
+    },
+    createUserNewsfeed(jwtToken) {
+        return axios.post(
+            `${this.HOST_NAME}/user/newsfeed`,
+            {},
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${jwtToken}`,
+                },
+            }
+        );
+    },
+    signin(data) {
+        return axios.post(`${this.HOST_NAME}/user/signin`, data);
+    },
 };
 
 export default api;
