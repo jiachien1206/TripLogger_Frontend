@@ -99,6 +99,37 @@ const api = {
     signin(data) {
         return axios.post(`${this.HOST_NAME}/user/signin`, data);
     },
+    postsUserStatusUpdated(jwtToken) {
+        return axios.delete(`${this.HOST_NAME}/relevant-posts`, {
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${jwtToken}`,
+            },
+        });
+    },
+    getPresignUrl() {
+        return axios(`${this.HOST_NAME}/post/presignUrl`, {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+    },
+    editPost(postId, post, jwtToken) {
+        return axios.put(`${this.HOST_NAME}/post/${postId}`, post, {
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${jwtToken}`,
+            },
+        });
+    },
+    deletePost(postId, jwtToken) {
+        return axios.delete(`${this.HOST_NAME}/post/${postId}`, {
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${jwtToken}`,
+            },
+        });
+    },
 };
 
 export default api;
