@@ -60,15 +60,14 @@ function EditPost() {
         if (!e.target.files) {
             return;
         }
-
         setFile(e.target.files[0]);
     };
 
     React.useEffect(() => {
         const getEditPost = async (postId) => {
             const res = await api.getPost(postId);
-            const { title, mainImg, content, location, tags, dates } = res.data.data;
-            setMainImg(mainImg);
+            const { title, main_image, content, location, tags, dates } = res.data.data;
+            setMainImg(main_image);
             setTitle(title);
             setContinent(location.continent);
             setCountry(location.country);
@@ -94,6 +93,7 @@ function EditPost() {
                 });
                 const mainImage = url.split('?')[0];
                 setMainImg(mainImage);
+                console.log(mainImage);
             } catch (error) {
                 console.log(error);
             }
@@ -103,6 +103,7 @@ function EditPost() {
 
     async function submitPost() {
         try {
+            alert('文章更新');
             const jwtToken = window.localStorage.getItem('jwtToken');
             await api.editPost(
                 postId,
@@ -116,9 +117,8 @@ function EditPost() {
                 },
                 jwtToken
             );
-            alert('文章更新');
             await updateNewsfeeds(jwtToken);
-            // window.location.replace('/');
+            window.location.replace('/');
         } catch (e) {
             console.log(e);
             alert('文章更新失敗');
