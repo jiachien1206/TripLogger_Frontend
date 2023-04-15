@@ -2,6 +2,8 @@ import { Outlet } from 'react-router-dom';
 import { createGlobalStyle } from 'styled-components';
 import React from 'react';
 import Header from './components/Header';
+import webSocket from 'socket.io-client';
+import updateNewsfeeds from './utils/updateUserNewsfeeds';
 
 const GlobalStyle = createGlobalStyle`
   * {
@@ -17,6 +19,20 @@ const GlobalStyle = createGlobalStyle`
 
 function App() {
     const [ws, setWs] = React.useState(null);
+
+    React.useEffect(() => {
+        const newWs = webSocket('http://localhost:8080');
+        setWs(newWs);
+    }, []);
+
+    React.useEffect(() => {
+        if (ws) {
+            ws.on('Update user newsfeeds', async () => {
+                const jwtToken = window.localStorage.getItem('jwtToken');
+                await updateNewsfeeds(jwtToken);
+            });
+        }
+    }, [ws]);
 
     return (
         <>
