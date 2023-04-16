@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-
+import Highlighter from 'react-highlight-words';
 const PostWrap = styled.div`
     border: 1px solid #929292;
     border-radius: 10px;
@@ -31,13 +31,40 @@ const PostContent = styled.div`
     }
 `;
 
-const Post = ({ post }) => {
+const Highlight = styled(Highlighter)`
+    .highlight {
+        margin: 0px 3px;
+        padding: 0px 8px;
+        background-color: #a0d9a0;
+        border-radius: 20px;
+    }
+`;
+
+const Post = ({ post, keyword }) => {
+    const strippedContent = post.content.replace(/(<([^>]+)>)/gi, ' ');
+    const index = strippedContent.indexOf(keyword);
+    let paragraph = strippedContent.substring(index - 80, index + keyword.length + 80);
+
     return (
         <PostWrap>
             <PostLink to={post.url}>
                 {/* <PostMainImg src={post.main_image}></PostMainImg> */}
-                <PostTitle>{post.title}</PostTitle>
-                <PostContent dangerouslySetInnerHTML={{ __html: post.content }} />
+                <PostTitle>
+                    <Highlight
+                        highlightClassName="highlight"
+                        searchWords={[keyword]}
+                        autoEscape={true}
+                        textToHighlight={post.title}
+                    />
+                </PostTitle>
+                <PostContent>
+                    <Highlight
+                        highlightClassName="highlight"
+                        searchWords={[keyword]}
+                        autoEscape={true}
+                        textToHighlight={paragraph}
+                    />
+                </PostContent>
                 {/* <ReadIcon />
                 <ReadNum>{readNum}</ReadNum>
                 <PostContinent>{post.location.continent}</PostContinent>
