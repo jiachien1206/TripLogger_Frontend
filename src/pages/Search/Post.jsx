@@ -41,9 +41,20 @@ const Highlight = styled(Highlighter)`
 `;
 
 const Post = ({ post, keyword }) => {
+    const keywordList = keyword.split(' ');
     const strippedContent = post.content.replace(/(<([^>]+)>)/gi, ' ');
-    const index = strippedContent.indexOf(keyword);
-    let paragraph = strippedContent.substring(index - 80, index + keyword.length + 80);
+    let lastIndex = 0;
+    const paragraphs = keywordList.map((keyword) => {
+        const index = strippedContent.indexOf(keyword);
+        if (lastIndex === 0) {
+            lastIndex = index;
+            return strippedContent.substring(index - 60, index + keyword.length + 60);
+        }
+        if (index - lastIndex > 80) {
+            lastIndex = index;
+            return strippedContent.substring(index - 60, index + keyword.length + 60);
+        }
+    });
 
     return (
         <PostWrap>
@@ -52,19 +63,25 @@ const Post = ({ post, keyword }) => {
                 <PostTitle>
                     <Highlight
                         highlightClassName="highlight"
-                        searchWords={[keyword]}
+                        searchWords={keywordList}
                         autoEscape={true}
                         textToHighlight={post.title}
                     />
                 </PostTitle>
-                <PostContent>
-                    <Highlight
-                        highlightClassName="highlight"
-                        searchWords={[keyword]}
-                        autoEscape={true}
-                        textToHighlight={paragraph}
-                    />
-                </PostContent>
+
+                {paragraphs.map((paragraph) => {
+                    return (
+                        <PostContent key={paragraph}>
+                            <Highlight
+                                highlightClassName="highlight"
+                                searchWords={keywordList}
+                                autoEscape={true}
+                                textToHighlight={paragraph}
+                            />
+                        </PostContent>
+                    );
+                })}
+
                 {/* <ReadIcon />
                 <ReadNum>{readNum}</ReadNum>
                 <PostContinent>{post.location.continent}</PostContinent>
