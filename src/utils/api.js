@@ -130,6 +130,9 @@ const api = {
             },
         });
     },
+    searchPost(keyword) {
+        return axios(`${this.HOST_NAME}/search?keyword=${keyword}`);
+    },
 };
 
 export default api;

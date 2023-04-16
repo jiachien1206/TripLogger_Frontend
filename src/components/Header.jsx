@@ -2,8 +2,10 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import logo from '../images/logo.png';
-import magnifier from '../images/search.png';
+import magnifier from '../images/search.svg';
 import membericon from '../images/profile.png';
+import api from '../utils/api';
+
 const Navigation = styled.div`
     position: fixed;
     top: 0;
@@ -35,24 +37,43 @@ const Logo = styled.a`
     background-image: url(${logo});
     background-size: contain;
 `;
-
-const Searchbar = styled.input`
+const SearchBar = styled.div`
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    height: 40px;
+    width: 260px;
+    margin-left: auto;
+`;
+const SearchInput = styled.input`
     height: 40px;
     width: 260px;
     outline: none;
-    margin-left: auto;
-    border-radius: 5px;
-    padding: 6px 45px 6px 20px;
-    border: solid 1px #979797;
-    background-image: url(${magnifier});
-    background-size: 44px;
-    background-position: 200px center;
-    background-repeat: no-repeat;
+    border: none;
     font-size: 20px;
     line-height: 24px;
     transition: border-color 1s;
+    border: solid 1px #979797;
+    border-radius: 5px;
+    padding-left: 10px;
     &:focus {
         border: 2px solid #00684a;
+    }
+`;
+
+const SearchButton = styled.button`
+    position: absolute;
+    height: 36px;
+    width: 36px;
+    border: none;
+    background-color: #ffffff;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    left: 222px;
+    top: 2px;
+    border-radius: 3px;
+    &:hover {
+        background-color: #b8f4cf;
     }
 `;
 
@@ -87,11 +108,28 @@ const Membericon = styled.div`
 
 const Header = () => {
     const [inputValue, setInputValue] = React.useState('');
+    const redirect = async () => {
+        window.location.replace(`/search?keyword=${inputValue}`);
+    };
+
     return (
         <Navigation>
             <NavigationLeft>
                 <Logo href="/" />
-                <Searchbar onChange={(e) => setInputValue(e.target.value)} value={inputValue} />
+                <SearchBar>
+                    <SearchInput
+                        onChange={(e) => setInputValue(e.target.value)}
+                        value={inputValue}
+                        onKeyPress={(e) => {
+                            if (e.key === 'Enter') {
+                                window.location.replace(`/search?keyword=${inputValue}`);
+                            }
+                        }}
+                    />
+                    <SearchButton onClick={redirect}>
+                        <img src={magnifier} />
+                    </SearchButton>
+                </SearchBar>
             </NavigationLeft>
             <NavigationRight>
                 <CreatePost to="/create">發文</CreatePost>
