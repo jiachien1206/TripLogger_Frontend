@@ -45,12 +45,12 @@ const Submit = styled.button`
 function CreatePost() {
     const [file, setFile] = React.useState();
     const [mainImg, setMainImg] = React.useState(null);
-    const [title, setTitle] = React.useState('阿富汗景點');
+    const [title, setTitle] = React.useState('哈修塔特好好玩');
     const [content, setContent] = React.useState('');
-    const [continent, setContinent] = React.useState('亞洲');
-    const [country, setCountry] = React.useState('阿富汗');
+    const [continent, setContinent] = React.useState('歐洲');
+    const [country, setCountry] = React.useState('奧地利');
     const [category, setCategory] = React.useState('景點');
-    const [travelDate, setTravelDate] = React.useState('2023-04-02');
+    const [travelDate, setTravelDate] = React.useState('2023-03-02');
     const inputRef = React.useRef(null);
     const handleUploadClick = () => {
         inputRef.current.click();
