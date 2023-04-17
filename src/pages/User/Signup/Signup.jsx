@@ -2,6 +2,9 @@ import React from 'react';
 import styled from 'styled-components';
 import api from '../../../utils/api.js';
 import updateNewsfeeds from '../../../utils/updateUserNewsfeeds.js';
+import EmailPwd from './EmailPwd';
+import Location from './Location';
+import Tag from './Tag';
 
 const SignupWrap = styled.div`
     display: flex;
@@ -9,7 +12,6 @@ const SignupWrap = styled.div`
     margin: 20px auto;
     padding: 20px;
     width: 500px;
-    height: 500px;
     border: 1px solid #000000;
 `;
 
@@ -34,9 +36,28 @@ const Password = styled.input`
 const Submit = styled.button``;
 
 const Signup = () => {
-    const [name, setName] = React.useState('Signup測試員');
-    const [email, setEmail] = React.useState('admin@gmail.com');
-    const [password, setPassword] = React.useState('adminadmin');
+    const [name, setName] = React.useState('小chat同學');
+    const [email, setEmail] = React.useState('chatgpt@gmail.com');
+    const [password, setPassword] = React.useState('chatchat');
+    const [page, setPage] = React.useState(1);
+    const [locations, setlocations] = React.useState([
+        '亞洲',
+        '歐洲',
+        '北美洲',
+        '大洋洲',
+        '南美洲',
+        '非洲',
+        '南極洲',
+    ]);
+    const [tags, setTags] = React.useState([
+        '交通',
+        '住宿',
+        '景點',
+        '證件',
+        '其他',
+        '恐怖故事',
+        '省錢妙招',
+    ]);
 
     async function signup() {
         try {
@@ -44,6 +65,8 @@ const Signup = () => {
                 name,
                 email,
                 password,
+                location_pre: locations,
+                tag_pre: tags,
             });
             const { user, accessToken } = res.data.data;
             const userData = { id: user._id, name: user.name };
@@ -61,19 +84,25 @@ const Signup = () => {
     return (
         <>
             <SignupWrap>
-                <label>
-                    Name:
-                    <Name value={name} onChange={(e) => setName(e.target.value)} />
-                </label>
-                <label>
-                    E-mail:
-                    <Email value={email} onChange={(e) => setEmail(e.target.value)} />
-                </label>
-                <label>
-                    Password:
-                    <Password value={password} onChange={(e) => setPassword(e.target.value)} />
-                </label>
-                <Submit onClick={signup}>送出</Submit>
+                {page === 1 ? (
+                    <EmailPwd
+                        paging={setPage}
+                        name={name}
+                        setName={setName}
+                        email={email}
+                        setEmail={setEmail}
+                        password={password}
+                        setPassword={setPassword}
+                    ></EmailPwd>
+                ) : page === 2 ? (
+                    <Location
+                        locations={locations}
+                        setLocations={setlocations}
+                        paging={setPage}
+                    ></Location>
+                ) : (
+                    <Tag tags={tags} setTags={setTags} submit={signup}></Tag>
+                )}
             </SignupWrap>
         </>
     );

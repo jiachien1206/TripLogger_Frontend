@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import api from '../../../utils/api.js';
-const Title = styled.div``;
+import { Title } from './Components.jsx';
 const Name = styled.input`
     line-height: 20px;
     width: 300px;
@@ -22,11 +22,7 @@ const Password = styled.input`
 
 const NextPage = styled.button``;
 
-const EmailPwd = ({ paging }) => {
-    const [name, setName] = React.useState('Signup測試員');
-    const [email, setEmail] = React.useState('admin@gmail.com');
-    const [password, setPassword] = React.useState('adminadmin');
-
+const EmailPwd = ({ paging, name, setName, email, setEmail, password, setPassword }) => {
     const nextPage = () => {
         paging(2);
     };
