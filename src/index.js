@@ -11,6 +11,7 @@ import Signup from './pages/User/Signup/Signup';
 import Signin from './pages/User/Signin/Signin';
 import Footstep from './pages/User/Footstep/Footstep';
 import Search from './pages/Search/Search';
+import Continent from './pages/Continent/Continent';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
@@ -27,6 +28,7 @@ root.render(
                 <Route path="user/signin" element={<Signin />} />
                 <Route path="user/footstep" element={<Footstep />} />
                 <Route path="search" element={<Search />} />
+                <Route path=":continent" element={<Continent />} />
                 <Route path="*" element={<Navigate to="/" replace />} />
             </Route>
         </Routes>

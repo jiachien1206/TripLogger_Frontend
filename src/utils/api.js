@@ -18,6 +18,9 @@ const api = {
     getPost(postId) {
         return axios(`${this.HOST_NAME}/posts/${postId}`);
     },
+    getContinentPosts(continent) {
+        return axios(`${this.HOST_NAME}/continents/${continent}`);
+    },
     addRead(postId, userId, location, tag) {
         return axios.post(`${this.HOST_NAME}/posts/${postId}/reads`, { userId, location, tag });
     },
