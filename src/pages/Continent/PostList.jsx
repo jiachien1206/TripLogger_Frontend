@@ -18,7 +18,7 @@ const PostList = ({ continent }) => {
     };
     React.useEffect(() => {
         fetchPosts();
-    }, []);
+    }, [continent]);
 
     return (
         <PostsWrap>

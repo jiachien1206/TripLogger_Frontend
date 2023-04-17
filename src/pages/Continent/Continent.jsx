@@ -53,6 +53,7 @@ const BannerText = styled.div`
 `;
 
 const Continent = () => {
+    // const [continentStatus, setContinentStatus] = React.useState();
     const continents = [
         'asia',
         'europe',
