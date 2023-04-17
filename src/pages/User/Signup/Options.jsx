@@ -8,6 +8,7 @@ const OptionsWrap = styled.div`
     display-flex;
     flex-direction: column;
     width: 350px;
+    background-color: #ffffff;
 `;
 
 const Option = styled.div`
@@ -15,7 +16,6 @@ const Option = styled.div`
     align-items: center;
     margin: 10px auto;
     padding: 10px 10px;
-    background-color: #ffffff;
     width: 300px;
     gap: 5px;
     border-bottom: 1px solid grey;
