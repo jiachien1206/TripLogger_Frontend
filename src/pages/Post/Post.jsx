@@ -2,6 +2,7 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import api from '../../utils/api.js';
+import Comments from './Comment';
 const PostWrap = styled.div`
     // background-color: #fff;
     padding: 10px;
@@ -45,14 +46,6 @@ const PostTime = styled.div`
     font-size: 14px;
 `;
 
-const PostCommentsWrap = styled.div`
-    margin-top: 30px;
-    border: 2px solid #000000;
-    padding: 10px;
-`;
-
-const PostComment = styled.div``;
-
 const LikeButton = styled.button`
     border: 1px solid red;
     border-radius: 5px;
@@ -60,6 +53,7 @@ const LikeButton = styled.button`
 
 const Post = () => {
     const [post, setPost] = React.useState();
+    const [newComment, setNewComment] = React.useState(false);
     const postId = useParams().id;
 
     React.useEffect(() => {
@@ -72,6 +66,15 @@ const Post = () => {
         }
         getPost(postId);
     }, [postId]);
+    React.useEffect(() => {
+        async function getPost(postId) {
+            const res = await api.getPost(postId);
+            const post = res.data.data;
+            setPost(post);
+        }
+        getPost(postId);
+        setNewComment(false);
+    }, [newComment]);
     if (!post) return null;
     return (
         <PostWrap>
@@ -83,16 +86,14 @@ const Post = () => {
             <PostAuthor>{post.authorId}</PostAuthor>
             <PostContent dangerouslySetInnerHTML={{ __html: post.content }} />
             <PostTime>{post.dates.post_date}</PostTime>
-            <PostCommentsWrap>
-                留言板
-                {post.comments.map((comment) => {
-                    return (
-                        <PostComment
-                            key={comment._id}
-                        >{`${comment.userId}: ${comment.content}`}</PostComment>
-                    );
-                })}
-            </PostCommentsWrap>
+            <Comments
+                location={post.location.continent}
+                tag={post.tags[0]}
+                postId={postId}
+                comments={post.comments}
+                setNewComment={setNewComment}
+            />
+
             {/* <LikeButton onClick={addLike}>{like}</LikeButton> */}
         </PostWrap>
     );

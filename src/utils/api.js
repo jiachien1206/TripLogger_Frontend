@@ -133,6 +133,14 @@ const api = {
     searchPost(keyword) {
         return axios(`${this.HOST_NAME}/search?keyword=${keyword}`);
     },
+    writeComment(postId, comment, jwtToken) {
+        return axios.post(`${this.HOST_NAME}/posts/${postId}/comment`, comment, {
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${jwtToken}`,
+            },
+        });
+    },
 };
 
 export default api;
