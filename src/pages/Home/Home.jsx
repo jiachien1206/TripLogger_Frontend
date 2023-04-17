@@ -10,16 +10,22 @@ const Wrapper = styled.div`
 const PostsWrap = styled.div`
     display: flex;
     flex-direction: column;
-    margin: auto;
 `;
 
-const FilterWrap = styled.div`
-    margin: 10px auto;
-`;
+const FilterWrap = styled.div``;
 
 const FilterButton = styled.button`
-    width: 100px;
     margin: 10px;
+    padding: 5px;
+    border: none;
+    background: none;
+    font-size: 18px;
+    color: #6f6f6f;
+    cursor: pointer;
+    &.active {
+        font-size: 23px;
+        font-weight: 800;
+    }
 `;
 
 const Home = () => {
@@ -38,6 +44,7 @@ const Home = () => {
                     {filters.map((filter) => {
                         return (
                             <FilterButton
+                                className={activeFilter === filter && 'active'}
                                 key={filter}
                                 onClick={() => {
                                     handleActiveFilter(filter);
