@@ -21,10 +21,12 @@ const Map = styled.img`
     width: 250px;
     margin: 0px auto;
     border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
 `;
 
 const ContinentList = styled.div``;
-const Continent = styled.div`
+const Continent = styled(Link)`
+    text-decoration: none;
     display: flex;
     align-items: center;
     gap: 10px;
@@ -51,31 +53,31 @@ const Sidebar = () => {
                 <Map src={mapImg} />
             </MapLink>
             <ContinentList>
-                <Continent>
+                <Continent to="/asia">
                     <ContinentIcon src={asia} />
                     <ContinentsTitle>亞洲</ContinentsTitle>
                 </Continent>
-                <Continent>
+                <Continent to="/europe">
                     <ContinentIcon src={europe} />
                     <ContinentsTitle>歐洲</ContinentsTitle>
                 </Continent>
-                <Continent>
+                <Continent to="/north-america">
                     <ContinentIcon src={north} />
                     <ContinentsTitle>北美洲</ContinentsTitle>
                 </Continent>
-                <Continent>
+                <Continent to="/oceania">
                     <ContinentIcon src={oceania} />
                     <ContinentsTitle>大洋洲</ContinentsTitle>
                 </Continent>
-                <Continent>
+                <Continent to="/south-america">
                     <ContinentIcon src={south} />
                     <ContinentsTitle>南美洲</ContinentsTitle>
                 </Continent>
-                <Continent>
+                <Continent to="/africa">
                     <ContinentIcon src={africa} />
                     <ContinentsTitle>非洲</ContinentsTitle>
                 </Continent>
-                <Continent>
+                <Continent to="/antarctica">
                     <ContinentIcon src={antarctica} />
                     <ContinentsTitle>南極洲</ContinentsTitle>
                 </Continent>
