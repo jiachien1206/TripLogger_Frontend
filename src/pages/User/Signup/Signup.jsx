@@ -1,6 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 import api from '../../../utils/api.js';
+import EmailPwd from './EmailPwd';
+import Location from './Location';
+import Tag from './Tag';
 import updateNewsfeeds from '../../../utils/updateUserNewsfeeds.js';
 
 const SignupWrap = styled.div`
@@ -11,34 +14,13 @@ const SignupWrap = styled.div`
     width: 500px;
     height: 500px;
     border: 1px solid #000000;
+    background-color: #ffffff;
 `;
-
-const Name = styled.input`
-    line-height: 20px;
-    width: 300px;
-    margin: 10px;
-`;
-
-const Email = styled.input`
-    line-height: 20px;
-    width: 300px;
-    margin: 10px;
-`;
-
-const Password = styled.input`
-    line-height: 20px;
-    width: 300px;
-    margin: 10px;
-`;
-
-const Submit = styled.button``;
 
 const Signup = () => {
-    const [name, setName] = React.useState('Signup測試員');
-    const [email, setEmail] = React.useState('admin@gmail.com');
-    const [password, setPassword] = React.useState('adminadmin');
+    const [page, setPage] = React.useState(1);
 
-    async function signup() {
+    async function signup(name, email, password) {
         try {
             const res = await api.signup({
                 name,
@@ -61,19 +43,13 @@ const Signup = () => {
     return (
         <>
             <SignupWrap>
-                <label>
-                    Name:
-                    <Name value={name} onChange={(e) => setName(e.target.value)} />
-                </label>
-                <label>
-                    E-mail:
-                    <Email value={email} onChange={(e) => setEmail(e.target.value)} />
-                </label>
-                <label>
-                    Password:
-                    <Password value={password} onChange={(e) => setPassword(e.target.value)} />
-                </label>
-                <Submit onClick={signup}>送出</Submit>
+                {page === 1 ? (
+                    <EmailPwd paging={setPage}></EmailPwd>
+                ) : page === 2 ? (
+                    <Location paging={setPage}></Location>
+                ) : (
+                    <Tag submit={signup}></Tag>
+                )}
             </SignupWrap>
         </>
     );

@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import Highlighter from 'react-highlight-words';
+
 const PostWrap = styled.div`
     border: 1px solid #929292;
     border-radius: 10px;
@@ -31,57 +31,13 @@ const PostContent = styled.div`
     }
 `;
 
-const Highlight = styled(Highlighter)`
-    .highlight {
-        margin: 0px 3px;
-        padding: 0px 8px;
-        background-color: #a0d9a0;
-        border-radius: 20px;
-    }
-`;
-
-const Post = ({ post, keyword }) => {
-    const keywordList = keyword.split(' ');
-    const strippedContent = post.content.replace(/(<([^>]+)>)/gi, ' ');
-    let lastIndex = 0;
-    const paragraphs = keywordList.map((keyword) => {
-        const index = strippedContent.indexOf(keyword);
-        if (lastIndex === 0) {
-            lastIndex = index;
-            return strippedContent.substring(index - 60, index + keyword.length + 60);
-        }
-        if (index - lastIndex > 80) {
-            lastIndex = index;
-            return strippedContent.substring(index - 60, index + keyword.length + 60);
-        }
-    });
-
+const Post = ({ post }) => {
     return (
         <PostWrap>
             <PostLink to={post.url}>
                 {/* <PostMainImg src={post.main_image}></PostMainImg> */}
-                <PostTitle>
-                    <Highlight
-                        highlightClassName="highlight"
-                        searchWords={keywordList}
-                        autoEscape={true}
-                        textToHighlight={post.title}
-                    />
-                </PostTitle>
-
-                {paragraphs.map((paragraph) => {
-                    return (
-                        <PostContent key={paragraph}>
-                            <Highlight
-                                highlightClassName="highlight"
-                                searchWords={keywordList}
-                                autoEscape={true}
-                                textToHighlight={paragraph}
-                            />
-                        </PostContent>
-                    );
-                })}
-
+                <PostTitle>{post.title}</PostTitle>
+                <PostContent dangerouslySetInnerHTML={{ __html: post.content }} />
                 {/* <ReadIcon />
                 <ReadNum>{readNum}</ReadNum>
                 <PostContinent>{post.location.continent}</PostContinent>
