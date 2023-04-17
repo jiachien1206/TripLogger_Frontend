@@ -53,31 +53,31 @@ const Sidebar = () => {
                 <Map src={mapImg} />
             </MapLink>
             <ContinentList>
-                <Continent to="/asia">
+                <Continent to="/location/asia">
                     <ContinentIcon src={asia} />
                     <ContinentsTitle>亞洲</ContinentsTitle>
                 </Continent>
-                <Continent to="/europe">
+                <Continent to="/location/europe">
                     <ContinentIcon src={europe} />
                     <ContinentsTitle>歐洲</ContinentsTitle>
                 </Continent>
-                <Continent to="/north-america">
+                <Continent to="/location/north-america">
                     <ContinentIcon src={north} />
                     <ContinentsTitle>北美洲</ContinentsTitle>
                 </Continent>
-                <Continent to="/oceania">
+                <Continent to="/location/oceania">
                     <ContinentIcon src={oceania} />
                     <ContinentsTitle>大洋洲</ContinentsTitle>
                 </Continent>
-                <Continent to="/south-america">
+                <Continent to="/location/south-america">
                     <ContinentIcon src={south} />
                     <ContinentsTitle>南美洲</ContinentsTitle>
                 </Continent>
-                <Continent to="/africa">
+                <Continent to="/location/africa">
                     <ContinentIcon src={africa} />
                     <ContinentsTitle>非洲</ContinentsTitle>
                 </Continent>
-                <Continent to="/antarctica">
+                <Continent to="/location/antarctica">
                     <ContinentIcon src={antarctica} />
                     <ContinentsTitle>南極洲</ContinentsTitle>
                 </Continent>

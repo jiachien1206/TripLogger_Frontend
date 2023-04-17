@@ -28,7 +28,7 @@ root.render(
                 <Route path="user/signin" element={<Signin />} />
                 <Route path="user/footstep" element={<Footstep />} />
                 <Route path="search" element={<Search />} />
-                <Route path=":continent" element={<Continent />} />
+                <Route path="location/:continent" element={<Continent />} />
                 <Route path="*" element={<Navigate to="/" replace />} />
             </Route>
         </Routes>
