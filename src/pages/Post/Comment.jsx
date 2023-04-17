@@ -44,7 +44,7 @@ const Comments = ({ postId, location, tag, comments, setNewComment }) => {
             tag,
             comment,
         };
-        await api.writeComment(postId, content, jwtToken);
+        const res = await api.writeComment(postId, content, jwtToken);
         setNewComment(true);
     };
 
