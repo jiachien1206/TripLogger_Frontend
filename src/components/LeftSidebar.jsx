@@ -13,7 +13,7 @@ import antarctica from '../images/antarctica.png';
 const Wrapper = styled.div`
     display: flex;
     flex-direction: column;
-    margin: 20px 40px 20px 10px;
+    margin: 20px 40px 20px 0px;
     gap: 30px;
 `;
 const MapLink = styled(Link)``;

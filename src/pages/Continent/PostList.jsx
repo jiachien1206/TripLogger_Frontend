@@ -4,7 +4,7 @@ import Post from './Post';
 import api from '../../utils/api';
 
 const PostsWrap = styled.div`
-    margin-top: 60px;
+    margin-top: 10px;
 `;
 
 const PostList = ({ continent }) => {
