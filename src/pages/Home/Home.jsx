@@ -4,7 +4,10 @@ import styled from 'styled-components';
 import LeftSidebar from '../../components/LeftSidebar';
 import updateNewsfeeds from '../../utils/updateUserNewsfeeds.js';
 
-const Wrapper = styled.div``;
+const Wrapper = styled.div`
+    max-width: 1440px;
+    display: flex;
+`;
 const PostsWrap = styled.div`
     display: flex;
     flex-direction: column;

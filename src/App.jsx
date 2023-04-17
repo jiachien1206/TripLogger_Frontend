@@ -14,6 +14,7 @@ const GlobalStyle = createGlobalStyle`
     margin: 100px auto 0px;
     background-color: #f5f5f5;
     max-width:1000px;
+    letter-spacing:0.1em;
   }
 `;
 
