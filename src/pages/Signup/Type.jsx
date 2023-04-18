@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Title } from './Components.jsx';
-import Options from '../../components/Options.jsx';
+import Options from '../../components/PreferenceOptions.jsx';
 
 const Submit = styled.button``;
 
