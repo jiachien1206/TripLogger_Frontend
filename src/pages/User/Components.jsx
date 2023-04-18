@@ -20,5 +20,5 @@ export const Block = styled.div`
 `;
 
 export const Title = styled.h2`
-    margin: 0;
+    margin: 0 auto;
 `;
