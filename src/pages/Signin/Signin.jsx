@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import api from '../../../utils/api.js';
-import updateNewsfeeds from '../../../utils/updateUserNewsfeeds.js';
+import api from '../../utils/api.js';
+import updateNewsfeeds from '../../utils/updateUserNewsfeeds.js';
 const SigninWrap = styled.div`
     display: flex;
     flex-direction: column;

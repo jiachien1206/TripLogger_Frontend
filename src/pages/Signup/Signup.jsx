@@ -1,10 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
-import api from '../../../utils/api.js';
-import updateNewsfeeds from '../../../utils/updateUserNewsfeeds.js';
-import EmailPwd from './EmailPwd';
-import Location from './Location';
-import Tag from './Tag';
+import api from '../../utils/api.js';
+import updateNewsfeeds from '../../utils/updateUserNewsfeeds.js';
+import EmailPwd from './EmailPwd.jsx';
+import Location from './Location.jsx';
+import Tag from './Tag.jsx';
 
 const SignupWrap = styled.div`
     display: flex;

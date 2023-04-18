@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import api from '../../../utils/api.js';
 import { Title } from './Components.jsx';
 const Name = styled.input`
     line-height: 20px;
