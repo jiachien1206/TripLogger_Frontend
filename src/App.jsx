@@ -1,9 +1,22 @@
 import { Outlet } from 'react-router-dom';
 import { createGlobalStyle } from 'styled-components';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
 import React from 'react';
 import Header from './components/Header';
 import webSocket from 'socket.io-client';
 import updateNewsfeeds from './utils/updateUserNewsfeeds';
+
+const theme = createTheme({
+    palette: {
+        primary: {
+            main: '#236262',
+            light: '',
+        },
+        secondary: {
+            main: '#6f6f6f',
+        },
+    },
+});
 
 const GlobalStyle = createGlobalStyle`
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC&display=swap');
@@ -38,9 +51,11 @@ function App() {
 
     return (
         <>
-            <GlobalStyle />
-            <Header />
-            <Outlet />
+            <ThemeProvider theme={theme}>
+                <GlobalStyle />
+                <Header />
+                <Outlet />
+            </ThemeProvider>
         </>
     );
 }
