@@ -65,15 +65,25 @@ const UploadImgInput = styled.input``;
 
 const Setting = () => {
     const [profileImage, setProfileImage] = React.useState(profile);
+    const [name, setName] = React.useState('');
+    const [email, setEmail] = React.useState('');
     const [file, setFile] = React.useState();
     const [locations, setLocations] = React.useState([]);
     const [types, setTypes] = React.useState([]);
-
     React.useEffect(() => {
+        const jwtToken = window.localStorage.getItem('jwtToken');
+        const user = window.localStorage.getItem('user');
+        const userId = user.id;
         const getUserData = async () => {
-            setProfileImage();
-            setLocations(['亞洲', '歐洲', '北美洲', '大洋洲', '南美洲', '非洲', '南極洲']);
-            setTypes(['交通', '住宿', '景點', '證件', '其他', '恐怖故事', '省錢妙招']);
+            const res = await api.getUser(userId, jwtToken);
+            const { name, email, location, type, image } = res.data.data;
+            setName(name);
+            setEmail(email);
+            setLocations(location);
+            setTypes(type);
+            if (image) {
+                setProfileImage(image);
+            }
         };
         getUserData();
     }, []);
@@ -119,9 +129,9 @@ const Setting = () => {
             <Block style={{ padding: '40px 80px' }}>
                 <Title>個人資料</Title>
                 <Label>使用者名稱 Username</Label>
-                <Input disabled="disabled" />
+                <Input disabled="disabled" value={name} />
                 <Label>電子郵件 Email</Label>
-                <Input disabled="disabled" />
+                <Input disabled="disabled" value={email} />
                 <Label>使用者照片 Profile Image</Label>
                 <ImageWrap>
                     <Avatar src={profileImage} sx={{ width: 45, height: 45 }} />

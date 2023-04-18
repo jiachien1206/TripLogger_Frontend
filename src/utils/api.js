@@ -144,6 +144,14 @@ const api = {
             },
         });
     },
+    getUser(userId, jwtToken) {
+        return axios(`${this.HOST_NAME}/user/${userId}`, {
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${jwtToken}`,
+            },
+        });
+    },
 };
 
 export default api;
