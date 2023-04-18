@@ -5,74 +5,85 @@ import logo from '../images/logo.png';
 import magnifier from '../images/search.svg';
 import membericon from '../images/profile.png';
 import api from '../utils/api';
+import SearchIcon from '@mui/icons-material/Search';
 
 const Navigation = styled.div`
     position: fixed;
     top: 0;
     left: 0;
-    height: 70px;
+    height: 50px;
     width: 100%;
     z-index: 99;
     background-color: white;
+
+    box-shadow: 0 1px 6px 0 rgb(32 33 36 / 5%);
+`;
+const NavigationContentWrap = styled.div`
+    max-width: 1200px;
+    height: 100%;
+    margin: 0px auto;
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 10px;
-    box-shadow: 0 1px 6px 0 rgb(32 33 36 / 5%);
 `;
 const NavigationLeft = styled.div`
     display: flex;
     align-items: center;
     margin-left: 20px;
-    gap: 20px;
+    gap: 5px;
 `;
 const NavigationRight = styled.div`
     display: flex;
     align-items: center;
-    margin-right: 20px;
 `;
 const Logo = styled.a`
-    width: 180px;
-    height: 68px;
+    width: 90px;
+    height: 37px;
     background-image: url(${logo});
     background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
 `;
 const SearchBar = styled.div`
     position: relative;
     display: flex;
     justify-content: space-between;
-    height: 40px;
+    height: 35px;
     width: 260px;
     margin-left: auto;
 `;
 const SearchInput = styled.input`
-    height: 40px;
+    height: 100%;
     width: 260px;
     outline: none;
     border: none;
-    font-size: 20px;
-    line-height: 24px;
+    font-size: 18px;
+    line-height: 19px;
     transition: border-color 1s;
-    border: solid 1px #979797;
+    border: solid 1px #d4d4d4;
     border-radius: 5px;
     padding-left: 10px;
+    &:hover {
+        border: 2px solid #d4d4d4;
+    }
     &:focus {
-        border: 2px solid #00684a;
+        border: 2px solid #236262;
     }
 `;
 
 const SearchButton = styled.button`
     position: absolute;
-    height: 36px;
-    width: 36px;
+    height: 31px;
+    width: 31px;
     border: none;
     background-color: #ffffff;
-    padding-top: 0px;
-    padding-bottom: 0px;
-    left: 222px;
+    right: 2px;
     top: 2px;
     border-radius: 3px;
+    padding: 0px;
     &:hover {
+        cursor: pointer;
         background-color: #b8f4cf;
     }
 `;
@@ -114,29 +125,31 @@ const Header = () => {
 
     return (
         <Navigation>
-            <NavigationLeft>
-                <Logo href="/" />
-                <SearchBar>
-                    <SearchInput
-                        onChange={(e) => setInputValue(e.target.value)}
-                        value={inputValue}
-                        onKeyPress={(e) => {
-                            if (e.key === 'Enter') {
-                                window.location.replace(`/search?keyword=${inputValue}`);
-                            }
-                        }}
-                    />
-                    <SearchButton onClick={redirect}>
-                        <img src={magnifier} />
-                    </SearchButton>
-                </SearchBar>
-            </NavigationLeft>
-            <NavigationRight>
-                <CreatePost to="/create">發文</CreatePost>
-                <Memberlink to="/user/signin">
-                    <Membericon />
-                </Memberlink>
-            </NavigationRight>
+            <NavigationContentWrap>
+                <NavigationLeft>
+                    <Logo href="/" />
+                    <SearchBar>
+                        <SearchInput
+                            onChange={(e) => setInputValue(e.target.value)}
+                            value={inputValue}
+                            onKeyPress={(e) => {
+                                if (e.key === 'Enter') {
+                                    window.location.replace(`/search?keyword=${inputValue}`);
+                                }
+                            }}
+                        />
+                        <SearchButton onClick={redirect}>
+                            <SearchIcon color="primary" sx={{ fontSize: 26 }} />
+                        </SearchButton>
+                    </SearchBar>
+                </NavigationLeft>
+                <NavigationRight>
+                    <CreatePost to="/create">發文</CreatePost>
+                    <Memberlink to="/user/signin">
+                        <Membericon />
+                    </Memberlink>
+                </NavigationRight>
+            </NavigationContentWrap>
         </Navigation>
     );
 };
