@@ -4,7 +4,7 @@ import api from '../../utils/api.js';
 import updateNewsfeeds from '../../utils/updateUserNewsfeeds.js';
 import EmailPwd from './EmailPwd.jsx';
 import Location from './Location.jsx';
-import Tag from './Tag.jsx';
+import Tag from './Type.jsx';
 
 const SignupWrap = styled.div`
     display: flex;

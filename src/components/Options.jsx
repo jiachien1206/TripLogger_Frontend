@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import bar from '../../images/bar.svg';
+import bar from '../images/bar.svg';
 
 const OptionsWrap = styled.div`
     border: 1px solid grey;

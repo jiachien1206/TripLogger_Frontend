@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { Title } from './Components.jsx';
-import Options from './Options.jsx';
+import Options from '../../components/Options.jsx';
 
 const NextPage = styled.button``;
 const Location = ({ locations, setLocations, paging }) => {
