@@ -6,9 +6,10 @@ import webSocket from 'socket.io-client';
 import updateNewsfeeds from './utils/updateUserNewsfeeds';
 
 const GlobalStyle = createGlobalStyle`
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC&display=swap');
   * {
+    font-family: 'Noto Sans TC', sans-serif;
     box-sizing: border-box;
-    
   }
   body {
     margin: 100px auto 0px;
