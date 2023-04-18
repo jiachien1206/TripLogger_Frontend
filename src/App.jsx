@@ -27,7 +27,7 @@ const GlobalStyle = createGlobalStyle`
     box-sizing: border-box;
   }
   body {
-    margin: 100px auto 0px;
+    margin: 50px auto 0px;
     background-color: #f5f5f5;
     max-width:1200px;
     letter-spacing:0.1em;
