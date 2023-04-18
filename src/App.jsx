@@ -10,10 +10,11 @@ const theme = createTheme({
     palette: {
         primary: {
             main: '#236262',
-            light: '',
+            light: '#a5dfdf',
         },
         secondary: {
             main: '#6f6f6f',
+            dark: '#6f6f6f',
             light: '#d4d4d4',
         },
     },
@@ -30,6 +31,7 @@ const GlobalStyle = createGlobalStyle`
     background-color: #f5f5f5;
     max-width:1200px;
     letter-spacing:0.1em;
+    color: #171717;
   }
 `;
 
