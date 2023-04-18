@@ -1,10 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
 import bar from '../images/bar.svg';
+import MenuRoundedIcon from '@mui/icons-material/MenuRounded';
 
 const OptionsWrap = styled.div`
-    border: 1px solid grey;
-    margin: 20px auto;
+    margin: 0px auto;
     display-flex;
     flex-direction: column;
     width: 350px;
@@ -15,10 +15,12 @@ const Option = styled.div`
     display: flex;
     align-items: center;
     margin: 10px auto;
-    padding: 10px 10px;
-    width: 300px;
-    gap: 5px;
-    border-bottom: 1px solid grey;
+    padding: 10px 20px;
+    width: 220px;
+    gap: 15px;
+    border-bottom: 1px solid #d4d4d4;
+    font-weight: 500;
+    cursor: grabbing;
     &.next-position {
         border: none;
         opacity: 0.2;
@@ -84,8 +86,8 @@ const Options = ({ options, setOrder }) => {
                         onDragLeave={handleDragLeave}
                         onDragEnd={handleDragEnd}
                     >
-                        <Bar />
-                        {index + 1} {option}
+                        <MenuRoundedIcon />
+                        {option}
                     </Option>
                 );
             })}
