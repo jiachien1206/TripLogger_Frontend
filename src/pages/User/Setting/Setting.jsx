@@ -116,7 +116,7 @@ const Setting = () => {
 
     return (
         <UserWrap>
-            <Block>
+            <Block style={{ padding: '40px 80px' }}>
                 <Title>個人資料</Title>
                 <Label>使用者名稱 Username</Label>
                 <Input disabled="disabled" />
