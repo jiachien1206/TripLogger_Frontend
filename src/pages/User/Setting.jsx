@@ -1,14 +1,16 @@
 import React from 'react';
 import styled from 'styled-components';
-import { UserWrap, Block, Title } from '../Components';
+import { Block, Title } from './Components';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
-import profile from '../../../images/profile.png';
-import api from '../../../utils/api';
+import profile from '../../images/profile.png';
+import api from '../../utils/api';
 import axios from 'axios';
-import Options from '../../../components/PreferenceOptions';
+import Options from '../../components/PreferenceOptions';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
+
+// const ProfileWrap = styled.div``;
 
 const Label = styled.label`
     margin-top: 10px;
@@ -37,6 +39,7 @@ const ImageWrap = styled.div`
     align-items: center;
     height: 50px;
     gap: 15px;
+    width: 100%;
 `;
 
 const UploadImgName = styled.div`
@@ -154,8 +157,8 @@ const Setting = () => {
     }, [file]);
 
     return (
-        <UserWrap>
-            <Block style={{ padding: '40px 80px' }}>
+        <>
+            <Block className="profile">
                 <Title>個人資料</Title>
                 <Label>使用者名稱 Username</Label>
                 <Input value={name} onChange={(e) => setName(e.target.value)} />
@@ -186,11 +189,11 @@ const Setting = () => {
                     </UploadImgName>
                 </ImageWrap>
             </Block>
-            <Block>
+            <Block className="setting">
                 <Title>喜歡的旅遊地點</Title>
                 <Options options={locations} setOrder={setLocations}></Options>
             </Block>
-            <Block>
+            <Block className="setting">
                 <Title>喜歡的文章類型</Title>
                 <Options options={types} setOrder={setTypes}></Options>
             </Block>
@@ -232,7 +235,7 @@ const Setting = () => {
                     </Alert>
                 )}
             </Snackbar>
-        </UserWrap>
+        </>
     );
 };
 

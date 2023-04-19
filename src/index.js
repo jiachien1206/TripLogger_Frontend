@@ -9,10 +9,9 @@ import EditPost from './pages/CreateEditPost/EditPost';
 import Map from './pages/Map/Map';
 import Signup from './pages/Signup/Signup';
 import Signin from './pages/Signin/Signin';
-import Footstep from './pages/User/Footstep/Footstep';
 import Search from './pages/Search/Search';
 import Continent from './pages/Continent/Continent';
-import Setting from './pages/User/Setting/Setting';
+import User from './pages/User/User';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
@@ -27,10 +26,9 @@ root.render(
                 <Route path="map" element={<Map />} />
                 <Route path="signup" element={<Signup />} />
                 <Route path="signin" element={<Signin />} />
-                <Route path="user/footstep" element={<Footstep />} />
                 <Route path="search" element={<Search />} />
                 <Route path="location/:continent" element={<Continent />} />
-                <Route path="user/setting" element={<Setting />} />
+                <Route path="user" element={<User />} />
                 <Route path="*" element={<Navigate to="/" replace />} />
             </Route>
         </Routes>

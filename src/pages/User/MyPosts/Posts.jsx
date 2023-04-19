@@ -1,15 +1,14 @@
 import React from 'react';
 import styled from 'styled-components';
 import api from '../../../utils/api.js';
-import Post from './Post';
-
-const Wrapper = styled.div`
-    margin: 50px auto 0px;
-    width: 1050px;
-    border: 1px solid grey;
-    border-radius: 5px;
-    padding: 5px;
-    background-color: #ffffff;
+import Post from './Post.jsx';
+import { Title } from '../Components.jsx';
+const Wrap = styled.div`
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+    border-radius: 8px;
 `;
 
 const Posts = () => {
@@ -27,12 +26,14 @@ const Posts = () => {
         fetchUserPosts(user.id, jwtToken);
     }, []);
     return (
-        <Wrapper>
-            <h2>我的文章</h2>
-            {posts.map((post) => {
-                return <Post key={post._id} post={post} jwtToken={jwtToken} />;
-            })}
-        </Wrapper>
+        <>
+            <Title>我的文章</Title>
+            <Wrap>
+                {posts.map((post) => {
+                    return <Post key={post._id} post={post} jwtToken={jwtToken} />;
+                })}
+            </Wrap>
+        </>
     );
 };
 
