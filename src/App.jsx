@@ -17,6 +17,12 @@ const theme = createTheme({
             dark: '#6f6f6f',
             light: '#d4d4d4',
         },
+        success: {
+            main: '#C5DECD',
+        },
+        warning: {
+            main: '#EEC0B0',
+        },
     },
 });
 
@@ -29,7 +35,6 @@ const GlobalStyle = createGlobalStyle`
   body {
     margin: 50px auto 0px;
     background-color: #f5f5f5;
-    max-width:1200px;
     letter-spacing:0.1em;
     color: #171717;
   }

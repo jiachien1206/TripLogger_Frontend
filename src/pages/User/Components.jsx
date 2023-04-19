@@ -3,7 +3,7 @@ import styled from 'styled-components';
 export const UserWrap = styled.div`
     display: flex;
     flex-direction: column;
-    margin-top: 100px;
+    margin: 100px 0px 28px;
     gap: 30px;
     align-items: center;
     color: #5c5c5c;

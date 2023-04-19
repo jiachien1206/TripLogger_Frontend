@@ -2,10 +2,13 @@ import React from 'react';
 import styled from 'styled-components';
 import { UserWrap, Block, Title } from '../Components';
 import Avatar from '@mui/material/Avatar';
+import Button from '@mui/material/Button';
 import profile from '../../../images/profile.png';
 import api from '../../../utils/api';
 import axios from 'axios';
 import Options from '../../../components/PreferenceOptions';
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
 
 const Label = styled.label`
     margin-top: 10px;
@@ -70,11 +73,13 @@ const Setting = () => {
     const [file, setFile] = React.useState();
     const [locations, setLocations] = React.useState([]);
     const [types, setTypes] = React.useState([]);
+    const [snackbar, setSnackbar] = React.useState(false);
+    const [success, setSuccess] = React.useState();
     React.useEffect(() => {
-        const jwtToken = window.localStorage.getItem('jwtToken');
-        const user = window.localStorage.getItem('user');
-        const userId = user.id;
         const getUserData = async () => {
+            const jwtToken = window.localStorage.getItem('jwtToken');
+            const user = window.localStorage.getItem('user');
+            const userId = JSON.parse(user).id;
             const res = await api.getUser(userId, jwtToken);
             const { name, email, location, type, image } = res.data.data;
             setName(name);
@@ -100,6 +105,30 @@ const Setting = () => {
         }
 
         setFile(e.target.files[0]);
+    };
+
+    const submitSetting = async () => {
+        const jwtToken = window.localStorage.getItem('jwtToken');
+        const user = window.localStorage.getItem('user');
+        const userId = JSON.parse(user).id;
+        const data = {
+            name,
+            email,
+            image: profileImage,
+            location_pre: locations,
+            type_pre: types,
+        };
+        const res = await api.editUser(userId, data, jwtToken);
+        if (res.status === 200) {
+            setSuccess(true);
+        } else {
+            setSuccess(false);
+        }
+        setSnackbar(true);
+    };
+
+    const closeSnackbar = async () => {
+        setSnackbar(false);
     };
 
     React.useEffect(() => {
@@ -129,9 +158,9 @@ const Setting = () => {
             <Block style={{ padding: '40px 80px' }}>
                 <Title>個人資料</Title>
                 <Label>使用者名稱 Username</Label>
-                <Input disabled="disabled" value={name} />
+                <Input value={name} onChange={(e) => setName(e.target.value)} />
                 <Label>電子郵件 Email</Label>
-                <Input disabled="disabled" value={email} />
+                <Input value={email} disabled="disabled" />
                 <Label>使用者照片 Profile Image</Label>
                 <ImageWrap>
                     <Avatar src={profileImage} sx={{ width: 45, height: 45 }} />
@@ -165,6 +194,44 @@ const Setting = () => {
                 <Title>喜歡的文章類型</Title>
                 <Options options={types} setOrder={setTypes}></Options>
             </Block>
+            <Button variant="contained" disableElevation onClick={submitSetting}>
+                更新設定
+            </Button>
+            <Snackbar
+                open={snackbar}
+                autoHideDuration={2000}
+                anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+                onClose={closeSnackbar}
+            >
+                {success ? (
+                    <Alert
+                        variant="filled"
+                        severity="success"
+                        color="success"
+                        sx={{
+                            height: '100%',
+                            padding: '5px 10px',
+                            width: '200px',
+                        }}
+                    >
+                        資料更新成功
+                    </Alert>
+                ) : (
+                    <Alert
+                        variant="filled"
+                        severity="warning"
+                        color="warning"
+                        sx={{
+                            // color: 'warning',
+                            height: '100%',
+                            padding: '5px 10px',
+                            width: '200px',
+                        }}
+                    >
+                        資料更新失敗
+                    </Alert>
+                )}
+            </Snackbar>
         </UserWrap>
     );
 };
