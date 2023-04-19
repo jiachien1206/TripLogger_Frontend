@@ -30,14 +30,16 @@ const MapBlock = () => {
     const [visitedcountries, setVistedcountries] = React.useState([]);
     const [isLoaded, setIsloaded] = React.useState(false);
     React.useEffect(() => {
-        const fetchUserVisited = async (jwtToken) => {
-            const res = await api.getUserVisited(jwtToken);
+        const fetchUserVisited = async (userId, jwtToken) => {
+            const res = await api.getUserVisited(userId, jwtToken);
             const userVistied = res.data.data;
             setVistedcountries(userVistied);
             setIsloaded(true);
         };
+        let user = window.localStorage.getItem('user');
+        const userId = JSON.parse(user).id;
         const jwtToken = window.localStorage.getItem('jwtToken');
-        fetchUserVisited(jwtToken);
+        fetchUserVisited(userId, jwtToken);
     }, []);
     const countryPopup = (country, layer) => {
         const countryName = country.properties.ADMIN;
