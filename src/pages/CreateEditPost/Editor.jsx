@@ -36,7 +36,6 @@ const imageHandler = (quill) => {
     input.click();
     input.onchange = async () => {
         const file = input.files[0];
-        console.log(file.size);
         if (file.size > 1048576) {
             alert('File is too big!');
         } else {
