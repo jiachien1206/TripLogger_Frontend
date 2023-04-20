@@ -34,7 +34,7 @@ const ContinentOption = styled.option``;
 
 const Country = styled.input``;
 
-const Category = styled.input``;
+const Type = styled.input``;
 
 const TravelDate = styled.input``;
 
@@ -49,7 +49,7 @@ function CreatePost() {
     const [content, setContent] = React.useState('');
     const [continent, setContinent] = React.useState('歐洲');
     const [country, setCountry] = React.useState('奧地利');
-    const [category, setCategory] = React.useState('景點');
+    const [type, setType] = React.useState('景點');
     const [travelDate, setTravelDate] = React.useState('2023-03-02');
     const inputRef = React.useRef(null);
     const handleUploadClick = () => {
@@ -95,7 +95,7 @@ function CreatePost() {
                     content,
                     main_image: mainImg,
                     location: { continent, country },
-                    tags: [category],
+                    type,
                     dates: { travel_date: travelDate },
                 },
                 jwtToken
@@ -153,7 +153,7 @@ function CreatePost() {
             </label>
             <label>
                 類別：
-                <Category value={category} onChange={(e) => setCategory(e.target.value)} />
+                <Type value={type} onChange={(e) => setType(e.target.value)} />
             </label>
             <label>
                 旅遊時間：

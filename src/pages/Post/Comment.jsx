@@ -35,13 +35,13 @@ const SubmitComment = styled.div`
 
 const PostComment = styled.div``;
 
-const Comments = ({ postId, location, tag, comments, setNewComment }) => {
+const Comments = ({ postId, location, type, comments, setNewComment }) => {
     const [comment, setComment] = React.useState('');
     const submitComment = async () => {
         const jwtToken = window.localStorage.getItem('jwtToken');
         const content = {
             location,
-            tag,
+            type,
             comment,
         };
         const res = await api.writeComment(postId, content, jwtToken);

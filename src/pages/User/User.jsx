@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import Setting from './Setting';
 import Map from './Map/Map';
 import Posts from './MyPosts/Posts';
+import Save from './MySave/SavedPosts';
 import asia from '../../images/asia.png';
 import north from '../../images/north-america.png';
 import south from '../../images/south-america.png';
@@ -26,15 +27,18 @@ const Sidebar = styled.div`
     width: 180px;
 `;
 
-const OptionsList = styled.div``;
+const OptionsList = styled.div`
+    display: flex;
+    flex-direction: column;
+`;
 const Option = styled.div`
     display: flex;
     align-items: center;
     gap: 10px;
-    height: 34px;
+    height: 40px;
     border-radius: 5px;
     cursor: pointer;
-    padding-left: 5px;
+    padding: 10px 5px;
     &:hover {
         background-color: #e5e5e5;
     }
@@ -48,17 +52,17 @@ const OptionTitle = styled.div`
 `;
 
 const Section = styled.div`
-    width: 600px;
+    max-width: 650px;
     display: flex;
     flex-direction: column;
     margin-bottom: 28px;
-    gap: 30px;
-    align-items: center;
+    // gap: 10px;
+    // align-items: center;
     color: #5c5c5c;
 `;
 
 const User = () => {
-    const [section, setSection] = React.useState('posts');
+    const [section, setSection] = React.useState('save');
     const handleSection = (section) => {
         setSection(section);
     };
@@ -78,21 +82,9 @@ const User = () => {
                         <OptionIcon src={north} />
                         <OptionTitle>我的文章</OptionTitle>
                     </Option>
-                    <Option onClick={() => handleSection('setting')}>
+                    <Option onClick={() => handleSection('save')}>
                         <OptionIcon src={oceania} />
-                        <OptionTitle>大洋洲</OptionTitle>
-                    </Option>
-                    <Option onClick={() => handleSection('setting')}>
-                        <OptionIcon src={south} />
-                        <OptionTitle>南美洲</OptionTitle>
-                    </Option>
-                    <Option onClick={() => handleSection('setting')}>
-                        <OptionIcon src={africa} />
-                        <OptionTitle>非洲</OptionTitle>
-                    </Option>
-                    <Option onClick={() => handleSection('setting')}>
-                        <OptionIcon src={antarctica} />
-                        <OptionTitle>南極洲</OptionTitle>
+                        <OptionTitle>收藏清單</OptionTitle>
                     </Option>
                 </OptionsList>
             </Sidebar>
@@ -103,6 +95,8 @@ const User = () => {
                     <Map />
                 ) : section === 'posts' ? (
                     <Posts></Posts>
+                ) : section === 'save' ? (
+                    <Save></Save>
                 ) : (
                     <></>
                 )}

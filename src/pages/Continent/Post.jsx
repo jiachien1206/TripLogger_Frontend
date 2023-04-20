@@ -45,7 +45,7 @@ const PostCountry = styled.div`
     font-size: 20px;
 `;
 
-const PostTags = styled.div`
+const PostType = styled.div`
     font-size: 20px;
 `;
 
@@ -162,13 +162,13 @@ const Post = ({ post }) => {
             setLikeNum(function (prev) {
                 return prev + 1;
             });
-            api.likePost(post._id, post.location.continent, post.tags[0], true, jwtToken);
+            api.likePost(post._id, post.location.continent, post.type, true, jwtToken);
             // updateLocalStorage(1, 'like');
         } else {
             setLikeNum(function (prev) {
                 return prev - 1;
             });
-            api.likePost(post._id, post.location.continent, post.tags[0], false, jwtToken);
+            api.likePost(post._id, post.location.continent, post.type, false, jwtToken);
             // updateLocalStorage(0, 'like');
         }
         setLike(!like);
@@ -176,10 +176,10 @@ const Post = ({ post }) => {
     function savePost() {
         const jwtToken = window.localStorage.getItem('jwtToken');
         if (!save) {
-            api.savePost(post._id, post.location.continent, post.tags[0], true, jwtToken);
+            api.savePost(post._id, post.location.continent, post.type, true, jwtToken);
             // updateLocalStorage(1, 'save');
         } else {
-            api.savePost(post._id, post.location.continent, post.tags[0], false, jwtToken);
+            api.savePost(post._id, post.location.continent, post.type, false, jwtToken);
             // updateLocalStorage(0, 'save');
         }
         setSave(!save);
@@ -193,7 +193,7 @@ const Post = ({ post }) => {
                 <ReadNum>{readNum}</ReadNum>
                 <PostContinent>{post.location.continent}</PostContinent>
                 <PostCountry>{post.location.country}</PostCountry>
-                <PostTags>{post.tags}</PostTags>
+                <PostType>{post.type}</PostType>
                 <PostAuthor>{post.authorId}</PostAuthor>
                 <PostContent dangerouslySetInnerHTML={{ __html: post.content }} />
                 <PostTime>{post.dates.post_date}</PostTime>

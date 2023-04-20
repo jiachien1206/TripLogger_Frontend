@@ -86,7 +86,7 @@ const Post = ({ post, keyword }) => {
                 <ReadNum>{readNum}</ReadNum>
                 <PostContinent>{post.location.continent}</PostContinent>
                 <PostCountry>{post.location.country}</PostCountry>
-                <PostTags>{post.tags}</PostTags>
+                <PostType>{post.type}</PostType>
                 <PostAuthor>{post.authorId}</PostAuthor>
                 
                 <PostTime>{post.dates.post_date}</PostTime> */}

@@ -26,7 +26,7 @@ const PostCountry = styled.div`
     font-size: 20px;
 `;
 
-const PostTags = styled.div`
+const PostType = styled.div`
     font-size: 20px;
 `;
 
@@ -62,7 +62,7 @@ const Post = () => {
             const post = res.data.data;
             setPost(post);
             const user = JSON.parse(window.localStorage.getItem('user'));
-            await api.addRead(postId, user.id, post.location.continent, post.tags[0]);
+            await api.addRead(postId, user.id, post.location.continent, post.type);
         }
         getPost(postId);
     }, [postId]);
@@ -82,13 +82,13 @@ const Post = () => {
             <PostTitle>{post.title}</PostTitle>
             <PostContinent>{post.location.continent}</PostContinent>
             <PostCountry>{post.location.country}</PostCountry>
-            <PostTags>{post.tags}</PostTags>
+            <PostType>{post.type}</PostType>
             <PostAuthor>{post.authorId}</PostAuthor>
             <PostContent dangerouslySetInnerHTML={{ __html: post.content }} />
             <PostTime>{post.dates.post_date}</PostTime>
             <Comments
                 location={post.location.continent}
-                tag={post.tags[0]}
+                type={post.type}
                 postId={postId}
                 comments={post.comments}
                 setNewComment={setNewComment}

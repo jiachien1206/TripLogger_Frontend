@@ -21,13 +21,13 @@ const api = {
     getContinentPosts(continent) {
         return axios(`${this.HOST_NAME}/continents/${continent}`);
     },
-    addRead(postId, userId, location, tag) {
-        return axios.post(`${this.HOST_NAME}/posts/${postId}/reads`, { userId, location, tag });
+    addRead(postId, userId, location, type) {
+        return axios.post(`${this.HOST_NAME}/posts/${postId}/reads`, { userId, location, type });
     },
-    likePost(postId, location, tag, like, jwtToken) {
+    likePost(postId, location, type, like, jwtToken) {
         return axios.post(
             `${this.HOST_NAME}/posts/${postId}/like`,
-            { location, tag, like },
+            { location, type, like },
             {
                 headers: {
                     'Content-Type': 'application/json',
@@ -36,10 +36,10 @@ const api = {
             }
         );
     },
-    savePost(postId, location, tag, save, jwtToken) {
+    savePost(postId, location, type, save, jwtToken) {
         return axios.post(
             `${this.HOST_NAME}/posts/${postId}/save`,
-            { location, tag, save },
+            { location, type, save },
             {
                 headers: {
                     'Content-Type': 'application/json',

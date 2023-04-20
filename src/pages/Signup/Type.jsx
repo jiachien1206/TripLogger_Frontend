@@ -5,14 +5,14 @@ import Options from '../../components/PreferenceOptions.jsx';
 
 const Submit = styled.button``;
 
-const Tag = ({ tags, setTags, submit }) => {
+const Type = ({ types, setTypes, submit }) => {
     return (
         <>
             <Title>喜歡的文章類別</Title>
-            <Options options={tags} setOrder={setTags}></Options>
+            <Options options={types} setOrder={setTypes}></Options>
             <Submit onClick={submit}>送出</Submit>
         </>
     );
 };
 
-export default Tag;
+export default Type;

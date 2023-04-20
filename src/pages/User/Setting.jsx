@@ -158,8 +158,8 @@ const Setting = () => {
 
     return (
         <>
+            <Title>個人資料</Title>
             <Block className="profile">
-                <Title>個人資料</Title>
                 <Label>使用者名稱 Username</Label>
                 <Input value={name} onChange={(e) => setName(e.target.value)} />
                 <Label>電子郵件 Email</Label>
@@ -189,16 +189,21 @@ const Setting = () => {
                     </UploadImgName>
                 </ImageWrap>
             </Block>
+            <Title>喜歡的旅遊地點</Title>
             <Block className="setting">
-                <Title>喜歡的旅遊地點</Title>
                 <Options options={locations} setOrder={setLocations}></Options>
             </Block>
+            <Title>喜歡的文章類型</Title>
             <Block className="setting">
-                <Title>喜歡的文章類型</Title>
                 <Options options={types} setOrder={setTypes}></Options>
             </Block>
-            <Button variant="contained" disableElevation onClick={submitSetting}>
-                更新設定
+            <Button
+                variant="contained"
+                sx={{ width: '100px', margin: '20px auto' }}
+                disableElevation
+                onClick={submitSetting}
+            >
+                更新資料
             </Button>
             <Snackbar
                 open={snackbar}
@@ -225,7 +230,6 @@ const Setting = () => {
                         severity="warning"
                         color="warning"
                         sx={{
-                            // color: 'warning',
                             height: '100%',
                             padding: '5px 10px',
                             width: '200px',

@@ -32,7 +32,7 @@ const Continent = styled.input``;
 
 const Country = styled.input``;
 
-const Category = styled.input``;
+const Type = styled.input``;
 
 const TravelDate = styled.input``;
 
@@ -47,7 +47,7 @@ function EditPost() {
     const [content, setContent] = React.useState();
     const [continent, setContinent] = React.useState('');
     const [country, setCountry] = React.useState('');
-    const [category, setCategory] = React.useState('');
+    const [type, setType] = React.useState('');
     const [travelDate, setTravelDate] = React.useState('');
     const postId = useParams().id;
     const inputRef = React.useRef(null);
@@ -66,12 +66,12 @@ function EditPost() {
     React.useEffect(() => {
         const getEditPost = async (postId) => {
             const res = await api.getPost(postId);
-            const { title, main_image, content, location, tags, dates } = res.data.data;
+            const { title, main_image, content, location, type, dates } = res.data.data;
             setMainImg(main_image);
             setTitle(title);
             setContinent(location.continent);
             setCountry(location.country);
-            setCategory(tags[0]);
+            setType(type);
             setTravelDate(new Date(dates.travel_date).toISOString().split('T')[0]);
             setContent(content);
         };
@@ -112,7 +112,7 @@ function EditPost() {
                     content,
                     main_image: mainImg,
                     location: { continent, country },
-                    tags: [category],
+                    type,
                     dates: { travel_date: travelDate },
                 },
                 jwtToken
@@ -161,7 +161,7 @@ function EditPost() {
             </label>
             <label>
                 類別：
-                <Category value={category} onChange={(e) => setCategory(e.target.value)} />
+                <Type value={type} onChange={(e) => setType(e.target.value)} />
             </label>
             <label>
                 旅遊時間：

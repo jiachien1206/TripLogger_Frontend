@@ -4,7 +4,7 @@ import api from '../../utils/api.js';
 import updateNewsfeeds from '../../utils/updateUserNewsfeeds.js';
 import EmailPwd from './EmailPwd.jsx';
 import Location from './Location.jsx';
-import Tag from './Type.jsx';
+import Type from './Type.jsx';
 
 const SignupWrap = styled.div`
     display: flex;
@@ -49,7 +49,7 @@ const Signup = () => {
         '非洲',
         '南極洲',
     ]);
-    const [tags, setTags] = React.useState([
+    const [types, setTypes] = React.useState([
         '交通',
         '住宿',
         '景點',
@@ -66,7 +66,7 @@ const Signup = () => {
                 email,
                 password,
                 location_pre: locations,
-                tag_pre: tags,
+                type_pre: types,
             });
             const { user, accessToken } = res.data.data;
             const userData = { id: user._id, name: user.name };
@@ -101,7 +101,7 @@ const Signup = () => {
                         paging={setPage}
                     ></Location>
                 ) : (
-                    <Tag tags={tags} setTags={setTags} submit={signup}></Tag>
+                    <Type types={types} setTypes={setTypes} submit={signup}></Type>
                 )}
             </SignupWrap>
         </>

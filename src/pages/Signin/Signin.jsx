@@ -27,8 +27,8 @@ const Password = styled.input`
 const Submit = styled.button``;
 
 const Signin = () => {
-    const [email, setEmail] = React.useState('admin7@gmail.com');
-    const [password, setPassword] = React.useState('adminadmin');
+    const [email, setEmail] = React.useState('chatgpt1@gmail.com');
+    const [password, setPassword] = React.useState('chatchat');
 
     async function signin() {
         try {

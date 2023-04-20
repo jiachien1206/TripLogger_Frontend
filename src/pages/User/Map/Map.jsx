@@ -52,30 +52,32 @@ const Map = () => {
         }
     };
     return (
-        <Block>
+        <>
             <Title>旅遊足跡</Title>
-            <Mymap
-                dragging={false}
-                scrollWheelZoom={false}
-                zoomControl={false}
-                doubleClickZoom={false}
-                minZoom={1}
-                zoom={1}
-                center={[0, 0]}
-                style={{ height: '500px', zIndex: '5' }}
-            >
-                {isLoaded && (
-                    <GeoJSON
-                        style={countryStyle}
-                        data={mapData.features}
-                        onEachFeature={(country, layer) => {
-                            countryPopup(country, layer);
-                            renderVisited(country, layer);
-                        }}
-                    />
-                )}
-            </Mymap>
-        </Block>
+            <Block>
+                <Mymap
+                    dragging={false}
+                    scrollWheelZoom={false}
+                    zoomControl={false}
+                    doubleClickZoom={false}
+                    minZoom={1}
+                    zoom={1}
+                    center={[0, 0]}
+                    style={{ height: '500px', zIndex: '5' }}
+                >
+                    {isLoaded && (
+                        <GeoJSON
+                            style={countryStyle}
+                            data={mapData.features}
+                            onEachFeature={(country, layer) => {
+                                countryPopup(country, layer);
+                                renderVisited(country, layer);
+                            }}
+                        />
+                    )}
+                </Mymap>
+            </Block>
+        </>
     );
 };
 
