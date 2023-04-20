@@ -8,7 +8,9 @@ const PostsWrap = styled.div`
 
 const PostList = ({ filter }) => {
     const [posts, setPosts] = React.useState([]);
-    const fetchPosts = () => {
+    const [likedPosts, setLikedPosts] = React.useState([]);
+    const [savedPosts, setSavedPosts] = React.useState([]);
+    const getPosts = () => {
         let posts;
         if (filter === '為你推薦') {
             posts = window.localStorage.getItem('relevantPosts');
@@ -22,14 +24,25 @@ const PostList = ({ filter }) => {
             setPosts(posts);
         }
     };
+    const getLikedPosts = () => {
+        const posts = window.localStorage.getItem('likedPosts');
+        setLikedPosts(JSON.parse(posts));
+    };
+
+    const getSavedPosts = () => {
+        const posts = window.localStorage.getItem('savedPosts');
+        setSavedPosts(JSON.parse(posts));
+    };
     React.useEffect(() => {
-        fetchPosts();
+        getPosts();
+        getLikedPosts();
+        getSavedPosts();
     }, [filter]);
 
     return (
         <PostsWrap>
             {posts.map((post) => (
-                <Post key={post._id} post={post} />
+                <Post key={post._id} post={post} likedPosts={likedPosts} savedPosts={savedPosts} />
             ))}
         </PostsWrap>
     );

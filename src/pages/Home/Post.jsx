@@ -45,7 +45,7 @@ const PostCountry = styled.div`
     font-size: 20px;
 `;
 
-const PostTags = styled.div`
+const PostType = styled.div`
     font-size: 20px;
 `;
 
@@ -101,86 +101,111 @@ const SavedButton = styled.div`
     background-image: url(${saveS});
 `;
 
-const Post = ({ post }) => {
-    const [like, setLike] = React.useState(post.like_status);
+const Post = ({ post, likedPosts, savedPosts }) => {
+    const [like, setLike] = React.useState(false);
     const [likeNum, setLikeNum] = React.useState(post.like_num);
     const [readNum, setReadNum] = React.useState(post.read_num);
-    const [save, setSave] = React.useState(post.save_status);
+    const [save, setSave] = React.useState(false);
+
+    const matchPostStatus = () => {
+        if (likedPosts.includes(post._id)) {
+            setLike(true);
+        }
+        if (savedPosts.includes(post._id)) {
+            setSave(true);
+        }
+    };
 
     React.useEffect(() => {
-        setLike(post.like_status);
-        setSave(post.save_status);
-        setLikeNum(post.like_num);
+        matchPostStatus();
     }, [post]);
 
-    function updateLocalStorage(status, type) {
-        const relevantPosts = window.localStorage.getItem('relevantPosts');
-        const relevantPostsResult = JSON.parse(relevantPosts).map((p) => {
-            if (p._id === post._id) {
-                p[`${type}_status`] = status;
-                if (status) {
-                    p[`${type}_num`] += 1;
-                } else {
-                    p[`${type}_num`] -= 1;
-                }
-            }
-            return p;
-        });
-        window.localStorage.setItem('relevantPosts', JSON.stringify(relevantPostsResult));
+    // function updateLocalStorage(status, type) {
+    //     const relevantPosts = window.localStorage.getItem('relevantPosts');
+    //     const relevantPostsResult = JSON.parse(relevantPosts).map((p) => {
+    //         if (p._id === post._id) {
+    //             p[`${type}_status`] = status;
+    //             if (status) {
+    //                 p[`${type}_num`] += 1;
+    //             } else {
+    //                 p[`${type}_num`] -= 1;
+    //             }
+    //         }
+    //         return p;
+    //     });
+    //     window.localStorage.setItem('relevantPosts', JSON.stringify(relevantPostsResult));
 
-        const topPosts = window.localStorage.getItem('topPosts');
-        const topPostsResult = JSON.parse(topPosts).map((p) => {
-            if (p._id === post._id) {
-                p[`${type}_status`] = status;
-                if (status) {
-                    p[`${type}_num`] += 1;
-                } else {
-                    p[`${type}_num`] -= 1;
-                }
-            }
-            return p;
-        });
-        window.localStorage.setItem('topPosts', JSON.stringify(topPostsResult));
-        const newPosts = window.localStorage.getItem('newPosts');
-        const newPostsResult = JSON.parse(newPosts).map((p) => {
-            if (p._id === post._id) {
-                p[`${type}_status`] = status;
-                if (status) {
-                    p[`${type}_num`] += 1;
-                } else {
-                    p[`${type}_num`] -= 1;
-                }
-            }
-            return p;
-        });
-        window.localStorage.setItem('newPosts', JSON.stringify(newPostsResult));
-    }
+    //     const topPosts = window.localStorage.getItem('topPosts');
+    //     const topPostsResult = JSON.parse(topPosts).map((p) => {
+    //         if (p._id === post._id) {
+    //             p[`${type}_status`] = status;
+    //             if (status) {
+    //                 p[`${type}_num`] += 1;
+    //             } else {
+    //                 p[`${type}_num`] -= 1;
+    //             }
+    //         }
+    //         return p;
+    //     });
+    //     window.localStorage.setItem('topPosts', JSON.stringify(topPostsResult));
+    //     const newPosts = window.localStorage.getItem('newPosts');
+    //     const newPostsResult = JSON.parse(newPosts).map((p) => {
+    //         if (p._id === post._id) {
+    //             p[`${type}_status`] = status;
+    //             if (status) {
+    //                 p[`${type}_num`] += 1;
+    //             } else {
+    //                 p[`${type}_num`] -= 1;
+    //             }
+    //         }
+    //         return p;
+    //     });
+    //     window.localStorage.setItem('newPosts', JSON.stringify(newPostsResult));
+    // }
 
     function likePost() {
         const jwtToken = window.localStorage.getItem('jwtToken');
+        let localStorageLikedPosts = window.localStorage.getItem('likedPosts');
+        localStorageLikedPosts = JSON.parse(localStorageLikedPosts);
         if (!like) {
             setLikeNum(function (prev) {
                 return prev + 1;
             });
-            api.likePost(post._id, post.location.continent, post.tags[0], true, jwtToken);
-            updateLocalStorage(1, 'like');
+            api.likePost(post._id, post.location.continent, post.type, true, jwtToken);
+            localStorageLikedPosts.push(post._id);
+            window.localStorage.setItem('likedPosts', JSON.stringify(localStorageLikedPosts));
         } else {
             setLikeNum(function (prev) {
                 return prev - 1;
             });
-            api.likePost(post._id, post.location.continent, post.tags[0], false, jwtToken);
-            updateLocalStorage(0, 'like');
+            api.likePost(post._id, post.location.continent, post.type, false, jwtToken);
+            const newLocalStorageLikedPosts = localStorageLikedPosts.filter((p) => {
+                if (p !== post._id) {
+                    return true;
+                }
+                return false;
+            });
+            window.localStorage.setItem('likedPosts', JSON.stringify(newLocalStorageLikedPosts));
         }
+
         setLike(!like);
     }
     function savePost() {
         const jwtToken = window.localStorage.getItem('jwtToken');
+        const localStorageSavedPosts = JSON.parse(window.localStorage.getItem('savedPosts'));
         if (!save) {
-            api.savePost(post._id, post.location.continent, post.tags[0], true, jwtToken);
-            updateLocalStorage(1, 'save');
+            api.savePost(post._id, post.location.continent, post.type, true, jwtToken);
+            localStorageSavedPosts.push(post._id);
+            window.localStorage.setItem('savedPosts', JSON.stringify(localStorageSavedPosts));
         } else {
-            api.savePost(post._id, post.location.continent, post.tags[0], false, jwtToken);
-            updateLocalStorage(0, 'save');
+            api.savePost(post._id, post.location.continent, post.type, false, jwtToken);
+            const newLocalStorageSavedPosts = localStorageSavedPosts.filter((p) => {
+                if (p !== post._id) {
+                    return true;
+                }
+                return false;
+            });
+            window.localStorage.setItem('savedPosts', JSON.stringify(newLocalStorageSavedPosts));
         }
         setSave(!save);
     }
@@ -193,7 +218,7 @@ const Post = ({ post }) => {
                 <ReadNum>{readNum}</ReadNum>
                 <PostContinent>{post.location.continent}</PostContinent>
                 <PostCountry>{post.location.country}</PostCountry>
-                <PostTags>{post.tags}</PostTags>
+                <PostType>{post.type}</PostType>
                 <PostAuthor>{post.authorId}</PostAuthor>
                 <PostContent dangerouslySetInnerHTML={{ __html: post.content }} />
                 <PostTime>{post.dates.post_date}</PostTime>

@@ -1,24 +1,26 @@
 import api from './api';
 
-const matchStatus = (posts, saved_posts, liked_posts) => {
-    return posts.map((post) => {
-        if (saved_posts.includes(post._id)) {
-            post.save_status = true;
-        } else {
-            post.save_status = false;
-        }
-        if (liked_posts.includes(post._id)) {
-            post.like_status = true;
-        } else {
-            post.like_status = false;
-        }
-        return post;
-    });
-};
+// const matchStatus = (posts, saved_posts, liked_posts) => {
+//     return posts.map((post) => {
+//         if (saved_posts.includes(post._id)) {
+//             post.save_status = true;
+//         } else {
+//             post.save_status = false;
+//         }
+//         if (liked_posts.includes(post._id)) {
+//             post.like_status = true;
+//         } else {
+//             post.like_status = false;
+//         }
+//         return post;
+//     });
+// };
 
 const updateNewsfeeds = async (jwtToken) => {
     const status = await api.getLikeSaveStatus(jwtToken);
     const { saved_posts, liked_posts } = status.data.data;
+    window.localStorage.setItem('likedPosts', JSON.stringify(liked_posts));
+    window.localStorage.setItem('savedPosts', JSON.stringify(saved_posts));
     let relevantPosts = await api.getRelevantPosts(jwtToken);
     relevantPosts = relevantPosts.data.data;
     let topPosts = await api.getTopPosts();
@@ -26,12 +28,12 @@ const updateNewsfeeds = async (jwtToken) => {
     let newPosts = await api.getNewPosts();
     newPosts = newPosts.data.data;
 
-    const relevantPostsResult = matchStatus(relevantPosts, saved_posts, liked_posts);
-    const topPostsResult = matchStatus(topPosts, saved_posts, liked_posts);
-    const newPostsResult = matchStatus(newPosts, saved_posts, liked_posts);
-    window.localStorage.setItem('relevantPosts', JSON.stringify(relevantPostsResult));
-    window.localStorage.setItem('topPosts', JSON.stringify(topPostsResult));
-    window.localStorage.setItem('newPosts', JSON.stringify(newPostsResult));
+    // const relevantPostsResult = matchStatus(relevantPosts, saved_posts, liked_posts);
+    // const topPostsResult = matchStatus(topPosts, saved_posts, liked_posts);
+    // const newPostsResult = matchStatus(newPosts, saved_posts, liked_posts);
+    window.localStorage.setItem('relevantPosts', JSON.stringify(relevantPosts));
+    window.localStorage.setItem('topPosts', JSON.stringify(topPosts));
+    window.localStorage.setItem('newPosts', JSON.stringify(newPosts));
     // await api.postsUserStatusUpdated(jwtToken);
 };
 
