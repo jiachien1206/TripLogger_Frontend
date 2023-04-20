@@ -103,11 +103,15 @@ const SavedButton = styled.div`
 
 const Post = ({ post, likedPosts, savedPosts }) => {
     const [like, setLike] = React.useState(false);
-    const [likeNum, setLikeNum] = React.useState(post.like_num);
-    const [readNum, setReadNum] = React.useState(post.read_num);
+    const [likeNum, setLikeNum] = React.useState(0);
+    const [readNum, setReadNum] = React.useState(0);
     const [save, setSave] = React.useState(false);
 
-    const matchPostStatus = () => {
+    const matchPostStatus = async () => {
+        const res = await api.getPostNumbers(post._id);
+        const { read_num, like_num } = res.data.data;
+        setReadNum(read_num);
+        setLikeNum(like_num);
         if (likedPosts.includes(post._id)) {
             setLike(true);
         }
