@@ -44,7 +44,7 @@ function App() {
     const [ws, setWs] = React.useState(null);
 
     React.useEffect(() => {
-        const newWs = webSocket('http://localhost:8080');
+        const newWs = webSocket('http://localhost:8000');
         setWs(newWs);
     }, []);
 
