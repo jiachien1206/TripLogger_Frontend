@@ -22,6 +22,7 @@ const Map = styled.img`
     margin: 0px auto;
     border: 1px solid rgba(0, 0, 0, 0.1);
     border-radius: 5px;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 2px;
 `;
 
 const ContinentList = styled.div``;

@@ -11,7 +11,7 @@ const Navigation = styled.div`
     position: fixed;
     top: 0;
     left: 0;
-    height: 50px;
+    height: 60px;
     width: 100%;
     z-index: 99;
     background-color: white;
@@ -19,7 +19,7 @@ const Navigation = styled.div`
     box-shadow: 0 1px 6px 0 rgb(32 33 36 / 5%);
 `;
 const NavigationContentWrap = styled.div`
-    max-width: 1200px;
+    max-width: 1350px;
     height: 100%;
     margin: 0px auto;
     display: flex;
@@ -31,15 +31,15 @@ const NavigationLeft = styled.div`
     display: flex;
     align-items: center;
     margin-left: 20px;
-    gap: 5px;
+    gap: 25px;
 `;
 const NavigationRight = styled.div`
     display: flex;
     align-items: center;
 `;
 const Logo = styled.a`
-    width: 90px;
-    height: 37px;
+    width: 60px;
+    height: 50px;
     background-image: url(${logo});
     background-size: contain;
     background-repeat: no-repeat;
@@ -49,7 +49,7 @@ const SearchBar = styled.div`
     position: relative;
     display: flex;
     justify-content: space-between;
-    height: 35px;
+    height: 40px;
     width: 260px;
     margin-left: auto;
 `;
@@ -74,8 +74,8 @@ const SearchInput = styled.input`
 
 const SearchButton = styled.button`
     position: absolute;
-    height: 31px;
-    width: 31px;
+    height: 36px;
+    width: 36px;
     border: none;
     background-color: #ffffff;
     right: 2px;
