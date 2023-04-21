@@ -25,7 +25,7 @@ const FilterButton = styled.button`
     border: none;
     background: none;
     font-size: 18px;
-    color: #6f6f6f;
+    color: #65676b;
     cursor: pointer;
     &.active {
         font-size: 23px;
