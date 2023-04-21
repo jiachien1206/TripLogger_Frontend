@@ -78,7 +78,18 @@ const api = {
             },
         });
     },
-
+    getUserSavedPosts(userId, postIds, jwtToken) {
+        return axios.post(
+            `${this.HOST_NAME}/users/${userId}/saved`,
+            { postIds },
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${jwtToken}`,
+                },
+            }
+        );
+    },
     createPost(post, jwtToken) {
         return axios.post(`${this.HOST_NAME}/post`, post, {
             headers: {

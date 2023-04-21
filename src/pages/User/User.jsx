@@ -13,11 +13,11 @@ import africa from '../..//images/africa.png';
 import antarctica from '../../images/antarctica.png';
 
 const Wrap = styled.div`
-    margin-top: 100px;
+    margin: 100px auto 0px;
     max-width: 1200px;
     display: flex;
     justify-content: center;
-    gap: 60px;
+    gap: 80px;
 `;
 
 const Sidebar = styled.div`
@@ -30,12 +30,13 @@ const Sidebar = styled.div`
 const OptionsList = styled.div`
     display: flex;
     flex-direction: column;
+    width: 220px;
 `;
 const Option = styled.div`
     display: flex;
     align-items: center;
-    gap: 10px;
-    height: 40px;
+    gap: 15px;
+    height: 45px;
     border-radius: 5px;
     cursor: pointer;
     padding: 10px 5px;
@@ -47,12 +48,13 @@ const OptionIcon = styled.img`
     height: 21px;
 `;
 const OptionTitle = styled.div`
-    font-size: 16px;
-    color: #6f6f6f;
+    font-size: 20px;
+    color: #5c5c5c;
+    font-weight: 500;
 `;
 
 const Section = styled.div`
-    max-width: 650px;
+    width: 650px;
     display: flex;
     flex-direction: column;
     margin-bottom: 28px;
