@@ -63,7 +63,7 @@ const Map = () => {
                     minZoom={1}
                     zoom={1}
                     center={[0, 0]}
-                    style={{ height: '500px', zIndex: '5' }}
+                    style={{ height: '550px', zIndex: '5' }}
                 >
                     {isLoaded && (
                         <GeoJSON
