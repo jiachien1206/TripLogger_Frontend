@@ -33,10 +33,11 @@ const GlobalStyle = createGlobalStyle`
     box-sizing: border-box;
   }
   body {
-    margin: 50px auto 0px;
+    margin: 50px 0px;
     background-color: #f5f5f5;
     letter-spacing:0.1em;
     color: #171717;
+    width: 100%;
   }
 `;
 

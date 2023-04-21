@@ -4,45 +4,23 @@ import styled from 'styled-components';
 import LeftSidebar from '../../components/LeftSidebar';
 import PostList from './PostList';
 
-const Wrapper = styled.div`
-    display: flex;
-    margin-top: 20px;
-`;
-
-const ContinentWrap = styled.div`
-    display: flex;
-    flex-direction: column;
-    width: 650px;
-`;
 const Banner = styled.div`
     position: relative;
-    height: 300px;
+    min-height: 350px;
     width: 100%;
     // border-radius: 8px;
     z-index: 1;
-    overflow: hidden;
-    background-size: contain;
+    // overflow: hidden;
+    background-size: cover;
     background-repeat: no-repeat;
-    filter: brightness(70%);
-    &::before {
-        content: '';
-        display: block;
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background-image: url(https://triplogger.s3.ap-northeast-1.amazonaws.com/banner/${(props) =>
-            props.continent}.jpg);
-        background-position: center;
-        filter: brightness(70%);
-    }
+    filter: brightness(90%);
+    color: #ffffff;
 `;
 
 const BannerText = styled.div`
     position: absolute;
-    top: 80%;
-    right: 5%;
+    top: 50%;
+    left: 50%;
     transform: translate(-50%, -50%);
     display: flex;
     justify-content: center;
@@ -52,8 +30,19 @@ const BannerText = styled.div`
     z-index: 20;
 `;
 
+const Wrapper = styled.div`
+    display: flex;
+    margin-top: 20px;
+    justify-content: center;
+`;
+
+const ContinentWrap = styled.div`
+    display: flex;
+    flex-direction: column;
+    width: 650px;
+`;
+
 const Continent = () => {
-    // const [continentStatus, setContinentStatus] = React.useState();
     const continents = [
         'asia',
         'europe',
