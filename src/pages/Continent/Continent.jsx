@@ -45,16 +45,16 @@ const FiltersWrap = styled.div`
 `;
 
 const Filter = styled.div`
-    background-color: #b8f4cf;
     font-size: 17px;
     padding: 5px 7px;
     border-radius: 8px;
     cursor: pointer;
+    color: #050505;
     &:hover {
-        border: 1px solid green;
+        background-color: #b8f4cf;
     }
     &.active {
-        background-color: #88b69a;
+        background-color: #b8f4cf;
     }
 `;
 
