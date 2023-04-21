@@ -8,9 +8,7 @@ const Banner = styled.div`
     position: relative;
     min-height: 350px;
     width: 100%;
-    // border-radius: 8px;
     z-index: 1;
-    // overflow: hidden;
     background-size: cover;
     background-repeat: no-repeat;
     filter: brightness(90%);

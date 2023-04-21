@@ -18,7 +18,7 @@ const Wrapper = styled.div`
 `;
 const MapLink = styled(Link)``;
 const Map = styled.img`
-    width: 250px;
+    width: 280px;
     margin: 0px auto;
     border: 1px solid rgba(0, 0, 0, 0.1);
     border-radius: 5px;
@@ -29,11 +29,11 @@ const Continent = styled(Link)`
     text-decoration: none;
     display: flex;
     align-items: center;
-    gap: 10px;
-    height: 34px;
+    gap: 12px;
+    height: 40px;
     border-radius: 5px;
     cursor: pointer;
-    padding-left: 5px;
+    padding-left: 8px;
     &:hover {
         background-color: #e5e5e5;
     }
@@ -42,7 +42,7 @@ const ContinentIcon = styled.img`
     height: 21px;
 `;
 const ContinentsTitle = styled.div`
-    font-size: 16px;
+    font-size: 20px;
     color: #6f6f6f;
 `;
 
