@@ -13,7 +13,7 @@ const theme = createTheme({
             light: '#a5dfdf',
         },
         secondary: {
-            main: '#3d3d3d',
+            main: '#050505',
             dark: '#6f6f6f',
             light: '#d4d4d4',
         },
@@ -34,9 +34,9 @@ const GlobalStyle = createGlobalStyle`
   }
   body {
     margin: 50px 0px;
-    background-color: #f0f2f5;
+    background-color: #f5f5f5;
     letter-spacing:0.1em;
-    color: #171717;
+    color: #050505;
     width: 100%;
   }
 `;

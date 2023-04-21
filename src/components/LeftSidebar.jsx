@@ -43,7 +43,7 @@ const ContinentIcon = styled.img`
 `;
 const ContinentsTitle = styled.div`
     font-size: 20px;
-    color: #6f6f6f;
+    color: #65676b;
 `;
 
 const Sidebar = () => {
