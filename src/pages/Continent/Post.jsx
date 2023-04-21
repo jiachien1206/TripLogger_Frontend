@@ -9,12 +9,10 @@ import saveS from '../../images/bookmark-solid.svg';
 import eye from '../../images/eye.svg';
 
 const PostWrap = styled.div`
-    border: 1px solid #929292;
-    border-radius: 10px;
+    border-radius: 8px;
     background-color: #fff;
-    padding: 10px;
     margin: 10px auto;
-    max-width: 800px;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
 `;
 
 const PostLink = styled(Link)`
@@ -22,11 +20,14 @@ const PostLink = styled(Link)`
     color: inherit;
 `;
 const PostMainImg = styled.img`
-    width: 100%;
+    height: 250px;
+
+    width: 650px;
+    object-fit: cover;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
 `;
-const PostTitle = styled.div`
-    font-size: 24px;
-`;
+const PostTitle = styled.h2``;
 
 const ReadIcon = styled.div`
     width: 20px;
@@ -112,49 +113,6 @@ const Post = ({ post }) => {
         setSave(post.save_status);
         setLikeNum(post.like_num);
     }, [post]);
-
-    // function updateLocalStorage(status, type) {
-    //     const relevantPosts = window.localStorage.getItem('relevantPosts');
-    //     const relevantPostsResult = JSON.parse(relevantPosts).map((p) => {
-    //         if (p._id === post._id) {
-    //             p[`${type}_status`] = status;
-    //             if (status) {
-    //                 p[`${type}_num`] += 1;
-    //             } else {
-    //                 p[`${type}_num`] -= 1;
-    //             }
-    //         }
-    //         return p;
-    //     });
-    //     window.localStorage.setItem('relevantPosts', JSON.stringify(relevantPostsResult));
-
-    //     const topPosts = window.localStorage.getItem('topPosts');
-    //     const topPostsResult = JSON.parse(topPosts).map((p) => {
-    //         if (p._id === post._id) {
-    //             p[`${type}_status`] = status;
-    //             if (status) {
-    //                 p[`${type}_num`] += 1;
-    //             } else {
-    //                 p[`${type}_num`] -= 1;
-    //             }
-    //         }
-    //         return p;
-    //     });
-    //     window.localStorage.setItem('topPosts', JSON.stringify(topPostsResult));
-    //     const newPosts = window.localStorage.getItem('newPosts');
-    //     const newPostsResult = JSON.parse(newPosts).map((p) => {
-    //         if (p._id === post._id) {
-    //             p[`${type}_status`] = status;
-    //             if (status) {
-    //                 p[`${type}_num`] += 1;
-    //             } else {
-    //                 p[`${type}_num`] -= 1;
-    //             }
-    //         }
-    //         return p;
-    //     });
-    //     window.localStorage.setItem('newPosts', JSON.stringify(newPostsResult));
-    // }
 
     function likePost() {
         const jwtToken = window.localStorage.getItem('jwtToken');

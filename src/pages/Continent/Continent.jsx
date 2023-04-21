@@ -3,6 +3,8 @@ import React from 'react';
 import styled from 'styled-components';
 import LeftSidebar from '../../components/LeftSidebar';
 import PostList from './PostList';
+import RightSidebar from '../../components/RightSidebar';
+import api from '../../utils/api.js';
 
 const Banner = styled.div`
     position: relative;
@@ -30,14 +32,37 @@ const BannerText = styled.div`
 
 const Wrapper = styled.div`
     display: flex;
-    margin-top: 20px;
     justify-content: center;
+    margin-top: 20px;
+    gap: 50px;
+`;
+
+const FiltersWrap = styled.div`
+    width: 100%;
+    display: flex;
+    gap: 10px;
+    height: 35px;
+`;
+
+const Filter = styled.div`
+    background-color: #b8f4cf;
+    font-size: 17px;
+    padding: 5px 7px;
+    border-radius: 8px;
+    cursor: pointer;
+    &:hover {
+        border: 1px solid green;
+    }
+    &.active {
+        background-color: #88b69a;
+    }
 `;
 
 const ContinentWrap = styled.div`
     display: flex;
     flex-direction: column;
     width: 650px;
+    margin-top: 20px;
 `;
 
 const Continent = () => {
@@ -50,6 +75,7 @@ const Continent = () => {
         'africa',
         'antarctica',
     ];
+    const filters = ['交通', '住宿', '景點', '證件', '其他', '恐怖故事', '省錢妙招'];
     const map = {
         asia: '亞洲',
         europe: '歐洲',
@@ -63,7 +89,28 @@ const Continent = () => {
     if (!continents.includes(continent)) {
         window.location.replace('/');
     }
+    const [activeFilters, setActiveFilter] = React.useState([]);
+    const [posts, setPosts] = React.useState([]);
 
+    const handleFilter = (filter) => {
+        if (activeFilters.includes(filter)) {
+            const newActiveFilters = activeFilters.filter((f) => {
+                return f !== filter;
+            });
+            setActiveFilter(newActiveFilters);
+        } else {
+            setActiveFilter([...activeFilters, filter]);
+        }
+    };
+    const filterPosts = async (continent, filters) => {
+        const res = await api.getContinentPosts(continent, filters.join(','));
+        const posts = res.data.data;
+        setPosts(posts);
+    };
+
+    React.useEffect(() => {
+        filterPosts(continent, activeFilters);
+    }, [continent, activeFilters]);
     return (
         <>
             <Banner
@@ -73,12 +120,27 @@ const Continent = () => {
             >
                 <BannerText>{map[continent]}</BannerText>
             </Banner>
-
             <Wrapper>
                 <LeftSidebar />
                 <ContinentWrap>
-                    <PostList continent={continent}></PostList>
+                    <FiltersWrap>
+                        {filters.map((filter) => {
+                            return (
+                                <Filter
+                                    key={filter}
+                                    className={activeFilters.includes(filter) && 'active'}
+                                    onClick={() => {
+                                        handleFilter(filter);
+                                    }}
+                                >
+                                    {filter}
+                                </Filter>
+                            );
+                        })}
+                    </FiltersWrap>
+                    <PostList posts={posts}></PostList>
                 </ContinentWrap>
+                <RightSidebar />
             </Wrapper>
         </>
     );

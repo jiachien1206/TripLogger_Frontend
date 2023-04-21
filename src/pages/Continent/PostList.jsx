@@ -7,19 +7,7 @@ const PostsWrap = styled.div`
     margin-top: 10px;
 `;
 
-const PostList = ({ continent }) => {
-    const [posts, setPosts] = React.useState([]);
-    const fetchPosts = async () => {
-        const res = await api.getContinentPosts(continent);
-        const posts = res.data.data;
-        if (posts) {
-            setPosts(posts);
-        }
-    };
-    React.useEffect(() => {
-        fetchPosts();
-    }, [continent]);
-
+const PostList = ({ posts }) => {
     return (
         <PostsWrap>
             {posts.map((post) => (

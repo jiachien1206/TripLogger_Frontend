@@ -14,7 +14,6 @@ const PostWrap = styled.div`
     background-color: #fff;
     padding: 10px;
     margin: 10px auto;
-    max-width: 800px;
 `;
 
 const PostLink = styled(Link)`

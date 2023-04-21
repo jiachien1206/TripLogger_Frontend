@@ -2,16 +2,19 @@ import PostList from './PostList';
 import React from 'react';
 import styled from 'styled-components';
 import LeftSidebar from '../../components/LeftSidebar';
+import RightSidebar from '../../components/RightSidebar';
 import updateNewsfeeds from '../../utils/updateUserNewsfeeds.js';
 
 const Wrapper = styled.div`
     display: flex;
     justify-content: center;
     margin-top: 80px;
+    gap: 50px;
 `;
 const PostsWrap = styled.div`
     display: flex;
     flex-direction: column;
+    max-width: 680px;
 `;
 
 const FilterWrap = styled.div``;
@@ -59,6 +62,7 @@ const Home = () => {
                 </FilterWrap>
                 <PostList filter={activeFilter} />
             </PostsWrap>
+            <RightSidebar className="right-sidebar"></RightSidebar>
         </Wrapper>
     );
 };
