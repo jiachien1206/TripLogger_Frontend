@@ -1,9 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
-import Post from './Post';
+// import Post from './Post';
+import Post from '../../components/Post';
 
 const PostsWrap = styled.div`
-    float: left;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
 `;
 
 const PostList = ({ filter }) => {

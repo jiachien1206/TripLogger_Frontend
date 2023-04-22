@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import Post from './Post';
+import Post from '../../components/Post';
 import api from '../../utils/api';
 
 const PostsWrap = styled.div`
