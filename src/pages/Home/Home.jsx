@@ -1,6 +1,7 @@
 import PostList from './PostList';
 import React from 'react';
 import styled from 'styled-components';
+import { AuthContext } from '../../context/authContext';
 import LeftSidebar from '../../components/LeftSidebar';
 import RightSidebar from '../../components/RightSidebar';
 import updateNewsfeeds from '../../utils/updateUserNewsfeeds.js';
@@ -34,12 +35,18 @@ const FilterButton = styled.button`
 `;
 
 const Home = () => {
-    const [filters, setFilters] = React.useState(['為你推薦', '熱門文章', '最新文章']);
-    const [activeFilter, setActiveFilter] = React.useState('為你推薦');
-
+    const [filters, setFilters] = React.useState(['熱門文章', '最新文章']);
+    const [activeFilter, setActiveFilter] = React.useState('熱門文章');
+    const { isLogin } = React.useContext(AuthContext);
     const handleActiveFilter = (filter) => {
         setActiveFilter(filter);
     };
+    React.useEffect(() => {
+        if (isLogin) {
+            setFilters(['為你推薦', '熱門文章', '最新文章']);
+            setActiveFilter('為你推薦');
+        }
+    }, []);
 
     return (
         <Wrapper>

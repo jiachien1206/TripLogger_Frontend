@@ -1,6 +1,7 @@
 import { Outlet } from 'react-router-dom';
 import { createGlobalStyle } from 'styled-components';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { AuthContextProvider } from './context/authContext';
 import React from 'react';
 import Header from './components/Header';
 import webSocket from 'socket.io-client';
@@ -62,8 +63,10 @@ function App() {
         <>
             <ThemeProvider theme={theme}>
                 <GlobalStyle />
-                <Header />
-                <Outlet />
+                <AuthContextProvider>
+                    <Header />
+                    <Outlet />
+                </AuthContextProvider>
             </ThemeProvider>
         </>
     );

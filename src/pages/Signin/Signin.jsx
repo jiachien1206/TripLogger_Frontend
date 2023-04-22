@@ -1,7 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Navigate, useNavigate } from 'react-router-dom';
 import api from '../../utils/api.js';
 import updateNewsfeeds from '../../utils/updateUserNewsfeeds.js';
+import { AuthContext } from '../../context/authContext';
+
 const SigninWrap = styled.div`
     display: flex;
     flex-direction: column;
@@ -27,28 +30,33 @@ const Password = styled.input`
 const Submit = styled.button``;
 
 const Signin = () => {
+    const { isLogin, saveUserData } = React.useContext(AuthContext);
     const [email, setEmail] = React.useState('chatgpt1@gmail.com');
     const [password, setPassword] = React.useState('chatchat');
+    const navigate = useNavigate();
 
     async function signin() {
         try {
+            console.log(isLogin);
             const res = await api.signin({
                 email,
                 password,
             });
             const { user, accessToken } = res.data.data;
-            const userData = { id: user._id, name: user.name };
+            const userData = { id: user._id, name: user.name, image: user.image };
             window.localStorage.setItem('jwtToken', accessToken);
             window.localStorage.setItem('user', JSON.stringify(userData));
-
             await updateNewsfeeds(accessToken);
-
-            window.location.replace('/');
+            userData['jwtToken'] = accessToken;
+            saveUserData(userData);
+            navigate('/');
         } catch (e) {
             console.log(e);
             alert('登入失敗');
         }
     }
+
+    if (isLogin) return <Navigate to="/" replace />;
 
     return (
         <>

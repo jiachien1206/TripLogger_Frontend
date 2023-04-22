@@ -63,7 +63,7 @@ const api = {
         return axios(`${this.HOST_NAME}/map-posts`);
     },
     getUserPosts(userId, jwtToken) {
-        return axios(`${this.HOST_NAME}/users/${userId}/posts`, {
+        return axios(`${this.HOST_NAME}/user/posts`, {
             headers: {
                 'Content-Type': 'application/json',
                 Authorization: `Bearer ${jwtToken}`,
@@ -71,7 +71,7 @@ const api = {
         });
     },
     getUserVisited(userId, jwtToken) {
-        return axios(`${this.HOST_NAME}/users/${userId}/visited`, {
+        return axios(`${this.HOST_NAME}/user/visited`, {
             headers: {
                 'Content-Type': 'application/json',
                 Authorization: `Bearer ${jwtToken}`,
@@ -80,7 +80,7 @@ const api = {
     },
     getUserSavedPosts(userId, postIds, jwtToken) {
         return axios.post(
-            `${this.HOST_NAME}/users/${userId}/saved`,
+            `${this.HOST_NAME}/user/saved`,
             { postIds },
             {
                 headers: {
@@ -159,7 +159,7 @@ const api = {
         });
     },
     getUser(userId, jwtToken) {
-        return axios(`${this.HOST_NAME}/users/${userId}/setting`, {
+        return axios(`${this.HOST_NAME}/user/setting`, {
             headers: {
                 'Content-Type': 'application/json',
                 Authorization: `Bearer ${jwtToken}`,
@@ -167,7 +167,7 @@ const api = {
         });
     },
     editUser(userId, data, jwtToken) {
-        return axios.put(`${this.HOST_NAME}/users/${userId}/setting`, data, {
+        return axios.put(`${this.HOST_NAME}/user/setting`, data, {
             headers: {
                 'Content-Type': 'application/json',
                 Authorization: `Bearer ${jwtToken}`,

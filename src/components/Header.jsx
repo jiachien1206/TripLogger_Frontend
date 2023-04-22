@@ -6,6 +6,7 @@ import magnifier from '../images/search.svg';
 import membericon from '../images/profile.png';
 import api from '../utils/api';
 import SearchIcon from '@mui/icons-material/Search';
+import { AuthContext } from '../context/authContext';
 
 const Navigation = styled.div`
     position: fixed;
@@ -119,6 +120,7 @@ const Membericon = styled.div`
 
 const Header = () => {
     const [inputValue, setInputValue] = React.useState('');
+    const { isLogin } = React.useContext(AuthContext);
     const redirect = async () => {
         window.location.replace(`/search?keyword=${inputValue}`);
     };
@@ -145,7 +147,7 @@ const Header = () => {
                 </NavigationLeft>
                 <NavigationRight>
                     <CreatePost to="/create">發文</CreatePost>
-                    <Memberlink to="/user/signin">
+                    <Memberlink to="/signin">
                         <Membericon />
                     </Memberlink>
                 </NavigationRight>

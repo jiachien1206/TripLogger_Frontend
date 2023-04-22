@@ -5,6 +5,8 @@ import updateNewsfeeds from '../../utils/updateUserNewsfeeds.js';
 import EmailPwd from './EmailPwd.jsx';
 import Location from './Location.jsx';
 import Type from './Type.jsx';
+import { AuthContext } from '../../context/authContext';
+import { Navigate, useNavigate } from 'react-router-dom';
 
 const SignupWrap = styled.div`
     display: flex;
@@ -36,6 +38,7 @@ const Password = styled.input`
 const Submit = styled.button``;
 
 const Signup = () => {
+    const { isLogin, saveUserData } = React.useContext(AuthContext);
     const [name, setName] = React.useState('小chat同學');
     const [email, setEmail] = React.useState('chatgpt@gmail.com');
     const [password, setPassword] = React.useState('chatchat');
@@ -58,6 +61,7 @@ const Signup = () => {
         '恐怖故事',
         '省錢妙招',
     ]);
+    const navigate = useNavigate();
 
     async function signup() {
         try {
@@ -69,18 +73,20 @@ const Signup = () => {
                 type_pre: types,
             });
             const { user, accessToken } = res.data.data;
-            const userData = { id: user._id, name: user.name };
-            window.localStorage.setItem('jwtToken', accessToken);
+            const userData = { id: user._id, name: user.name, image: user.image };
             window.localStorage.setItem('user', JSON.stringify(userData));
+            window.localStorage.setItem('jwtToken', accessToken);
             await api.createUserNewsfeed(accessToken);
             await updateNewsfeeds(accessToken);
-            window.location.replace('/');
+            userData['jwtToken'] = accessToken;
+            saveUserData(userData);
+            navigate('/');
         } catch (e) {
             console.log(e);
             alert('註冊失敗');
         }
     }
-
+    if (isLogin) return <Navigate to="/" replace />;
     return (
         <>
             <SignupWrap>
