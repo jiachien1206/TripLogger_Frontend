@@ -78,12 +78,13 @@ export const AuthContextProvider = ({ children }) => {
     };
     const getUserData = async (jwtToken) => {
         const res = await api.getUser('_', jwtToken);
-        console.log(res);
+
         if (!res.error) {
             const user = res.data.data;
             setUser(user);
             setIsLogin(true);
         }
+        console.log(isLogin);
     };
     React.useEffect(() => {
         const jwtToken = window.localStorage.getItem('jwtToken');

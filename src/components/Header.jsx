@@ -2,11 +2,11 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import logo from '../images/logo.png';
-import magnifier from '../images/search.svg';
 import membericon from '../images/profile.png';
 import api from '../utils/api';
 import SearchIcon from '@mui/icons-material/Search';
 import { AuthContext } from '../context/authContext';
+import Avatar from '@mui/material/Avatar';
 
 const Navigation = styled.div`
     position: fixed;
@@ -37,8 +37,9 @@ const NavigationLeft = styled.div`
 const NavigationRight = styled.div`
     display: flex;
     align-items: center;
+    gap: 10px;
 `;
-const Logo = styled.a`
+const Logo = styled(Link)`
     width: 60px;
     height: 50px;
     background-image: url(${logo});
@@ -92,22 +93,45 @@ const SearchButton = styled.button`
 const CreatePost = styled(Link)`
     height: 40px;
     width: 100px;
-    background: #00ed64;
-    border: 1px solid #00684a;
+    border: 1px solid #236262;
     border-radius: 5px;
     text-decoration: none;
     display: flex;
     justify-content: center;
     align-items: center;
-    transition: border-radius 0.2s;
+    transition: all 0.2s;
     color: #00684a;
+    font-size: 17px;
+    font-weight: 500;
     &:hover {
         border-radius: 25px;
+        color: #ffffff;
+        background-color: #236262;
     }
 `;
 
 const Memberlink = styled(Link)`
-    margin-left: 42px;
+    margin-left: 20px;
+`;
+
+const SignButton = styled(Link)`
+    font-size: 17px;
+    text-decoration: none;
+    padding: 5px 15px;
+    border-radius: 6px;
+    margin: 0px 5px;
+    transition: border-radius 0.4s;
+    &.signup {
+        background-color: #236262;
+        color: #ffffff;
+    }
+    &.signin {
+        border: 2px solid #236262;
+        color: #236262;
+    }
+    &:hover {
+        border-radius: 100px;
+    }
 `;
 
 const Membericon = styled.div`
@@ -120,16 +144,15 @@ const Membericon = styled.div`
 
 const Header = () => {
     const [inputValue, setInputValue] = React.useState('');
-    const { isLogin } = React.useContext(AuthContext);
+    const { isLogin, user } = React.useContext(AuthContext);
     const redirect = async () => {
         window.location.replace(`/search?keyword=${inputValue}`);
     };
-
     return (
         <Navigation>
             <NavigationContentWrap>
                 <NavigationLeft>
-                    <Logo href="/" />
+                    <Logo to="/" />
                     <SearchBar>
                         <SearchInput
                             onChange={(e) => setInputValue(e.target.value)}
@@ -146,10 +169,23 @@ const Header = () => {
                     </SearchBar>
                 </NavigationLeft>
                 <NavigationRight>
-                    <CreatePost to="/create">發文</CreatePost>
-                    <Memberlink to="/signin">
-                        <Membericon />
-                    </Memberlink>
+                    {isLogin ? (
+                        <>
+                            <CreatePost to="/create">發文</CreatePost>
+                            <Memberlink to="/user">
+                                <Avatar src={user.image} sx={{ width: 43, height: 43 }} />
+                            </Memberlink>
+                        </>
+                    ) : (
+                        <>
+                            <SignButton className="signup" to="/signup">
+                                註冊
+                            </SignButton>
+                            <SignButton className="signin" to="/signin">
+                                登入
+                            </SignButton>
+                        </>
+                    )}
                 </NavigationRight>
             </NavigationContentWrap>
         </Navigation>

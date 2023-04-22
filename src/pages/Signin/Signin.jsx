@@ -34,7 +34,6 @@ const Signin = () => {
     const [email, setEmail] = React.useState('chatgpt1@gmail.com');
     const [password, setPassword] = React.useState('chatchat');
     const navigate = useNavigate();
-
     async function signin() {
         try {
             console.log(isLogin);
