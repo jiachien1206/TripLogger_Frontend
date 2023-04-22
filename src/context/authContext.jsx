@@ -84,7 +84,6 @@ export const AuthContextProvider = ({ children }) => {
             setUser(user);
             setIsLogin(true);
         }
-        console.log(isLogin);
     };
     React.useEffect(() => {
         const jwtToken = window.localStorage.getItem('jwtToken');
