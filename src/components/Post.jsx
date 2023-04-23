@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { AuthContext } from '../context/authContext';
 import api from '../utils/api.js';
 import { Link } from 'react-router-dom';
 import thumbR from '../images/thumbs-up-regular.svg';
@@ -11,6 +12,12 @@ import ChatBubbleOutlineRoundedIcon from '@mui/icons-material/ChatBubbleOutlineR
 import LocationOnRoundedIcon from '@mui/icons-material/LocationOnRounded';
 import Reactions from './Reaction';
 import reactions from '../images/reactions.png';
+import Backdrop from '@mui/material/Backdrop';
+import Box from '@mui/material/Box';
+import Modal from '@mui/material/Modal';
+import Fade from '@mui/material/Fade';
+import Typography from '@mui/material/Typography';
+import { useIsFocusVisible } from '@mui/material';
 
 const PostWrap = styled.div`
     border-radius: 8px;
@@ -182,7 +189,50 @@ const LikedButtonIcon = styled.div`
     filter: invert(29%) sepia(87%) saturate(293%) hue-rotate(131deg) brightness(94%) contrast(94%);
 `;
 
+const ModalTitle = styled.div`
+    font-size: 20px;
+`;
+const SignButtonWrap = styled.div`
+    display: flex;
+    gap: 15px;
+`;
+const SignButton = styled(Link)`
+    font-size: 17px;
+    text-decoration: none;
+    padding: 5px 15px;
+    border-radius: 6px;
+    transition: border-radius 0.4s;
+    &.signup {
+        background-color: #236262;
+        color: #ffffff;
+        font-size: 18px;
+        padding-top: 6px;
+    }
+    &.signin {
+        border: 2px solid #236262;
+        color: #236262;
+    }
+`;
+
+const style = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 380,
+    bgcolor: '#ffffff',
+    boxShadow: 24,
+    borderRadius: '10px',
+    p: 4,
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '30px',
+    alignItems: 'center',
+    color: '#050505',
+};
+
 const Post = ({ post, likedPosts, savedPosts }) => {
+    const { isLogin } = React.useContext(AuthContext);
     const [like, setLike] = React.useState(false);
     const [likeNum, setLikeNum] = React.useState(0);
     const [readNum, setReadNum] = React.useState(0);
@@ -192,6 +242,9 @@ const Post = ({ post, likedPosts, savedPosts }) => {
     const utcDate = new Date(post.dates.post_date);
     const dateTime = utcDate.toLocaleString();
     const [date] = dateTime.split(' ');
+    const [open, setOpen] = React.useState(false);
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
 
     const matchPostStatus = async () => {
         const res = await api.getPostNumbers(post._id);
@@ -257,6 +310,7 @@ const Post = ({ post, likedPosts, savedPosts }) => {
         }
         setSave(!save);
     }
+
     return (
         <PostWrap>
             <PostLink to={`/post/${post._id}`}>
@@ -298,41 +352,86 @@ const Post = ({ post, likedPosts, savedPosts }) => {
                     </Numbers>
                 </Buttom>
             </PostLink>
-            <Buttons>
-                {like ? (
-                    <Button
-                        className="active"
-                        onClick={likePost}
-                        onMouseOver={() => setIsHover(true)}
-                        onMouseLeave={() => setIsHover(false)}
+            {isLogin ? (
+                <Buttons>
+                    {like ? (
+                        <Button
+                            className="active"
+                            onClick={likePost}
+                            onMouseOver={() => setIsHover(true)}
+                            onMouseLeave={() => setIsHover(false)}
+                        >
+                            <LikedButtonIcon />讚
+                        </Button>
+                    ) : (
+                        <Button
+                            onClick={likePost}
+                            onMouseOver={() => setIsHover(true)}
+                            onMouseLeave={() => setIsHover(false)}
+                        >
+                            <Reactions isHover={isHover} active={false} />
+                        </Button>
+                    )}
+                    {save ? (
+                        <Button className="active" onClick={savePost}>
+                            <BookmarkRoundedIcon color="primary" sx={{ fontSize: 22 }} />
+                            收藏
+                        </Button>
+                    ) : (
+                        <Button onClick={savePost}>
+                            <BookmarkBorderRoundedIcon sx={{ fontSize: 22 }} />
+                            收藏
+                        </Button>
+                    )}
+                    <CommentButton to={`/post/${post._id}`}>
+                        <ChatBubbleOutlineRoundedIcon sx={{ fontSize: 20 }} />
+                        留言
+                    </CommentButton>
+                </Buttons>
+            ) : (
+                <>
+                    <Buttons>
+                        <Button onClick={handleOpen}>
+                            <LikeButtonIcon />讚
+                        </Button>
+                        <Button onClick={handleOpen}>
+                            <BookmarkBorderRoundedIcon sx={{ fontSize: 22 }} />
+                            收藏
+                        </Button>
+                        <Button onClick={handleOpen}>
+                            <ChatBubbleOutlineRoundedIcon sx={{ fontSize: 20 }} />
+                            收藏
+                        </Button>
+                    </Buttons>
+                    <Modal
+                        aria-labelledby="spring-modal-title"
+                        aria-describedby="spring-modal-description"
+                        open={open}
+                        onClose={handleClose}
+                        closeAfterTransition
+                        slots={{ backdrop: Backdrop }}
+                        slotProps={{
+                            backdrop: {
+                                TransitionComponent: Fade,
+                            },
+                        }}
                     >
-                        <LikedButtonIcon />讚
-                    </Button>
-                ) : (
-                    <Button
-                        onClick={likePost}
-                        onMouseOver={() => setIsHover(true)}
-                        onMouseLeave={() => setIsHover(false)}
-                    >
-                        <Reactions isHover={isHover} active={false} />
-                    </Button>
-                )}
-                {save ? (
-                    <Button className="active" onClick={savePost}>
-                        <BookmarkRoundedIcon color="primary" sx={{ fontSize: 22 }} />
-                        收藏
-                    </Button>
-                ) : (
-                    <Button onClick={savePost}>
-                        <BookmarkBorderRoundedIcon sx={{ fontSize: 22 }} />
-                        收藏
-                    </Button>
-                )}
-                <CommentButton to={`/post/${post._id}`}>
-                    <ChatBubbleOutlineRoundedIcon sx={{ fontSize: 20 }} />
-                    留言
-                </CommentButton>
-            </Buttons>
+                        <Fade in={open}>
+                            <Box sx={style}>
+                                <ModalTitle>登入TripLogger以使用更多功能</ModalTitle>
+                                <SignButtonWrap>
+                                    <SignButton className="signup" to="/signup">
+                                        註冊
+                                    </SignButton>
+                                    <SignButton className="signin" to="/signin">
+                                        登入
+                                    </SignButton>
+                                </SignButtonWrap>
+                            </Box>
+                        </Fade>
+                    </Modal>
+                </>
+            )}
         </PostWrap>
     );
 };
