@@ -25,63 +25,119 @@ const Map = styled.img`
     box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 2px;
 `;
 
-const ContinentList = styled.div``;
+const ContinentList = styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+`;
 const Continent = styled(Link)`
     text-decoration: none;
     display: flex;
     align-items: center;
     gap: 12px;
-    height: 40px;
     border-radius: 5px;
     cursor: pointer;
-    padding-left: 8px;
+    padding: 9px 0px 9px 12px;
+    font-weight: 500;
     &:hover {
-        background-color: #e5e5e5;
+        background-color: #dbf5f0;
+    }
+    &.active {
+        background-color: #ffffff;
     }
 `;
 const ContinentIcon = styled.img`
-    height: 21px;
+    height: 22px;
 `;
 const ContinentsTitle = styled.div`
-    font-size: 20px;
+    font-size: 19px;
     color: #65676b;
 `;
 
-const Sidebar = () => {
+const Sidebar = ({ active }) => {
     return (
         <Wrapper>
             <MapLink to="/map">
                 <Map src={mapImg} />
             </MapLink>
             <ContinentList>
-                <Continent to="/location/asia">
-                    <ContinentIcon src={asia} />
-                    <ContinentsTitle>亞洲</ContinentsTitle>
-                </Continent>
-                <Continent to="/location/europe">
-                    <ContinentIcon src={europe} />
-                    <ContinentsTitle>歐洲</ContinentsTitle>
-                </Continent>
-                <Continent to="/location/north-america">
-                    <ContinentIcon src={north} />
-                    <ContinentsTitle>北美洲</ContinentsTitle>
-                </Continent>
-                <Continent to="/location/oceania">
-                    <ContinentIcon src={oceania} />
-                    <ContinentsTitle>大洋洲</ContinentsTitle>
-                </Continent>
-                <Continent to="/location/south-america">
-                    <ContinentIcon src={south} />
-                    <ContinentsTitle>南美洲</ContinentsTitle>
-                </Continent>
-                <Continent to="/location/africa">
-                    <ContinentIcon src={africa} />
-                    <ContinentsTitle>非洲</ContinentsTitle>
-                </Continent>
-                <Continent to="/location/antarctica">
-                    <ContinentIcon src={antarctica} />
-                    <ContinentsTitle>南極洲</ContinentsTitle>
-                </Continent>
+                {active === 'asia' ? (
+                    <Continent className="active" to="/location/asia">
+                        <ContinentIcon src={asia} />
+                        <ContinentsTitle>亞洲</ContinentsTitle>
+                    </Continent>
+                ) : (
+                    <Continent to="/location/asia">
+                        <ContinentIcon src={asia} />
+                        <ContinentsTitle>亞洲</ContinentsTitle>
+                    </Continent>
+                )}
+                {active === 'europe' ? (
+                    <Continent className="active" to="/location/europe">
+                        <ContinentIcon src={europe} />
+                        <ContinentsTitle>歐洲</ContinentsTitle>
+                    </Continent>
+                ) : (
+                    <Continent to="/location/europe">
+                        <ContinentIcon src={europe} />
+                        <ContinentsTitle>歐洲</ContinentsTitle>
+                    </Continent>
+                )}
+                {active === 'north-america' ? (
+                    <Continent className="active" to="/location/north-america">
+                        <ContinentIcon src={north} />
+                        <ContinentsTitle>北美洲</ContinentsTitle>
+                    </Continent>
+                ) : (
+                    <Continent to="/location/north-america">
+                        <ContinentIcon src={north} />
+                        <ContinentsTitle>北美洲</ContinentsTitle>
+                    </Continent>
+                )}
+                {active === 'oceania' ? (
+                    <Continent className="active" to="/location/oceania">
+                        <ContinentIcon src={oceania} />
+                        <ContinentsTitle>大洋洲</ContinentsTitle>
+                    </Continent>
+                ) : (
+                    <Continent to="/location/oceania">
+                        <ContinentIcon src={oceania} />
+                        <ContinentsTitle>大洋洲</ContinentsTitle>
+                    </Continent>
+                )}
+                {active === 'south-america' ? (
+                    <Continent className="active" to="/location/south-america">
+                        <ContinentIcon src={south} />
+                        <ContinentsTitle>南美洲</ContinentsTitle>
+                    </Continent>
+                ) : (
+                    <Continent to="/location/south-america">
+                        <ContinentIcon src={south} />
+                        <ContinentsTitle>南美洲</ContinentsTitle>
+                    </Continent>
+                )}
+                {active === 'africa' ? (
+                    <Continent className="active" to="/location/africa">
+                        <ContinentIcon src={africa} />
+                        <ContinentsTitle>非洲</ContinentsTitle>
+                    </Continent>
+                ) : (
+                    <Continent to="/location/africa">
+                        <ContinentIcon src={africa} />
+                        <ContinentsTitle>非洲</ContinentsTitle>
+                    </Continent>
+                )}
+                {active === 'antarctica' ? (
+                    <Continent className="active" to="/location/antarctica">
+                        <ContinentIcon src={antarctica} />
+                        <ContinentsTitle>南極洲</ContinentsTitle>
+                    </Continent>
+                ) : (
+                    <Continent to="/location/antarctica">
+                        <ContinentIcon src={antarctica} />
+                        <ContinentsTitle>南極洲</ContinentsTitle>
+                    </Continent>
+                )}
             </ContinentList>
         </Wrapper>
     );
