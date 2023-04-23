@@ -87,16 +87,20 @@ function EditPost() {
                 if (!file) {
                     return;
                 }
-                const res = await api.getPresignUrl();
-                const url = res.data.data;
-                await axios.put(url, file, {
-                    headers: {
-                        'Content-Type': 'multipart/form-data',
-                    },
-                });
-                const mainImage = url.split('?')[0];
-                setMainImg(mainImage);
-                console.log(mainImage);
+                if (file.size > 2097152) {
+                    alert('檔案須小於2MB');
+                    setFile();
+                } else {
+                    const res = await api.getPresignUrl();
+                    const url = res.data.data;
+                    await axios.put(url, file, {
+                        headers: {
+                            'Content-Type': 'multipart/form-data',
+                        },
+                    });
+                    const mainImage = url.split('?')[0];
+                    setMainImg(mainImage);
+                }
             } catch (error) {
                 console.log(error);
             }

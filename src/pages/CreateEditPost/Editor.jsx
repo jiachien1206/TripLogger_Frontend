@@ -43,8 +43,8 @@ const TextEditor = ({ originContent, editContent }) => {
         input.click();
         input.onchange = async () => {
             const file = input.files[0];
-            if (file.size > 1048576) {
-                alert('File is too big!');
+            if (file.size > 2097152) {
+                alert('檔案須小於2MB');
             } else {
                 const imageUrl = await uploadImage(file);
                 if (imageUrl) {

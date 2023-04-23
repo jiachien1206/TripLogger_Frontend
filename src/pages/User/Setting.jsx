@@ -137,18 +137,20 @@ const Setting = () => {
     React.useEffect(() => {
         const uploadImage = async () => {
             try {
-                if (!file) {
-                    return;
+                if (file.size > 2097152) {
+                    alert('檔案須小於2MB');
+                    setFile();
+                } else {
+                    const res = await api.getPresignUrl(jwtToken);
+                    const url = res.data.data;
+                    await axios.put(url, file, {
+                        headers: {
+                            'Content-Type': 'multipart/form-data',
+                        },
+                    });
+                    const image = url.split('?')[0];
+                    setProfileImage(image);
                 }
-                const res = await api.getPresignUrl(jwtToken);
-                const url = res.data.data;
-                await axios.put(url, file, {
-                    headers: {
-                        'Content-Type': 'multipart/form-data',
-                    },
-                });
-                const image = url.split('?')[0];
-                setProfileImage(image);
             } catch (error) {
                 console.log(error);
             }
