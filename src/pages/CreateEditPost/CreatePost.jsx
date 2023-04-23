@@ -119,61 +119,63 @@ function CreatePost() {
     React.useEffect(() => {
         scrollToBottom();
     }, [content]);
-    if (!isLogin) return <Navigate to="/" replace />;
-    return (
-        <>
-            <MainImgWrap>
-                <MainImg src={mainImg} />
-                <UploadImg>
-                    <MainImgButton onClick={handleUploadClick}>
-                        {file ? `${file.name}` : '上傳首圖'}
-                    </MainImgButton>
-                    <MainImgInput
-                        type="file"
-                        ref={inputRef}
-                        accept="image/*"
-                        style={{ display: 'none' }}
-                        onChange={handleFileChange}
-                        multiple={false}
+
+    if (isLogin)
+        return (
+            <>
+                <MainImgWrap>
+                    <MainImg src={mainImg} />
+                    <UploadImg>
+                        <MainImgButton onClick={handleUploadClick}>
+                            {file ? `${file.name}` : '上傳首圖'}
+                        </MainImgButton>
+                        <MainImgInput
+                            type="file"
+                            ref={inputRef}
+                            accept="image/*"
+                            style={{ display: 'none' }}
+                            onChange={handleFileChange}
+                            multiple={false}
+                        />
+                    </UploadImg>
+                </MainImgWrap>
+                <Title value={title} onChange={(e) => setTitle(e.target.value)} />
+                <label>
+                    洲：
+                    <Continent value={continent} onChange={(e) => setContinent(e.target.value)}>
+                        <ContinentOption>{'亞洲'}</ContinentOption>;
+                        <ContinentOption>{'歐洲'}</ContinentOption>
+                        <ContinentOption>{'北美洲'}</ContinentOption>
+                        <ContinentOption>{'大洋洲'}</ContinentOption>
+                        <ContinentOption>{'南美洲'}</ContinentOption>
+                        <ContinentOption>{'非洲'}</ContinentOption>
+                        <ContinentOption>{'南極洲'}</ContinentOption>
+                    </Continent>
+                </label>
+                <label>
+                    國家：
+                    <Country value={country} onChange={(e) => setCountry(e.target.value)} />
+                </label>
+                <label>
+                    類別：
+                    <Type value={type} onChange={(e) => setType(e.target.value)} />
+                </label>
+                <label>
+                    旅遊時間：
+                    <TravelDate
+                        type="date"
+                        value={travelDate}
+                        onChange={(e) => setTravelDate(e.target.value)}
                     />
-                </UploadImg>
-            </MainImgWrap>
-            <Title value={title} onChange={(e) => setTitle(e.target.value)} />
-            <label>
-                洲：
-                <Continent value={continent} onChange={(e) => setContinent(e.target.value)}>
-                    <ContinentOption>{'亞洲'}</ContinentOption>;
-                    <ContinentOption>{'歐洲'}</ContinentOption>
-                    <ContinentOption>{'北美洲'}</ContinentOption>
-                    <ContinentOption>{'大洋洲'}</ContinentOption>
-                    <ContinentOption>{'南美洲'}</ContinentOption>
-                    <ContinentOption>{'非洲'}</ContinentOption>
-                    <ContinentOption>{'南極洲'}</ContinentOption>
-                </Continent>
-            </label>
-            <label>
-                國家：
-                <Country value={country} onChange={(e) => setCountry(e.target.value)} />
-            </label>
-            <label>
-                類別：
-                <Type value={type} onChange={(e) => setType(e.target.value)} />
-            </label>
-            <label>
-                旅遊時間：
-                <TravelDate
-                    type="date"
-                    value={travelDate}
-                    onChange={(e) => setTravelDate(e.target.value)}
-                />
-            </label>
-            <TextEditor editContent={(value) => setContent(value)} />
-            <Submit type="button" onClick={submitPost}>
-                發文
-            </Submit>
-            <div ref={contentEndRef}></div>
-        </>
-    );
+                </label>
+                <TextEditor editContent={(value) => setContent(value)} />
+                <Submit type="button" onClick={submitPost}>
+                    發文
+                </Submit>
+                <div ref={contentEndRef}></div>
+            </>
+        );
+    else return <Navigate to="/" replace />;
 }
 
 export default CreatePost;

@@ -75,58 +75,60 @@ const User = () => {
     const handleSection = (section) => {
         setSection(section);
     };
-    if (!isLogin) return <Navigate to="/" replace />;
-    return (
-        <Wrap>
-            <Sidebar>
-                <OptionsList>
+
+    if (isLogin)
+        return (
+            <Wrap>
+                <Sidebar>
+                    <OptionsList>
+                        {section === 'setting' ? (
+                            <Option className="active" onClick={() => handleSection('setting')}>
+                                <OptionIcon src={asia} />
+                                <OptionTitle>個人資料</OptionTitle>
+                            </Option>
+                        ) : (
+                            <Option onClick={() => handleSection('setting')}>
+                                <OptionIcon src={asia} />
+                                <OptionTitle>個人資料</OptionTitle>
+                            </Option>
+                        )}
+                        {section === 'map' ? (
+                            <Option className="active" onClick={() => handleSection('map')}>
+                                <OptionIcon src={europe} />
+                                <OptionTitle>旅遊足跡</OptionTitle>
+                            </Option>
+                        ) : (
+                            <Option onClick={() => handleSection('map')}>
+                                <OptionIcon src={europe} />
+                                <OptionTitle>旅遊足跡</OptionTitle>
+                            </Option>
+                        )}
+                        <Option onClick={() => handleSection('posts')}>
+                            <OptionIcon src={north} />
+                            <OptionTitle>我的文章</OptionTitle>
+                        </Option>
+                        <Option onClick={() => handleSection('save')}>
+                            <OptionIcon src={oceania} />
+                            <OptionTitle>收藏清單</OptionTitle>
+                        </Option>
+                    </OptionsList>
+                </Sidebar>
+                <Section>
                     {section === 'setting' ? (
-                        <Option className="active" onClick={() => handleSection('setting')}>
-                            <OptionIcon src={asia} />
-                            <OptionTitle>個人資料</OptionTitle>
-                        </Option>
+                        <Setting />
+                    ) : section === 'map' ? (
+                        <Map />
+                    ) : section === 'posts' ? (
+                        <Posts></Posts>
+                    ) : section === 'save' ? (
+                        <Save></Save>
                     ) : (
-                        <Option onClick={() => handleSection('setting')}>
-                            <OptionIcon src={asia} />
-                            <OptionTitle>個人資料</OptionTitle>
-                        </Option>
+                        <></>
                     )}
-                    {section === 'map' ? (
-                        <Option className="active" onClick={() => handleSection('map')}>
-                            <OptionIcon src={europe} />
-                            <OptionTitle>旅遊足跡</OptionTitle>
-                        </Option>
-                    ) : (
-                        <Option onClick={() => handleSection('map')}>
-                            <OptionIcon src={europe} />
-                            <OptionTitle>旅遊足跡</OptionTitle>
-                        </Option>
-                    )}
-                    <Option onClick={() => handleSection('posts')}>
-                        <OptionIcon src={north} />
-                        <OptionTitle>我的文章</OptionTitle>
-                    </Option>
-                    <Option onClick={() => handleSection('save')}>
-                        <OptionIcon src={oceania} />
-                        <OptionTitle>收藏清單</OptionTitle>
-                    </Option>
-                </OptionsList>
-            </Sidebar>
-            <Section>
-                {section === 'setting' ? (
-                    <Setting />
-                ) : section === 'map' ? (
-                    <Map />
-                ) : section === 'posts' ? (
-                    <Posts></Posts>
-                ) : section === 'save' ? (
-                    <Save></Save>
-                ) : (
-                    <></>
-                )}
-            </Section>
-        </Wrap>
-    );
+                </Section>
+            </Wrap>
+        );
+    else return <Navigate to="/" replace />;
 };
 
 export default User;

@@ -60,13 +60,13 @@ function App() {
 
     return (
         <>
-            <ThemeProvider theme={theme}>
-                <GlobalStyle />
-                <AuthContextProvider>
+            <AuthContextProvider>
+                <ThemeProvider theme={theme}>
+                    <GlobalStyle />
                     <Header />
                     <Outlet />
-                </AuthContextProvider>
-            </ThemeProvider>
+                </ThemeProvider>{' '}
+            </AuthContextProvider>
         </>
     );
 }

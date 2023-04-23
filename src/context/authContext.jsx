@@ -77,20 +77,27 @@ export const AuthContextProvider = ({ children }) => {
         setLoading(false);
     };
     const getUserData = async (jwtToken) => {
-        const res = await api.getUser('_', jwtToken);
-
-        if (!res.error) {
-            const user = res.data.data;
-            setUser(user);
-            setIsLogin(true);
+        try {
+            const res = await api.getUser('_', jwtToken);
+            if (!res.error) {
+                const user = res.data.data;
+                setUser(user);
+                setIsLogin(true);
+            }
+            setLoading(false);
+        } catch {
+            setIsLogin(false);
         }
     };
     React.useEffect(() => {
         const jwtToken = window.localStorage.getItem('jwtToken');
         if (jwtToken) {
             getUserData(jwtToken);
+        } else {
+            setLoading(false);
         }
     }, []);
+
     return (
         <AuthContext.Provider
             value={{
@@ -103,7 +110,7 @@ export const AuthContextProvider = ({ children }) => {
                 logout,
             }}
         >
-            {children}
+            {loading ? null : children}
         </AuthContext.Provider>
     );
 };
