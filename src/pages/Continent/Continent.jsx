@@ -121,7 +121,7 @@ const Continent = () => {
                 <BannerText>{map[continent]}</BannerText>
             </Banner>
             <Wrapper>
-                <LeftSidebar />
+                <LeftSidebar active={continent} />
                 <ContinentWrap>
                     <FiltersWrap>
                         {filters.map((filter) => {
