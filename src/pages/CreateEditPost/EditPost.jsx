@@ -2,7 +2,7 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { AuthContext } from '../../context/authContext';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import TextEditor from './Editor';
 import api from '../../utils/api';
 import updateNewsfeeds from '../../utils/updateUserNewsfeeds';
@@ -54,6 +54,7 @@ function EditPost() {
     const [travelDate, setTravelDate] = React.useState('');
     const postId = useParams().id;
     const inputRef = React.useRef(null);
+    const navigate = useNavigate();
 
     const handleUploadClick = () => {
         inputRef.current.click();
@@ -125,7 +126,7 @@ function EditPost() {
                 jwtToken
             );
             await updateNewsfeeds(jwtToken);
-            window.location.replace('/');
+            navigate('/');
         } catch (e) {
             console.log(e);
             alert('文章更新失敗');

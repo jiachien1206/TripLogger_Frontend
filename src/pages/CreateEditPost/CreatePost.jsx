@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { AuthContext } from '../../context/authContext';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import TextEditor from './Editor';
 import api from '../../utils/api';
 import updateNewsfeeds from '../../utils/updateUserNewsfeeds';
@@ -54,6 +54,7 @@ function CreatePost() {
     const [country, setCountry] = React.useState('奧地利');
     const [type, setType] = React.useState('景點');
     const [travelDate, setTravelDate] = React.useState('2023-03-02');
+    const navigate = useNavigate();
     const inputRef = React.useRef(null);
     const handleUploadClick = () => {
         inputRef.current.click();
@@ -110,7 +111,7 @@ function CreatePost() {
             );
             alert('送出文章');
             await updateNewsfeeds(jwtToken);
-            window.location.replace('/');
+            navigate('/');
         } catch (e) {
             console.log(e);
             alert('文章發佈失敗');
