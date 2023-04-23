@@ -4,7 +4,9 @@ import Post from '../../components/Post';
 import api from '../../utils/api';
 
 const PostsWrap = styled.div`
-    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
 `;
 
 const PostList = ({ posts }) => {
