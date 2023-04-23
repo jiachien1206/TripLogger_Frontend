@@ -6,13 +6,10 @@ import Setting from './Setting';
 import Map from './Map/Map';
 import Posts from './MyPosts/Posts';
 import Save from './MySave/SavedPosts';
-import asia from '../../images/asia.png';
-import north from '../../images/north-america.png';
-import south from '../../images/south-america.png';
-import europe from '../../images/europe.png';
-import oceania from '../../images/oceania.png';
-import africa from '../..//images/africa.png';
-import antarctica from '../../images/antarctica.png';
+import setting from '../../images/user_setting.png';
+import map from '../../images/user_map.png';
+import posts from '../../images/user_posts.png';
+import save from '../../images/user_save.png';
 
 const Wrap = styled.div`
     margin: 100px auto 0px;
@@ -72,11 +69,7 @@ const Section = styled.div`
 
 const User = () => {
     const section = useParams().section;
-    // const [activeSection, setActiveSection] = React.useState('setting');
     const { isLogin } = React.useContext(AuthContext);
-    // const handleSection = (section) => {
-    //     setActiveSection(section);
-    // };
 
     if (isLogin)
         return (
@@ -85,45 +78,45 @@ const User = () => {
                     <OptionsList>
                         {section === 'setting' ? (
                             <Option className="active" to={'/user/setting'}>
-                                <OptionIcon src={asia} />
+                                <OptionIcon src={setting} />
                                 <OptionTitle>個人資料</OptionTitle>
                             </Option>
                         ) : (
                             <Option to={'/user/setting'}>
-                                <OptionIcon src={asia} />
+                                <OptionIcon src={setting} />
                                 <OptionTitle>個人資料</OptionTitle>
                             </Option>
                         )}
                         {section === 'map' ? (
                             <Option className="active" to={'/user/map'}>
-                                <OptionIcon src={europe} />
+                                <OptionIcon src={map} />
                                 <OptionTitle>旅遊足跡</OptionTitle>
                             </Option>
                         ) : (
                             <Option to={'/user/map'}>
-                                <OptionIcon src={europe} />
+                                <OptionIcon src={map} />
                                 <OptionTitle>旅遊足跡</OptionTitle>
                             </Option>
                         )}
                         {section === 'posts' ? (
                             <Option className="active" to={'/user/posts'}>
-                                <OptionIcon src={europe} />
+                                <OptionIcon src={posts} />
                                 <OptionTitle>我的文章</OptionTitle>
                             </Option>
                         ) : (
                             <Option to={'/user/posts'}>
-                                <OptionIcon src={europe} />
+                                <OptionIcon src={posts} />
                                 <OptionTitle>我的文章</OptionTitle>
                             </Option>
                         )}
                         {section === 'save' ? (
                             <Option className="active" to={'/user/save'}>
-                                <OptionIcon src={europe} />
+                                <OptionIcon src={save} />
                                 <OptionTitle>收藏清單</OptionTitle>
                             </Option>
                         ) : (
                             <Option to={'/user/save'}>
-                                <OptionIcon src={europe} />
+                                <OptionIcon src={save} />
                                 <OptionTitle>收藏清單</OptionTitle>
                             </Option>
                         )}
