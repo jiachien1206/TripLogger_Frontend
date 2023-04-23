@@ -1,5 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
+import { AuthContext } from '../../context/authContext';
+import { Navigate } from 'react-router-dom';
 import Setting from './Setting';
 import Map from './Map/Map';
 import Posts from './MyPosts/Posts';
@@ -69,9 +71,11 @@ const Section = styled.div`
 
 const User = () => {
     const [section, setSection] = React.useState('setting');
+    const { isLogin } = React.useContext(AuthContext);
     const handleSection = (section) => {
         setSection(section);
     };
+    if (!isLogin) return <Navigate to="/" replace />;
     return (
         <Wrap>
             <Sidebar>

@@ -1,5 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
+import { AuthContext } from '../../context/authContext';
+import { Navigate } from 'react-router-dom';
 import TextEditor from './Editor';
 import api from '../../utils/api';
 import updateNewsfeeds from '../../utils/updateUserNewsfeeds';
@@ -43,6 +45,7 @@ const Submit = styled.button`
 `;
 
 function CreatePost() {
+    const { isLogin } = React.useContext(AuthContext);
     const [file, setFile] = React.useState();
     const [mainImg, setMainImg] = React.useState(null);
     const [title, setTitle] = React.useState('哈修塔特好好玩');
@@ -116,6 +119,7 @@ function CreatePost() {
     React.useEffect(() => {
         scrollToBottom();
     }, [content]);
+    if (!isLogin) return <Navigate to="/" replace />;
     return (
         <>
             <MainImgWrap>
