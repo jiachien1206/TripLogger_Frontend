@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import Post from '../../components/Post';
 import api from '../../utils/api';
+import { AuthContext } from '../../context/authContext';
 
 const PostsWrap = styled.div`
     display: flex;
@@ -12,6 +13,7 @@ const PostsWrap = styled.div`
 const PostList = ({ posts }) => {
     const [likedPosts, setLikedPosts] = React.useState([]);
     const [savedPosts, setSavedPosts] = React.useState([]);
+    const { isLogin } = React.useContext(AuthContext);
 
     const getLikedPosts = () => {
         const posts = window.localStorage.getItem('likedPosts');
@@ -23,8 +25,10 @@ const PostList = ({ posts }) => {
         setSavedPosts(JSON.parse(posts));
     };
     React.useEffect(() => {
-        getLikedPosts();
-        getSavedPosts();
+        if (isLogin) {
+            getLikedPosts();
+            getSavedPosts();
+        }
     }, [posts]);
 
     return (

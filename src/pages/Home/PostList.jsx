@@ -39,8 +39,10 @@ const PostList = ({ filter }) => {
     };
     React.useEffect(() => {
         getPosts();
-        getLikedPosts();
-        getSavedPosts();
+        if (isLogin) {
+            getLikedPosts();
+            getSavedPosts();
+        }
     }, [filter]);
 
     return (
