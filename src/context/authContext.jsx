@@ -81,6 +81,7 @@ export const AuthContextProvider = ({ children }) => {
             const res = await api.getUser('_', jwtToken);
             if (!res.error) {
                 const user = res.data.data;
+                setJwtToken(jwtToken);
                 setUser(user);
                 setIsLogin(true);
             }

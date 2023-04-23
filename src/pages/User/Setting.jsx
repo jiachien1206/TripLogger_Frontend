@@ -9,6 +9,7 @@ import axios from 'axios';
 import Options from '../../components/PreferenceOptions';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
+import { AuthContext } from '../../context/authContext';
 
 const Label = styled.label`
     margin-bottom: 5px;
@@ -68,6 +69,7 @@ const UploadImgButton = styled.div``;
 const UploadImgInput = styled.input``;
 
 const Setting = () => {
+    const { jwtToken } = React.useContext(AuthContext);
     const [profileImage, setProfileImage] = React.useState(profile);
     const [name, setName] = React.useState('');
     const [email, setEmail] = React.useState('');
@@ -138,7 +140,7 @@ const Setting = () => {
                 if (!file) {
                     return;
                 }
-                const res = await api.getPresignUrl();
+                const res = await api.getPresignUrl(jwtToken);
                 const url = res.data.data;
                 await axios.put(url, file, {
                     headers: {

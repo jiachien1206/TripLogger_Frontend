@@ -45,7 +45,7 @@ const Submit = styled.button`
 `;
 
 function CreatePost() {
-    const { isLogin } = React.useContext(AuthContext);
+    const { isLogin, jwtToken } = React.useContext(AuthContext);
     const [file, setFile] = React.useState();
     const [mainImg, setMainImg] = React.useState(null);
     const [title, setTitle] = React.useState('哈修塔特好好玩');
@@ -73,7 +73,7 @@ function CreatePost() {
                 if (!file) {
                     return;
                 }
-                const res = await api.getPresignUrl();
+                const res = await api.getPresignUrl(jwtToken);
                 const url = res.data.data;
                 await axios.put(url, file, {
                     headers: {

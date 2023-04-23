@@ -4,6 +4,7 @@ import 'react-quill/dist/quill.snow.css';
 import styled from 'styled-components';
 import axios from 'axios';
 import api from '../../utils/api';
+import { AuthContext } from '../../context/authContext';
 
 const Quill = styled(ReactQuill)`
     margin: 20px;
@@ -13,45 +14,46 @@ const Quill = styled(ReactQuill)`
     }
 `;
 
-const uploadImage = async (file) => {
-    try {
-        const res = await api.getPresignUrl();
-        const url = res.data.data;
-        await axios.put(url, file, {
-            headers: {
-                'Content-Type': 'multipart/form-data',
-            },
-        });
-        const imageUrl = url.split('?')[0];
-        return imageUrl;
-    } catch (error) {
-        console.log(error);
-    }
-};
-
-const imageHandler = (quill) => {
-    const input = document.createElement('input');
-    input.setAttribute('type', 'file');
-    input.setAttribute('accept', 'image/*');
-    input.click();
-    input.onchange = async () => {
-        const file = input.files[0];
-        if (file.size > 1048576) {
-            alert('File is too big!');
-        } else {
-            const imageUrl = await uploadImage(file);
-            if (imageUrl) {
-                const range = quill.getSelection();
-                quill.insertEmbed(range.index, 'image', imageUrl);
-            }
-        }
-    };
-};
-
 const TextEditor = ({ originContent, editContent }) => {
     const [content, setContent] = React.useState();
     const [initialContent, setInitialContent] = React.useState();
     const quillRef = React.useRef(null);
+    const { jwtToken } = React.useContext(AuthContext);
+
+    const uploadImage = async (file) => {
+        try {
+            const res = await api.getPresignUrl(jwtToken);
+            const url = res.data.data;
+            await axios.put(url, file, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
+            const imageUrl = url.split('?')[0];
+            return imageUrl;
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const imageHandler = (quill) => {
+        const input = document.createElement('input');
+        input.setAttribute('type', 'file');
+        input.setAttribute('accept', 'image/*');
+        input.click();
+        input.onchange = async () => {
+            const file = input.files[0];
+            if (file.size > 1048576) {
+                alert('File is too big!');
+            } else {
+                const imageUrl = await uploadImage(file);
+                if (imageUrl) {
+                    const range = quill.getSelection();
+                    quill.insertEmbed(range.index, 'image', imageUrl);
+                }
+            }
+        };
+    };
 
     React.useEffect(() => {
         if (originContent) {

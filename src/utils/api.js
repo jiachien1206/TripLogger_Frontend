@@ -124,10 +124,11 @@ const api = {
             },
         });
     },
-    getPresignUrl() {
+    getPresignUrl(jwtToken) {
         return axios(`${this.HOST_NAME}/post/presignUrl`, {
             headers: {
                 'Content-Type': 'application/json',
+                Authorization: `Bearer ${jwtToken}`,
             },
         });
     },
