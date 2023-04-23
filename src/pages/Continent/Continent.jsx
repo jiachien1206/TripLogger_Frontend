@@ -7,6 +7,7 @@ import RightSidebar from '../../components/RightSidebar';
 import api from '../../utils/api.js';
 
 const Banner = styled.div`
+    margin-top: 60px;
     position: relative;
     min-height: 350px;
     width: 100%;
