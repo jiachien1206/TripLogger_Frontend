@@ -137,6 +137,9 @@ const Setting = () => {
     React.useEffect(() => {
         const uploadImage = async () => {
             try {
+                if (!file) {
+                    return;
+                }
                 if (file.size > 2097152) {
                     alert('檔案須小於2MB');
                     setFile();
