@@ -41,7 +41,6 @@ const GlobalStyle = createGlobalStyle`
     width: 100%;
   }
 `;
-
 function App() {
     const [ws, setWs] = React.useState(null);
 

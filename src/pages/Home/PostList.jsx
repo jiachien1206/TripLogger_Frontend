@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import Post from '../../components/Post';
+import { AuthContext } from '../../context/authContext';
 
 const PostsWrap = styled.div`
     display: flex;
@@ -12,6 +13,7 @@ const PostList = ({ filter }) => {
     const [posts, setPosts] = React.useState([]);
     const [likedPosts, setLikedPosts] = React.useState([]);
     const [savedPosts, setSavedPosts] = React.useState([]);
+    const { isLogin } = React.useContext(AuthContext);
     const getPosts = () => {
         let posts;
         if (filter === '為你推薦') {
