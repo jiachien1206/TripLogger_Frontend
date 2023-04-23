@@ -16,11 +16,10 @@ const Navigation = styled.div`
     width: 100%;
     z-index: 99;
     background-color: white;
-
     box-shadow: 0 1px 6px 0 rgb(32 33 36 / 5%);
 `;
 const NavigationContentWrap = styled.div`
-    max-width: 1350px;
+    max-width: 1270px;
     height: 100%;
     margin: 0px auto;
     display: flex;
@@ -31,7 +30,6 @@ const NavigationContentWrap = styled.div`
 const NavigationLeft = styled.div`
     display: flex;
     align-items: center;
-    margin-left: 20px;
     gap: 25px;
 `;
 const NavigationRight = styled.div`
@@ -91,8 +89,7 @@ const SearchButton = styled.button`
 `;
 
 const CreatePost = styled(Link)`
-    height: 40px;
-    width: 100px;
+    padding: 7px 30px;
     border: 1px solid #236262;
     border-radius: 5px;
     text-decoration: none;
@@ -111,18 +108,19 @@ const CreatePost = styled(Link)`
 `;
 
 const Memberlink = styled(Link)`
-    margin-left: 20px;
+    margin-left: 10px;
 `;
 
 const SignButton = styled(Link)`
     font-size: 17px;
     text-decoration: none;
-    padding: 5px 15px;
+    padding: 7px 30px;
     border-radius: 6px;
     margin: 0px 5px;
-    transition: border-radius 0.4s;
+    transition: all 0.3s;
     &.signup {
         background-color: #236262;
+        border: 2px solid #236262;
         color: #ffffff;
     }
     &.signin {
