@@ -170,7 +170,7 @@ const Header = () => {
                     {isLogin ? (
                         <>
                             <CreatePost to="/create">發文</CreatePost>
-                            <Memberlink to="/user">
+                            <Memberlink to="/user/setting">
                                 <Avatar src={user.image} sx={{ width: 43, height: 43 }} />
                             </Memberlink>
                         </>

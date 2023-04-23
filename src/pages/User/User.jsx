@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { AuthContext } from '../../context/authContext';
-import { Navigate } from 'react-router-dom';
+import { useParams, Navigate, Link } from 'react-router-dom';
 import Setting from './Setting';
 import Map from './Map/Map';
 import Posts from './MyPosts/Posts';
@@ -34,7 +34,7 @@ const OptionsList = styled.div`
     flex-direction: column;
     width: 220px;
 `;
-const Option = styled.div`
+const Option = styled(Link)`
     display: flex;
     align-items: center;
     gap: 15px;
@@ -43,6 +43,7 @@ const Option = styled.div`
     cursor: pointer;
     padding: 14px 0px 14px 10px;
     margin: 3px 0px;
+    text-decoration: none;
     &:hover {
         background-color: #dbf5f0;
     }
@@ -70,11 +71,12 @@ const Section = styled.div`
 `;
 
 const User = () => {
-    const [section, setSection] = React.useState('setting');
+    const section = useParams().section;
+    // const [activeSection, setActiveSection] = React.useState('setting');
     const { isLogin } = React.useContext(AuthContext);
-    const handleSection = (section) => {
-        setSection(section);
-    };
+    // const handleSection = (section) => {
+    //     setActiveSection(section);
+    // };
 
     if (isLogin)
         return (
@@ -82,35 +84,49 @@ const User = () => {
                 <Sidebar>
                     <OptionsList>
                         {section === 'setting' ? (
-                            <Option className="active" onClick={() => handleSection('setting')}>
+                            <Option className="active" to={'/user/setting'}>
                                 <OptionIcon src={asia} />
                                 <OptionTitle>個人資料</OptionTitle>
                             </Option>
                         ) : (
-                            <Option onClick={() => handleSection('setting')}>
+                            <Option to={'/user/setting'}>
                                 <OptionIcon src={asia} />
                                 <OptionTitle>個人資料</OptionTitle>
                             </Option>
                         )}
                         {section === 'map' ? (
-                            <Option className="active" onClick={() => handleSection('map')}>
+                            <Option className="active" to={'/user/map'}>
                                 <OptionIcon src={europe} />
                                 <OptionTitle>旅遊足跡</OptionTitle>
                             </Option>
                         ) : (
-                            <Option onClick={() => handleSection('map')}>
+                            <Option to={'/user/map'}>
                                 <OptionIcon src={europe} />
                                 <OptionTitle>旅遊足跡</OptionTitle>
                             </Option>
                         )}
-                        <Option onClick={() => handleSection('posts')}>
-                            <OptionIcon src={north} />
-                            <OptionTitle>我的文章</OptionTitle>
-                        </Option>
-                        <Option onClick={() => handleSection('save')}>
-                            <OptionIcon src={oceania} />
-                            <OptionTitle>收藏清單</OptionTitle>
-                        </Option>
+                        {section === 'posts' ? (
+                            <Option className="active" to={'/user/posts'}>
+                                <OptionIcon src={europe} />
+                                <OptionTitle>我的文章</OptionTitle>
+                            </Option>
+                        ) : (
+                            <Option to={'/user/posts'}>
+                                <OptionIcon src={europe} />
+                                <OptionTitle>我的文章</OptionTitle>
+                            </Option>
+                        )}
+                        {section === 'save' ? (
+                            <Option className="active" to={'/user/save'}>
+                                <OptionIcon src={europe} />
+                                <OptionTitle>收藏清單</OptionTitle>
+                            </Option>
+                        ) : (
+                            <Option to={'/user/save'}>
+                                <OptionIcon src={europe} />
+                                <OptionTitle>收藏清單</OptionTitle>
+                            </Option>
+                        )}
                     </OptionsList>
                 </Sidebar>
                 <Section>
