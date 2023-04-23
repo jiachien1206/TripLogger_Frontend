@@ -10,10 +10,8 @@ import Options from '../../components/PreferenceOptions';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 
-// const ProfileWrap = styled.div``;
-
 const Label = styled.label`
-    margin-top: 10px;
+    margin-bottom: 5px;
     font-weight: 500;
 `;
 const Input = styled.input`
@@ -25,13 +23,13 @@ const Input = styled.input`
     border: solid 1px #d4d4d4;
     border-radius: 5px;
     padding-left: 10px;
+    margin-bottom: 20px;
     &:hover {
         border: 2px solid #d4d4d4;
     }
     &:focus {
         border: 2px solid #236262;
     }
-    disabled: true;
 `;
 
 const ImageWrap = styled.div`

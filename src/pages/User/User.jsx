@@ -39,9 +39,13 @@ const Option = styled.div`
     height: 45px;
     border-radius: 5px;
     cursor: pointer;
-    padding: 10px 5px;
+    padding: 14px 0px 14px 10px;
+    margin: 3px 0px;
     &:hover {
-        background-color: #e5e5e5;
+        background-color: #dbf5f0;
+    }
+    &.active {
+        background-color: #ffffff;
     }
 `;
 const OptionIcon = styled.img`
@@ -64,7 +68,7 @@ const Section = styled.div`
 `;
 
 const User = () => {
-    const [section, setSection] = React.useState('save');
+    const [section, setSection] = React.useState('setting');
     const handleSection = (section) => {
         setSection(section);
     };
@@ -72,14 +76,28 @@ const User = () => {
         <Wrap>
             <Sidebar>
                 <OptionsList>
-                    <Option onClick={() => handleSection('setting')}>
-                        <OptionIcon src={asia} />
-                        <OptionTitle>個人資料</OptionTitle>
-                    </Option>
-                    <Option onClick={() => handleSection('map')}>
-                        <OptionIcon src={europe} />
-                        <OptionTitle>旅遊足跡</OptionTitle>
-                    </Option>
+                    {section === 'setting' ? (
+                        <Option className="active" onClick={() => handleSection('setting')}>
+                            <OptionIcon src={asia} />
+                            <OptionTitle>個人資料</OptionTitle>
+                        </Option>
+                    ) : (
+                        <Option onClick={() => handleSection('setting')}>
+                            <OptionIcon src={asia} />
+                            <OptionTitle>個人資料</OptionTitle>
+                        </Option>
+                    )}
+                    {section === 'map' ? (
+                        <Option className="active" onClick={() => handleSection('map')}>
+                            <OptionIcon src={europe} />
+                            <OptionTitle>旅遊足跡</OptionTitle>
+                        </Option>
+                    ) : (
+                        <Option onClick={() => handleSection('map')}>
+                            <OptionIcon src={europe} />
+                            <OptionTitle>旅遊足跡</OptionTitle>
+                        </Option>
+                    )}
                     <Option onClick={() => handleSection('posts')}>
                         <OptionIcon src={north} />
                         <OptionTitle>我的文章</OptionTitle>

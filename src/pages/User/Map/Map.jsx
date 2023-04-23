@@ -48,7 +48,7 @@ const Map = () => {
     const renderVisited = (country, layer) => {
         const iso3 = visitedcountries.map((country) => country.iso3);
         if (iso3.includes(country.properties.ISO_A3)) {
-            layer.setStyle({ fillColor: '#00ed64' });
+            layer.setStyle({ fillColor: '#37BEB0' });
         }
     };
     return (
