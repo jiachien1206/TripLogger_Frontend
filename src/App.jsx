@@ -45,7 +45,7 @@ function App() {
     const [ws, setWs] = React.useState(null);
 
     React.useEffect(() => {
-        const newWs = webSocket('http://localhost:8000');
+        const newWs = webSocket('https://chiaproject.com');
         setWs(newWs);
     }, []);
 
