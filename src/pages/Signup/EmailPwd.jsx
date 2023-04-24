@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import Button from '@mui/material/Button';
 
 const Title = styled.div`
     margin: 0px auto 20px;
@@ -15,9 +16,8 @@ const Name = styled.input`
     background-color: #f5f5f5;
     border: none;
     border-radius: 10px;
-    font-size: 18px;
+    font-size: 16px;
     padding: 15px 20px;
-    line-height: 20px;
     width: 300px;
     &:focus-visible {
         outline: none !important;
@@ -28,9 +28,8 @@ const Email = styled.input`
     background-color: #f5f5f5;
     border: none;
     border-radius: 10px;
-    font-size: 18px;
+    font-size: 16px;
     padding: 15px 20px;
-    line-height: 20px;
     width: 300px;
     &:focus-visible {
         outline: none !important;
@@ -41,9 +40,8 @@ const Password = styled.input`
     background-color: #f5f5f5;
     border: none;
     border-radius: 10px;
-    font-size: 18px;
+    font-size: 16px;
     padding: 15px 20px;
-    line-height: 20px;
     width: 300px;
     &:focus-visible {
         outline: none !important;
@@ -63,7 +61,6 @@ const EmailPwd = ({ paging, name, setName, email, setEmail, password, setPasswor
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
             />
-
             <Password
                 placeholder="密碼"
                 value={password}

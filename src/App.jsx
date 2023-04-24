@@ -45,7 +45,7 @@ function App() {
     const [ws, setWs] = React.useState(null);
 
     React.useEffect(() => {
-        const newWs = webSocket('http://localhost:8000/api');
+        const newWs = webSocket('https://chiaproject.com');
         setWs(newWs);
     }, []);
 
@@ -63,7 +63,9 @@ function App() {
             <AuthContextProvider>
                 <ThemeProvider theme={theme}>
                     <GlobalStyle />
-                    <Header />
+                    {location.pathname !== '/signup' && location.pathname !== '/signin' && (
+                        <Header />
+                    )}
                     <Outlet />
                 </ThemeProvider>{' '}
             </AuthContextProvider>

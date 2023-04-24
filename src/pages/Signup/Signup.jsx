@@ -43,9 +43,9 @@ const steps = ['註冊帳號', '請排序喜歡的旅遊地點', '請排序喜�
 
 const Signup = () => {
     const { isLogin, saveUserData } = React.useContext(AuthContext);
-    const [name, setName] = React.useState('小chat同學');
-    const [email, setEmail] = React.useState('chatgpt@gmail.com');
-    const [password, setPassword] = React.useState('chatchat');
+    const [name, setName] = React.useState('');
+    const [email, setEmail] = React.useState('');
+    const [password, setPassword] = React.useState('');
     const [activeStep, setActiveStep] = React.useState(0);
     const [skipped, setSkipped] = React.useState(new Set());
     const [locations, setlocations] = React.useState([
@@ -104,89 +104,84 @@ const Signup = () => {
     }
     if (isLogin) return <Navigate to="/" replace />;
     return (
-        <>
-            <Modal
-                aria-labelledby="spring-modal-title"
-                aria-describedby="spring-modal-description"
-                open={open}
-                // onClose={handleClose}
-                closeAfterTransition
-                slots={{ backdrop: Backdrop }}
-                slotProps={{
-                    backdrop: {
-                        TransitionComponent: Fade,
-                    },
-                }}
-            >
-                <Fade in={open}>
-                    <Box sx={style}>
-                        <Stepper activeStep={activeStep}>
-                            {steps.map((label, index) => {
-                                const stepProps = {};
-                                const labelProps = {};
+        <Modal
+            aria-labelledby="spring-modal-title"
+            aria-describedby="spring-modal-description"
+            open={open}
+            // onClose={handleClose}
+            closeAfterTransition
+            slots={{ backdrop: Backdrop }}
+            slotProps={{
+                backdrop: {
+                    TransitionComponent: Fade,
+                },
+            }}
+        >
+            <Fade in={open}>
+                <Box sx={style}>
+                    <Stepper activeStep={activeStep}>
+                        {steps.map((label, index) => {
+                            const stepProps = {};
+                            const labelProps = {};
 
-                                return (
-                                    <Step key={label} {...stepProps}>
-                                        <StepLabel {...labelProps}>{label}</StepLabel>
-                                    </Step>
-                                );
-                            })}
-                        </Stepper>
-                        {activeStep === 0 ? (
-                            <React.Fragment>
-                                <EmailPwd
-                                    name={name}
-                                    setName={setName}
-                                    email={email}
-                                    setEmail={setEmail}
-                                    password={password}
-                                    setPassword={setPassword}
-                                ></EmailPwd>
-                                <Box sx={{ display: 'flex', flexDirection: 'row', pt: 1 }}>
-                                    <Button color="inherit" disabled="disabled" sx={{ mr: 1 }}>
-                                        Back
-                                    </Button>
-                                    <Box sx={{ flex: '1 1 auto' }} />
-                                    <Button onClick={handleNext}>Next</Button>
-                                </Box>
-                            </React.Fragment>
-                        ) : activeStep === 1 ? (
-                            <React.Fragment>
-                                <Title>{steps[1]}</Title>
-                                <Location
-                                    locations={locations}
-                                    setLocations={setlocations}
-                                ></Location>
-                                <Box sx={{ display: 'flex', flexDirection: 'row', pt: 1 }}>
-                                    <Button
-                                        color="inherit"
-                                        // disabled={activeStep === 1}
-                                        onClick={handleBack}
-                                        sx={{ mr: 1 }}
-                                    >
-                                        Back
-                                    </Button>
-                                    <Box sx={{ flex: '1 1 auto' }} />
-                                    <Button onClick={handleNext}>Next</Button>
-                                </Box>
-                            </React.Fragment>
-                        ) : (
-                            <React.Fragment>
-                                <Title>{steps[2]}</Title>
-                                <Type types={types} setTypes={setTypes}></Type>
-                                <Box sx={{ display: 'flex', flexDirection: 'row', pt: 1 }}>
-                                    <Button color="inherit" onClick={handleBack} sx={{ mr: 1 }}>
-                                        Back
-                                    </Button>
-                                    <Box sx={{ flex: '1 1 auto' }} />
-                                    <Button onClick={signup}>Submit</Button>
-                                </Box>
-                            </React.Fragment>
-                        )}
-                    </Box>
-                </Fade>
-            </Modal>
-        </>
+                            return (
+                                <Step key={label} {...stepProps}>
+                                    <StepLabel {...labelProps}>{label}</StepLabel>
+                                </Step>
+                            );
+                        })}
+                    </Stepper>
+                    {activeStep === 0 ? (
+                        <React.Fragment>
+                            <EmailPwd
+                                name={name}
+                                setName={setName}
+                                email={email}
+                                setEmail={setEmail}
+                                password={password}
+                                setPassword={setPassword}
+                            ></EmailPwd>
+                            <Box sx={{ display: 'flex', flexDirection: 'row', pt: 1 }}>
+                                <Button color="inherit" disabled="disabled" sx={{ mr: 1 }}>
+                                    Back
+                                </Button>
+                                <Box sx={{ flex: '1 1 auto' }} />
+                                <Button onClick={handleNext}>Next</Button>
+                            </Box>
+                        </React.Fragment>
+                    ) : activeStep === 1 ? (
+                        <React.Fragment>
+                            <Title>{steps[1]}</Title>
+                            <Location locations={locations} setLocations={setlocations}></Location>
+                            <Box sx={{ display: 'flex', flexDirection: 'row', pt: 1 }}>
+                                <Button
+                                    color="inherit"
+                                    // disabled={activeStep === 1}
+                                    onClick={handleBack}
+                                    sx={{ mr: 1 }}
+                                >
+                                    Back
+                                </Button>
+                                <Box sx={{ flex: '1 1 auto' }} />
+                                <Button onClick={handleNext}>Next</Button>
+                            </Box>
+                        </React.Fragment>
+                    ) : (
+                        <React.Fragment>
+                            <Title>{steps[2]}</Title>
+                            <Type types={types} setTypes={setTypes}></Type>
+                            <Box sx={{ display: 'flex', flexDirection: 'row', pt: 1 }}>
+                                <Button color="inherit" onClick={handleBack} sx={{ mr: 1 }}>
+                                    Back
+                                </Button>
+                                <Box sx={{ flex: '1 1 auto' }} />
+                                <Button onClick={signup}>Submit</Button>
+                            </Box>
+                        </React.Fragment>
+                    )}
+                </Box>
+            </Fade>
+        </Modal>
     );
 };
 
