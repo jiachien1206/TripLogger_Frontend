@@ -45,9 +45,9 @@ const Signup = () => {
     const { isLogin, saveUserData } = React.useContext(AuthContext);
     const [name, setName] = React.useState('');
     const [email, setEmail] = React.useState('');
+    const [inputStatus, setInputStatus] = React.useState(false);
     const [password, setPassword] = React.useState('');
     const [activeStep, setActiveStep] = React.useState(0);
-    const [skipped, setSkipped] = React.useState(new Set());
     const [locations, setlocations] = React.useState([
         '亞洲',
         '歐洲',
@@ -134,6 +134,7 @@ const Signup = () => {
                     {activeStep === 0 ? (
                         <React.Fragment>
                             <EmailPwd
+                                setInputStatus={setInputStatus}
                                 name={name}
                                 setName={setName}
                                 email={email}
@@ -146,7 +147,13 @@ const Signup = () => {
                                     Back
                                 </Button>
                                 <Box sx={{ flex: '1 1 auto' }} />
-                                <Button onClick={handleNext}>Next</Button>
+                                {inputStatus ? (
+                                    <Button onClick={handleNext}>Next</Button>
+                                ) : (
+                                    <Button disabled="disabled" onClick={handleNext}>
+                                        Next
+                                    </Button>
+                                )}
                             </Box>
                         </React.Fragment>
                     ) : activeStep === 1 ? (

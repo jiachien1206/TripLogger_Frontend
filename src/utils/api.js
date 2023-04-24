@@ -101,6 +101,9 @@ const api = {
     signup(data) {
         return axios.post(`${this.HOST_NAME}/user/signup`, data);
     },
+    checkUser(data) {
+        return axios.post(`${this.HOST_NAME}/user/signup-email`, data);
+    },
     createUserNewsfeed(jwtToken) {
         return axios.post(
             `${this.HOST_NAME}/user/newsfeed`,
