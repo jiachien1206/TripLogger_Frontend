@@ -6,6 +6,7 @@ import React from 'react';
 import Header from './components/Header';
 import webSocket from 'socket.io-client';
 import updateNewsfeeds from './utils/updateUserNewsfeeds';
+import { useLocation } from 'react-router-dom';
 
 const theme = createTheme({
     palette: {
@@ -42,6 +43,7 @@ const GlobalStyle = createGlobalStyle`
   }
 `;
 function App() {
+    const location = useLocation();
     const [ws, setWs] = React.useState(null);
 
     React.useEffect(() => {
