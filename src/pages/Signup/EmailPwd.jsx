@@ -1,47 +1,75 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Title } from './Components.jsx';
+
+const Title = styled.div`
+    margin: 0px auto 20px;
+`;
+const Wrap = styled.div`
+    margin: auto 0px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+`;
 const Name = styled.input`
+    background-color: #f5f5f5;
+    border: none;
+    border-radius: 10px;
+    font-size: 18px;
+    padding: 15px 20px;
     line-height: 20px;
     width: 300px;
-    margin: 10px;
+    &:focus-visible {
+        outline: none !important;
+    }
 `;
 
 const Email = styled.input`
+    background-color: #f5f5f5;
+    border: none;
+    border-radius: 10px;
+    font-size: 18px;
+    padding: 15px 20px;
     line-height: 20px;
     width: 300px;
-    margin: 10px;
+    &:focus-visible {
+        outline: none !important;
+    }
 `;
 
 const Password = styled.input`
+    background-color: #f5f5f5;
+    border: none;
+    border-radius: 10px;
+    font-size: 18px;
+    padding: 15px 20px;
     line-height: 20px;
     width: 300px;
-    margin: 10px;
+    &:focus-visible {
+        outline: none !important;
+    }
 `;
-
-const NextPage = styled.button``;
 
 const EmailPwd = ({ paging, name, setName, email, setEmail, password, setPassword }) => {
     const nextPage = () => {
         paging(2);
     };
     return (
-        <>
-            <Title>註冊會員</Title>
-            <label>
-                Name:
-                <Name value={name} onChange={(e) => setName(e.target.value)} />
-            </label>
-            <label>
-                E-mail:
-                <Email value={email} onChange={(e) => setEmail(e.target.value)} />
-            </label>
-            <label>
-                Password:
-                <Password value={password} onChange={(e) => setPassword(e.target.value)} />
-            </label>
-            <NextPage onClick={nextPage}>Next</NextPage>
-        </>
+        <Wrap>
+            <Title>註冊帳號</Title>
+            <Name placeholder="使用者名稱" value={name} onChange={(e) => setName(e.target.value)} />
+            <Email
+                placeholder="電子信箱"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+            />
+
+            <Password
+                placeholder="密碼"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+            />
+        </Wrap>
     );
 };
 

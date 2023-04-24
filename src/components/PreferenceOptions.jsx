@@ -5,7 +5,7 @@ import MenuRoundedIcon from '@mui/icons-material/MenuRounded';
 
 const OptionsWrap = styled.div`
     margin: 0px auto;
-    display-flex;
+    display: flex;
     flex-direction: column;
     width: 350px;
     background-color: #ffffff;
