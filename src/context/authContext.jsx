@@ -1,5 +1,6 @@
 import React from 'react';
 import api from '../utils/api';
+import updateNewsfeeds from '../utils/updateUserNewsfeeds';
 
 export const AuthContext = React.createContext({
     isLogin: false,
@@ -90,12 +91,17 @@ export const AuthContextProvider = ({ children }) => {
             setIsLogin(false);
         }
     };
+
+    const guestGetNewsfeed = async () => {
+        await updateNewsfeeds(null);
+        setLoading(false);
+    };
     React.useEffect(() => {
         const jwtToken = window.localStorage.getItem('jwtToken');
         if (jwtToken) {
             getUserData(jwtToken);
         } else {
-            setLoading(false);
+            guestGetNewsfeed();
         }
     }, []);
 
