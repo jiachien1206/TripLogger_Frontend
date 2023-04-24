@@ -4,35 +4,71 @@ import { Navigate, useNavigate } from 'react-router-dom';
 import api from '../../utils/api.js';
 import updateNewsfeeds from '../../utils/updateUserNewsfeeds.js';
 import { AuthContext } from '../../context/authContext';
+import Backdrop from '@mui/material/Backdrop';
+import Box from '@mui/material/Box';
+import Modal from '@mui/material/Modal';
+import Fade from '@mui/material/Fade';
+import Button from '@mui/material/Button';
 
-const SigninWrap = styled.div`
-    display: flex;
-    flex-direction: column;
-    margin: 20px auto;
-    padding: 20px;
-    width: 500px;
-    height: 500px;
-    border: 1px solid #000000;
+const Title = styled.div`
+    font-size: 24px;
+    margin: 15px auto;
+    font-weight: bold;
 `;
 
+const style = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    bgcolor: '#ffffff',
+    boxShadow: 24,
+    borderRadius: '10px',
+    p: 4,
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '15px',
+    alignItems: 'center',
+    color: '#050505',
+    fontWeight: 500,
+    fontSize: '18px',
+    cursor: 'default',
+    padding: '40px 70px',
+    justifyContent: 'center',
+};
+
 const Email = styled.input`
+    background-color: #f5f5f5;
+    border: none;
+    border-radius: 10px;
+    font-size: 18px;
+    padding: 15px 20px;
     line-height: 20px;
     width: 300px;
-    margin: 10px;
+    &:focus-visible {
+        outline: none !important;
+    }
 `;
 
 const Password = styled.input`
+    background-color: #f5f5f5;
+    border: none;
+    border-radius: 10px;
+    font-size: 18px;
+    padding: 15px 20px;
     line-height: 20px;
     width: 300px;
-    margin: 10px;
+    &:focus-visible {
+        outline: none !important;
+    }
 `;
 
 const Submit = styled.button``;
 
 const Signin = () => {
     const { isLogin, saveUserData } = React.useContext(AuthContext);
-    const [email, setEmail] = React.useState('chatgpt1@gmail.com');
-    const [password, setPassword] = React.useState('chatchat');
+    const [email, setEmail] = React.useState('');
+    const [password, setPassword] = React.useState('');
     const navigate = useNavigate();
     async function signin() {
         try {
@@ -59,7 +95,45 @@ const Signin = () => {
 
     return (
         <>
-            <SigninWrap>
+            <Modal
+                aria-labelledby="spring-modal-title"
+                aria-describedby="spring-modal-description"
+                open={open}
+                // onClose={handleClose}
+                closeAfterTransition
+                slots={{ backdrop: Backdrop }}
+                slotProps={{
+                    backdrop: {
+                        TransitionComponent: Fade,
+                    },
+                }}
+            >
+                <Fade in={open}>
+                    <Box sx={style}>
+                        <Title>Welcome</Title>
+                        <Email
+                            placeholder="電子信箱"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                        />
+
+                        <Password
+                            placeholder="密碼"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                        />
+                        <Button
+                            variant="contained"
+                            sx={{ width: '100px', margin: '20px auto' }}
+                            disableElevation
+                            onClick={signin}
+                        >
+                            登入
+                        </Button>
+                    </Box>
+                </Fade>
+            </Modal>
+            {/* <SigninWrap>
                 <label>
                     E-mail:
                     <Email value={email} onChange={(e) => setEmail(e.target.value)} />
@@ -69,7 +143,7 @@ const Signin = () => {
                     <Password value={password} onChange={(e) => setPassword(e.target.value)} />
                 </label>
                 <Submit onClick={signin}>送出</Submit>
-            </SigninWrap>
+            </SigninWrap> */}
         </>
     );
 };
