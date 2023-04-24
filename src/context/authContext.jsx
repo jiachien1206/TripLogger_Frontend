@@ -115,6 +115,7 @@ export const AuthContextProvider = ({ children }) => {
                 signin,
                 saveUserData,
                 logout,
+                setUser,
             }}
         >
             {loading ? null : children}

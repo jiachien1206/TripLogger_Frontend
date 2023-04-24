@@ -69,7 +69,7 @@ const UploadImgButton = styled.div``;
 const UploadImgInput = styled.input``;
 
 const Setting = () => {
-    const { jwtToken } = React.useContext(AuthContext);
+    const { jwtToken, setUser, user } = React.useContext(AuthContext);
     const [profileImage, setProfileImage] = React.useState(profile);
     const [name, setName] = React.useState('');
     const [email, setEmail] = React.useState('');
@@ -112,8 +112,8 @@ const Setting = () => {
 
     const submitSetting = async () => {
         const jwtToken = window.localStorage.getItem('jwtToken');
-        const user = window.localStorage.getItem('user');
-        const userId = JSON.parse(user).id;
+        const _user = window.localStorage.getItem('user');
+        const userId = JSON.parse(_user).id;
         const data = {
             name,
             email,
@@ -124,6 +124,9 @@ const Setting = () => {
         const res = await api.editUser(userId, data, jwtToken);
         if (res.status === 200) {
             setSuccess(true);
+            const newUser = { ...user };
+            newUser.image = profileImage;
+            setUser(newUser);
         } else {
             setSuccess(false);
         }
