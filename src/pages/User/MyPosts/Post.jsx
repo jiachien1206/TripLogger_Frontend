@@ -47,16 +47,17 @@ const EditLink = styled(Link)`
 `;
 
 const Delete = styled.div`
-width: 40px;
+    width: 40px;
     height: 40px;
     display: flex;
     align-items: center;
     justify-content: center;
     border-radius: 20px;
-    cursor:pointer;
+    cursor: pointer;
     transition: background-color 0.2s;
     &:hover {
-        background-color: #EEC0B0;
+        background-color: #eec0b0;
+    }
 `;
 
 const Post = ({ post, jwtToken }) => {

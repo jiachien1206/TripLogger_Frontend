@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import api from '../../utils/api.js';
 import Comments from './Comment';
+import { AuthContext } from '../../context/authContext';
 const PostWrap = styled.div`
     // background-color: #fff;
     padding: 10px;
@@ -52,6 +53,7 @@ const LikeButton = styled.button`
 `;
 
 const Post = () => {
+    const { isLogin } = React.useContext(AuthContext);
     const [post, setPost] = React.useState();
     const [newComment, setNewComment] = React.useState(false);
     const postId = useParams().id;
@@ -61,8 +63,12 @@ const Post = () => {
             const res = await api.getPost(postId);
             const post = res.data.data;
             setPost(post);
-            const user = JSON.parse(window.localStorage.getItem('user'));
-            await api.addRead(postId, user.id, post.location.continent, post.type);
+            if (isLogin) {
+                const user = JSON.parse(window.localStorage.getItem('user'));
+                await api.addRead(postId, user.id, post.location.continent, post.type);
+            } else {
+                await api.addRead(postId, null, post.location.continent, post.type);
+            }
         }
         getPost(postId);
     }, [postId]);
