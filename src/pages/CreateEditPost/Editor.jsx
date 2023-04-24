@@ -7,10 +7,18 @@ import api from '../../utils/api';
 import { AuthContext } from '../../context/authContext';
 
 const Quill = styled(ReactQuill)`
-    margin: 20px;
+    /* margin: 20px; */
     background-color: #ffffff;
+
     .ql-container {
         min-height: 400px;
+        border-bottom-left-radius: 5px;
+        border-bottom-right-radius: 5px;
+        font-size: 15px;
+    }
+    .ql-toolbar {
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
     }
 `;
 

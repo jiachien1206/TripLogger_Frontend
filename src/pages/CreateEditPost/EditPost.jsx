@@ -7,39 +7,25 @@ import TextEditor from './Editor';
 import api from '../../utils/api';
 import updateNewsfeeds from '../../utils/updateUserNewsfeeds';
 import axios from 'axios';
-const MainImgWrap = styled.div`
+import {
+    Wrap,
+    MainImgWrap,
+    MainImg,
+    UploadImg,
+    MainImgButton,
+    MainImgInput,
+    Title,
+} from './Components';
+import Select from 'react-select';
+import Button from '@mui/material/Button';
+
+const SelectWrap = styled.div`
     display: flex;
-    margin: 20px 0px;
+
+    gap: 10px;
 `;
-const MainImg = styled.img`
-    max-height: 200px;
-`;
-const UploadImg = styled.div``;
-
-const MainImgButton = styled.button`
-    padding: 10px;
-    margin: 10px;
-`;
-
-const MainImgInput = styled.input`
-    display: 'none';
-`;
-
-const Title = styled.input`
-    height: 40px;
-    width: 100%;
-`;
-
-const Continent = styled.input``;
-
-const Country = styled.input``;
-
-const Type = styled.input``;
-
-const TravelDate = styled.input``;
-
-const Submit = styled.button`
-    margin: 20px 0px;
+const Selects = styled(Select)`
+    width: 250px;
 `;
 
 function EditPost() {
@@ -51,7 +37,8 @@ function EditPost() {
     const [continent, setContinent] = React.useState('');
     const [country, setCountry] = React.useState('');
     const [type, setType] = React.useState('');
-    const [travelDate, setTravelDate] = React.useState('');
+    const [startDate, setStartDate] = React.useState('');
+    const [endDate, setEndDate] = React.useState('');
     const postId = useParams().id;
     const inputRef = React.useRef(null);
     const navigate = useNavigate();
@@ -76,7 +63,8 @@ function EditPost() {
             setContinent(location.continent);
             setCountry(location.country);
             setType(type);
-            setTravelDate(new Date(dates.travel_date).toISOString().split('T')[0]);
+            setStartDate(new Date(dates.start_date).toISOString().split('T')[0]);
+            setEndDate(new Date(dates.end_date).toISOString().split('T')[0]);
             setContent(content);
         };
         getEditPost(postId);
@@ -121,7 +109,7 @@ function EditPost() {
                     main_image: mainImg,
                     location: { continent, country },
                     type,
-                    dates: { travel_date: travelDate },
+                    // dates: { travel_date: travelDate },
                 },
                 jwtToken
             );
@@ -133,16 +121,16 @@ function EditPost() {
         }
     }
     const contentEndRef = React.useRef(null);
-    const scrollToBottom = () => {
-        contentEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-    };
+    // const scrollToBottom = () => {
+    //     contentEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    // };
 
-    React.useEffect(() => {
-        scrollToBottom();
-    }, [content]);
+    // React.useEffect(() => {
+    //     scrollToBottom();
+    // }, [content]);
     if (!isLogin) return <Navigate to="/" replace />;
     return (
-        <>
+        <Wrap>
             <MainImgWrap>
                 <MainImg src={mainImg} />
                 <UploadImg>
@@ -160,28 +148,25 @@ function EditPost() {
                 </UploadImg>
             </MainImgWrap>
             {<Title value={title} onChange={(e) => setTitle(e.target.value)} />}
-            <label>
-                洲：
-                <Continent value={continent} onChange={(e) => setContinent(e.target.value)} />
-            </label>
-            <label>
-                國家：
-                <Country value={country} onChange={(e) => setCountry(e.target.value)} />
-            </label>
-            <label>
-                類別：
-                <Type value={type} onChange={(e) => setType(e.target.value)} />
-            </label>
-            <label>
-                旅遊時間：
-                <TravelDate type="date" value={travelDate} disabled />
-            </label>
+            <SelectWrap>
+                <Selects isDisabled={true} placeholder={country} />
+                <Selects isDisabled={true} placeholder={type} />
+            </SelectWrap>
+
             {<TextEditor originContent={content} editContent={(value) => setContent(value)} />}
-            <Submit type="button" onClick={submitPost}>
+            <label>
+                旅遊時間：{startDate} ~ {endDate}
+            </label>
+            <Button
+                variant="contained"
+                sx={{ width: '100px', margin: '20px auto' }}
+                disableElevation
+                onClick={submitPost}
+            >
                 編輯完成
-            </Submit>
+            </Button>
             <div ref={contentEndRef}></div>
-        </>
+        </Wrap>
     );
 }
 

@@ -6,55 +6,70 @@ import TextEditor from './Editor';
 import api from '../../utils/api';
 import updateNewsfeeds from '../../utils/updateUserNewsfeeds';
 import axios from 'axios';
+import 'react-date-range/dist/styles.css'; // main style file
+import 'react-date-range/dist/theme/default.css'; // theme css file
+import { DateRange } from 'react-date-range';
+import {
+    Wrap,
+    MainImgWrap,
+    MainImg,
+    UploadImg,
+    MainImgButton,
+    MainImgInput,
+    Title,
+} from './Components';
+import Select from 'react-select';
+import Button from '@mui/material/Button';
 
-const MainImgWrap = styled.div`
+const SelectWrap = styled.div`
     display: flex;
-    margin: 20px 0px;
-`;
-const MainImg = styled.img`
-    max-height: 200px;
-`;
-const UploadImg = styled.div``;
 
-const MainImgButton = styled.button`
-    padding: 10px;
-    margin: 10px;
+    gap: 10px;
+`;
+const Selects = styled(Select)`
+    width: 250px;
 `;
 
-const MainImgInput = styled.input`
-    display: 'none';
-`;
-
-const Title = styled.input`
-    height: 40px;
-    width: 100%;
-`;
-
-const Continent = styled.select``;
-
-const ContinentOption = styled.option``;
-
-const Country = styled.input``;
-
-const Type = styled.input``;
-
-const TravelDate = styled.input``;
-
-const Submit = styled.button`
-    margin: 20px 0px;
+const DateRangeWrap = styled(DateRange)`
+    width: 320px;
+    margin: 0px auto;
 `;
 
 function CreatePost() {
     const { isLogin, jwtToken } = React.useContext(AuthContext);
     const [file, setFile] = React.useState();
     const [mainImg, setMainImg] = React.useState(null);
-    const [title, setTitle] = React.useState('哈修塔特好好玩');
+    const [title, setTitle] = React.useState('');
     const [content, setContent] = React.useState('');
     const [continent, setContinent] = React.useState('歐洲');
     const [country, setCountry] = React.useState('奧地利');
     const [type, setType] = React.useState('景點');
-    const [travelDate, setTravelDate] = React.useState('2023-03-02');
+    const [travelDate, setTravelDate] = React.useState([
+        {
+            startDate: new Date(),
+            endDate: null,
+            key: 'selection',
+        },
+    ]);
     const navigate = useNavigate();
+    const countryOptions = [
+        { value: '台灣', label: '台灣' },
+        { value: '阿富汗', label: '阿富汗' },
+        { value: '日本', label: '日本' },
+    ];
+
+    const typeOptions = [
+        { value: '景點', label: '景點' },
+        { value: '住宿', label: '住宿' },
+        { value: '交通', label: '交通' },
+        { value: '省錢妙招', label: '省錢妙招' },
+        { value: '恐怖故事', label: '恐怖故事' },
+        { value: '證件', label: '證件' },
+        { value: '其他', label: '其他' },
+    ];
+
+    const [selectedOption, setSelectedOption] = React.useState('阿富汗');
+
     const inputRef = React.useRef(null);
     const handleUploadClick = () => {
         inputRef.current.click();
@@ -105,7 +120,7 @@ function CreatePost() {
                     main_image: mainImg,
                     location: { continent, country },
                     type,
-                    dates: { travel_date: travelDate },
+                    dates: { start_date: travelDate.startDate, end_date: travelDate.endDate },
                 },
                 jwtToken
             );
@@ -118,17 +133,25 @@ function CreatePost() {
         }
     }
     const contentEndRef = React.useRef(null);
-    const scrollToBottom = () => {
-        contentEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    // const scrollToBottom = () => {
+    //     contentEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    // };
+
+    const handleSelect = () => {};
+
+    const selectionRange = {
+        startDate: new Date(),
+        endDate: new Date(),
+        key: 'selection',
     };
 
-    React.useEffect(() => {
-        scrollToBottom();
-    }, [content]);
+    // React.useEffect(() => {
+    //     scrollToBottom();
+    // }, [content]);
 
     if (isLogin)
         return (
-            <>
+            <Wrap>
                 <MainImgWrap>
                     <MainImg src={mainImg} />
                     <UploadImg>
@@ -145,41 +168,52 @@ function CreatePost() {
                         />
                     </UploadImg>
                 </MainImgWrap>
-                <Title value={title} onChange={(e) => setTitle(e.target.value)} />
-                <label>
-                    洲：
-                    <Continent value={continent} onChange={(e) => setContinent(e.target.value)}>
-                        <ContinentOption>{'亞洲'}</ContinentOption>;
-                        <ContinentOption>{'歐洲'}</ContinentOption>
-                        <ContinentOption>{'北美洲'}</ContinentOption>
-                        <ContinentOption>{'大洋洲'}</ContinentOption>
-                        <ContinentOption>{'南美洲'}</ContinentOption>
-                        <ContinentOption>{'非洲'}</ContinentOption>
-                        <ContinentOption>{'南極洲'}</ContinentOption>
-                    </Continent>
-                </label>
-                <label>
-                    國家：
-                    <Country value={country} onChange={(e) => setCountry(e.target.value)} />
-                </label>
-                <label>
-                    類別：
-                    <Type value={type} onChange={(e) => setType(e.target.value)} />
-                </label>
-                <label>
+                <Title
+                    placeholder="輸入文章標題..."
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
+                />
+
+                <SelectWrap>
+                    <Selects
+                        placeholder={'國家'}
+                        onChange={(e) => setCountry(e.value)}
+                        options={countryOptions}
+                    />
+                    <Selects
+                        placeholder={'類別'}
+                        onChange={(e) => setType(e.value)}
+                        options={typeOptions}
+                    />
+                </SelectWrap>
+
+                {/* <label>
                     旅遊時間：
                     <TravelDate
                         type="date"
                         value={travelDate}
                         onChange={(e) => setTravelDate(e.target.value)}
                     />
-                </label>
+                </label> */}
                 <TextEditor editContent={(value) => setContent(value)} />
-                <Submit type="button" onClick={submitPost}>
+
+                <DateRangeWrap
+                    editableDateInputs={true}
+                    onChange={(item) => setTravelDate([item.selection])}
+                    moveRangeOnFirstSelection={false}
+                    ranges={travelDate}
+                    rangeColors={['#37BEB0', '#3ecf8e', '#fed14c']}
+                />
+                <Button
+                    variant="contained"
+                    sx={{ width: '100px', margin: '20px auto' }}
+                    disableElevation
+                    onClick={submitPost}
+                >
                     發文
-                </Submit>
+                </Button>
                 <div ref={contentEndRef}></div>
-            </>
+            </Wrap>
         );
     else return <Navigate to="/" replace />;
 }

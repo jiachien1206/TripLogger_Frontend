@@ -65,9 +65,10 @@ function App() {
             <AuthContextProvider>
                 <ThemeProvider theme={theme}>
                     <GlobalStyle />
-                    {location.pathname !== '/signup' && location.pathname !== '/signin' && (
-                        <Header />
-                    )}
+                    {location.pathname !== '/signup' &&
+                        location.pathname !== '/signin' &&
+                        location.pathname !== '/create' &&
+                        !/^\/edit/.test(location.pathname) && <Header />}
                     <Outlet />
                 </ThemeProvider>{' '}
             </AuthContextProvider>
