@@ -53,9 +53,9 @@ function CreatePost() {
     ]);
     const navigate = useNavigate();
     const countryOptions = [
-        { value: '台灣', label: '台灣' },
-        { value: '阿富汗', label: '阿富汗' },
-        { value: '日本', label: '日本' },
+        { value: '奧地利', label: '奧地利' },
+        { value: '法國', label: '法國' },
+        { value: '義大利', label: '義大利' },
     ];
 
     const typeOptions = [
