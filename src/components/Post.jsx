@@ -400,7 +400,7 @@ const Post = ({ post, likedPosts, savedPosts }) => {
                         </Button>
                         <Button onClick={handleOpen}>
                             <ChatBubbleOutlineRoundedIcon sx={{ fontSize: 20 }} />
-                            收藏
+                            留言
                         </Button>
                     </Buttons>
                     <Modal
