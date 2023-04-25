@@ -61,16 +61,20 @@ const Password = styled.input`
     }
 `;
 
-const Submit = styled.button``;
-
 const Signin = () => {
     const { isLogin, saveUserData } = React.useContext(AuthContext);
     const [email, setEmail] = React.useState('');
     const [password, setPassword] = React.useState('');
     const navigate = useNavigate();
+
+    function isValidEmail(email) {
+        return /\S+@\S+\.\S+/.test(email);
+    }
     async function signin() {
         try {
-            console.log(isLogin);
+            if (!isValidEmail(email) || password.length < 8) {
+                return alert('帳號或密碼輸入錯誤');
+            }
             const res = await api.signin({
                 email,
                 password,
@@ -85,7 +89,7 @@ const Signin = () => {
             navigate('/');
         } catch (e) {
             console.log(e);
-            alert('登入失敗');
+            alert('帳號或密碼輸入錯誤');
         }
     }
 
@@ -112,9 +116,10 @@ const Signin = () => {
                         <Email
                             placeholder="電子信箱"
                             value={email}
-                            onChange={(e) => setEmail(e.target.value)}
+                            onChange={(e) => {
+                                setEmail(e.target.value);
+                            }}
                         />
-
                         <Password
                             placeholder="密碼"
                             value={password}
@@ -131,17 +136,6 @@ const Signin = () => {
                     </Box>
                 </Fade>
             </Modal>
-            {/* <SigninWrap>
-                <label>
-                    E-mail:
-                    <Email value={email} onChange={(e) => setEmail(e.target.value)} />
-                </label>
-                <label>
-                    Password:
-                    <Password value={password} onChange={(e) => setPassword(e.target.value)} />
-                </label>
-                <Submit onClick={signin}>送出</Submit>
-            </SigninWrap> */}
         </>
     );
 };
