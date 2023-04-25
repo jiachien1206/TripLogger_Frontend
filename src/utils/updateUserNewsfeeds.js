@@ -1,20 +1,4 @@
 import api from './api';
-import React from 'react';
-// const matchStatus = (posts, saved_posts, liked_posts) => {
-//     return posts.map((post) => {
-//         if (saved_posts.includes(post._id)) {
-//             post.save_status = true;
-//         } else {
-//             post.save_status = false;
-//         }
-//         if (liked_posts.includes(post._id)) {
-//             post.like_status = true;
-//         } else {
-//             post.like_status = false;
-//         }
-//         return post;
-//     });
-// };
 
 const updateNewsfeeds = async (jwtToken) => {
     if (jwtToken) {
@@ -32,12 +16,6 @@ const updateNewsfeeds = async (jwtToken) => {
     newPosts = newPosts.data.data;
     window.localStorage.setItem('topPosts', JSON.stringify(topPosts));
     window.localStorage.setItem('newPosts', JSON.stringify(newPosts));
-
-    // const relevantPostsResult = matchStatus(relevantPosts, saved_posts, liked_posts);
-    // const topPostsResult = matchStatus(topPosts, saved_posts, liked_posts);
-    // const newPostsResult = matchStatus(newPosts, saved_posts, liked_posts);
-
-    // await api.postsUserStatusUpdated(jwtToken);
 };
 
 export default updateNewsfeeds;
