@@ -112,7 +112,7 @@ function CreatePost() {
 
     async function submitPost() {
         try {
-            const jwtToken = window.localStorage.getItem('jwtToken');
+            // const jwtToken = window.localStorage.getItem('jwtToken');
             await api.createPost(
                 {
                     title,
