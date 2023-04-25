@@ -112,21 +112,28 @@ function CreatePost() {
 
     async function submitPost() {
         try {
-            // const jwtToken = window.localStorage.getItem('jwtToken');
-            await api.createPost(
-                {
-                    title,
-                    content,
-                    main_image: mainImg,
-                    location: { continent, country },
-                    type,
-                    dates: { start_date: travelDate.startDate, end_date: travelDate.endDate },
-                },
-                jwtToken
-            );
-            alert('送出文章');
-            await updateNewsfeeds(jwtToken);
-            navigate('/');
+            if (!mainImg) {
+                alert('請上傳首圖');
+            } else if (title === '') {
+                alert('請填寫標題');
+            } else if (content === '') {
+                alert('請寫文章內容');
+            } else {
+                await api.createPost(
+                    {
+                        title,
+                        content,
+                        main_image: mainImg,
+                        location: { continent, country },
+                        type,
+                        dates: { start_date: travelDate.startDate, end_date: travelDate.endDate },
+                    },
+                    jwtToken
+                );
+                alert('送出文章');
+                await updateNewsfeeds(jwtToken);
+                navigate('/');
+            }
         } catch (e) {
             console.log(e);
             alert('文章發佈失敗');
@@ -176,12 +183,13 @@ function CreatePost() {
 
                 <SelectWrap>
                     <Selects
-                        placeholder={'國家'}
+                        defaultValue={{ value: '奧地利', label: '奧地利' }}
+                        // placeholder={'國家'}
                         onChange={(e) => setCountry(e.value)}
                         options={countryOptions}
                     />
                     <Selects
-                        placeholder={'類別'}
+                        defaultValue={{ value: '景點', label: '景點' }}
                         onChange={(e) => setType(e.value)}
                         options={typeOptions}
                     />

@@ -25,12 +25,11 @@ export const MainImgButton = styled.button`
     background-color: transparent;
     padding: 10px 15px;
     border-radius: 6px;
-    border: none;
     font-size: 16px;
-    font-weight: 500;
-    background-color: #d4d4d4;
+    font-weight: bold;
+    border: 1px solid #00684a;
     cursor: pointer;
-    color: #6f6f6f;
+    color: #00684a;
 `;
 
 export const MainImgInput = styled.input`
@@ -45,5 +44,8 @@ export const Title = styled.input`
     color: #515151;
     &:focus-visible {
         outline: none !important;
+    }
+    &::placeholder {
+        opacity: 0.3;
     }
 `;

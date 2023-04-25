@@ -29,7 +29,7 @@ const Selects = styled(Select)`
 `;
 
 function EditPost() {
-    const { isLogin } = React.useContext(AuthContext);
+    const { isLogin, jwtToken } = React.useContext(AuthContext);
     const [file, setFile] = React.useState('');
     const [mainImg, setMainImg] = React.useState('');
     const [title, setTitle] = React.useState('');
@@ -99,22 +99,26 @@ function EditPost() {
 
     async function submitPost() {
         try {
-            alert('文章更新');
-            const jwtToken = window.localStorage.getItem('jwtToken');
-            await api.editPost(
-                postId,
-                {
-                    title,
-                    content,
-                    main_image: mainImg,
-                    location: { continent, country },
-                    type,
-                    // dates: { travel_date: travelDate },
-                },
-                jwtToken
-            );
-            await updateNewsfeeds(jwtToken);
-            navigate('/');
+            if (title === '') {
+                alert('請填寫標題');
+            } else if (content === '') {
+                alert('請寫文章內容');
+            } else {
+                alert('文章更新');
+                await api.editPost(
+                    postId,
+                    {
+                        title,
+                        content,
+                        main_image: mainImg,
+                        location: { continent, country },
+                        type,
+                    },
+                    jwtToken
+                );
+                await updateNewsfeeds(jwtToken);
+                navigate('/');
+            }
         } catch (e) {
             console.log(e);
             alert('文章更新失敗');
