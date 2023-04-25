@@ -44,7 +44,7 @@ const Signup = () => {
     const { isLogin, saveUserData } = React.useContext(AuthContext);
     const [name, setName] = React.useState('');
     const [email, setEmail] = React.useState('');
-    const [inputStatus, setInputStatus] = React.useState(false);
+    const [inputStatus, setInputStatus] = React.useState(true);
     const [password, setPassword] = React.useState('');
     const [activeStep, setActiveStep] = React.useState(0);
     const [locations, setlocations] = React.useState([

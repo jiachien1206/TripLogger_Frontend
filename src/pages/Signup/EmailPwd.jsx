@@ -18,7 +18,6 @@ const InputWrap = styled.div`
     display: flex;
     flex-direction: column;
     gap: 10px;
-    margin-left: 40px;
 `;
 const Name = styled.input`
     background-color: #f5f5f5;
@@ -32,7 +31,8 @@ const Name = styled.input`
     }
 `;
 
-const EmailWrap = styled.div`
+const RowlWrap = styled.div`
+    position: relative;
     display: flex;
     align-items: center;
     gap: 10px;
@@ -43,17 +43,18 @@ const Email = styled.input`
     border: none;
     border-radius: 10px;
     font-size: 16px;
-    padding: 15px 20px;
+    padding: 15px 55px 15px 20px;
     width: 300px;
     &:focus-visible {
         outline: none !important;
     }
 `;
 
-const Placeholder = styled.div`
-    width: 20px;
-    height: 20px;
+const CheckCircle = styled(CheckCircleRoundedIcon)`
+    position: absolute;
+    right: 20px;
 `;
+
 const Password = styled.input`
     background-color: #f5f5f5;
     border: none;
@@ -67,65 +68,93 @@ const Password = styled.input`
 `;
 
 const EmailPwd = ({ setInputStatus, name, setName, email, setEmail, password, setPassword }) => {
+    const [namePass, setNamePass] = React.useState(false);
     const [emailPass, setEmailPass] = React.useState(false);
+    const [pwdPass, setPwdPass] = React.useState(false);
     function isValidEmail(email) {
         return /\S+@\S+\.\S+/.test(email);
     }
-    const verifyEmail = async (e) => {
-        setEmail(e.target.value);
-        if (isValidEmail(e.target.value)) {
+
+    const verifyName = (name) => {
+        if (name !== '') {
+            setNamePass(true);
+        } else {
+            setNamePass(false);
+        }
+    };
+    const verifyEmail = async (email) => {
+        if (isValidEmail(email)) {
             setTimeout(async () => {
-                const res = await api.checkUser({ email: e.target.value });
+                const res = await api.checkUser({ email });
                 if (!res.error) {
                     setEmailPass(true);
-                    if (password.length > 7) {
-                        setInputStatus(true);
-                    }
                 } else {
                     setEmailPass(false);
-                    setInputStatus(false);
                 }
             }, 700);
         } else {
             setEmailPass(false);
-            setInputStatus(false);
         }
     };
 
-    const verifyInputs = async (e) => {
-        setPassword(e.target.value);
+    const verifyPassword = (password) => {
+        if (password.length > 7) {
+            setPwdPass(true);
+        } else {
+            setPwdPass(false);
+        }
+    };
+    React.useEffect(() => {
+        verifyName(name);
+        verifyEmail(email);
+        verifyPassword(password);
+    }, []);
 
-        if (emailPass === true && e.target.value.length > 7) {
+    React.useEffect(() => {
+        if (namePass && emailPass && pwdPass) {
             setInputStatus(true);
         } else {
             setInputStatus(false);
         }
-    };
+    }, [namePass, emailPass, pwdPass]);
 
     return (
         <Wrap>
             <Title>註冊帳號</Title>
             <InputWrap>
-                <Name
-                    placeholder="使用者名稱"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                />
-                <EmailWrap>
+                <RowlWrap>
+                    <Name
+                        placeholder="使用者名稱"
+                        value={name}
+                        onChange={(e) => {
+                            setName(e.target.value);
+                            verifyName(name);
+                        }}
+                    />
+                    {namePass && <CheckCircle color="primary" />}
+                </RowlWrap>
+                <RowlWrap>
                     <Email
                         placeholder="電子信箱"
                         value={email}
                         onChange={(e) => {
-                            verifyEmail(e);
+                            setEmail(e.target.value);
+                            verifyEmail(email);
                         }}
                     />
-                    {emailPass ? <CheckCircleRoundedIcon color="primary" /> : <Placeholder />}
-                </EmailWrap>
-                <Password
-                    placeholder="密碼 (最少7個字元)"
-                    value={password}
-                    onChange={(e) => verifyInputs(e)}
-                />
+                    {emailPass && <CheckCircle color="primary" />}
+                </RowlWrap>
+                <RowlWrap>
+                    <Password
+                        placeholder="密碼 (最少7個字元)"
+                        value={password}
+                        onChange={(e) => {
+                            setPassword(e.target.value);
+                            verifyPassword(password);
+                        }}
+                    />
+                    {pwdPass && <CheckCircle color="primary" />}
+                </RowlWrap>
             </InputWrap>
         </Wrap>
     );
