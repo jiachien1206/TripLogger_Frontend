@@ -1,16 +1,15 @@
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 import styled from 'styled-components';
 import { AuthContext } from '../../context/authContext';
 import { useParams, Navigate, Link } from 'react-router-dom';
 import Setting from './Setting';
-import Map from './Map/Map';
 import Posts from './MyPosts/Posts';
 import Save from './MySave/SavedPosts';
 import setting from '../../images/user_setting.png';
 import map from '../../images/user_map.png';
 import posts from '../../images/user_posts.png';
 import save from '../../images/user_save.png';
-
+const Map = lazy(() => import('./Map/Map'));
 const Wrap = styled.div`
     margin: 100px auto 0px;
     max-width: 1200px;
@@ -126,7 +125,9 @@ const User = () => {
                     {section === 'setting' ? (
                         <Setting />
                     ) : section === 'map' ? (
-                        <Map />
+                        <Suspense fallback={<div>Loading...</div>}>
+                            <Map />
+                        </Suspense>
                     ) : section === 'posts' ? (
                         <Posts></Posts>
                     ) : section === 'save' ? (
