@@ -1,5 +1,4 @@
 import React from 'react';
-import styled from 'styled-components';
 import api from '../../utils/api.js';
 import updateNewsfeeds from '../../utils/updateUserNewsfeeds.js';
 import EmailPwd from './EmailPwd.jsx';
@@ -68,9 +67,6 @@ const Signup = () => {
     ]);
     const navigate = useNavigate();
 
-    const isStepOptional = (step) => {
-        return step === 1;
-    };
     const handleNext = () => {
         setActiveStep((prevActiveStep) => prevActiveStep + 1);
     };
@@ -108,7 +104,6 @@ const Signup = () => {
             aria-labelledby="spring-modal-title"
             aria-describedby="spring-modal-description"
             open={open}
-            // onClose={handleClose}
             closeAfterTransition
             slots={{ backdrop: Backdrop }}
             slotProps={{
@@ -161,12 +156,7 @@ const Signup = () => {
                             <Title>{steps[1]}</Title>
                             <Location locations={locations} setLocations={setlocations}></Location>
                             <Box sx={{ display: 'flex', flexDirection: 'row', pt: 1 }}>
-                                <Button
-                                    color="inherit"
-                                    // disabled={activeStep === 1}
-                                    onClick={handleBack}
-                                    sx={{ mr: 1 }}
-                                >
+                                <Button color="inherit" onClick={handleBack} sx={{ mr: 1 }}>
                                     Back
                                 </Button>
                                 <Box sx={{ flex: '1 1 auto' }} />
