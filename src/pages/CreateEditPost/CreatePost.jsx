@@ -1,5 +1,4 @@
 import React from 'react';
-import styled from 'styled-components';
 import { AuthContext } from '../../context/authContext';
 import { Navigate, useNavigate } from 'react-router-dom';
 import TextEditor from './Editor';
@@ -17,10 +16,10 @@ import {
     SelectWrap,
     Selects,
     DateInput,
+    CircularStatic,
+    BottomWrap,
 } from './Components';
-import Select from 'react-select';
 import Button from '@mui/material/Button';
-import { convertLength } from '@mui/material/styles/cssUtils';
 import { countryOptions } from './countryData';
 
 function CreatePost() {
@@ -29,11 +28,11 @@ function CreatePost() {
     const [mainImg, setMainImg] = React.useState(null);
     const [title, setTitle] = React.useState('');
     const [content, setContent] = React.useState('');
-    const [continent, setContinent] = React.useState('歐洲');
-    const [country, setCountry] = React.useState([]);
+    const [country, setCountry] = React.useState(['臺灣', '亞洲']);
     const [type, setType] = React.useState('景點');
     const [startDate, setStartDate] = React.useState(null);
     const [endDate, setEndDate] = React.useState(null);
+    const [progress, setProgress] = React.useState(0);
     const navigate = useNavigate();
 
     const typeOptions = [
@@ -59,6 +58,12 @@ function CreatePost() {
         setFile(e.target.files[0]);
     };
 
+    const onUploadProgress = (progressEvent) => {
+        const { loaded, total } = progressEvent;
+        let percent = Math.floor((loaded * 100) / total);
+        setProgress(percent);
+    };
+
     React.useEffect(() => {
         const uploadImage = async () => {
             try {
@@ -75,6 +80,7 @@ function CreatePost() {
                         headers: {
                             'Content-Type': 'multipart/form-data',
                         },
+                        onUploadProgress,
                     });
                     const mainImage = url.split('?')[0];
                     setMainImg(mainImage);
@@ -122,10 +128,6 @@ function CreatePost() {
             alert('文章發佈失敗');
         }
     }
-    const contentEndRef = React.useRef(null);
-    // const scrollToBottom = () => {
-    //     contentEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-    // };
 
     const handleSelect = () => {};
 
@@ -142,8 +144,10 @@ function CreatePost() {
     if (isLogin)
         return (
             <Wrap>
+                {console.log(country[1], country[0])}
                 <MainImgWrap>
                     {mainImg && <MainImg src={mainImg} />}
+                    {progress !== 0 && progress < 100 && <CircularStatic progress={progress} />}
                     <UploadImg>
                         <MainImgButton onClick={handleUploadClick}>
                             {file ? `變更首圖` : '上傳首圖'}
@@ -197,17 +201,17 @@ function CreatePost() {
                         }}
                     ></DateInput>
                 </SelectWrap>
-
-                <TextEditor editContent={(value) => setContent(value)} />
-                <Button
-                    variant="contained"
-                    sx={{ width: '100px', margin: '20px auto' }}
-                    disableElevation
-                    onClick={submitPost}
-                >
-                    發文
-                </Button>
-                <div ref={contentEndRef}></div>
+                <BottomWrap>
+                    <TextEditor editContent={(value) => setContent(value)} />
+                    <Button
+                        variant="contained"
+                        sx={{ width: '100px', margin: '0px auto' }}
+                        disableElevation
+                        onClick={submitPost}
+                    >
+                        發文
+                    </Button>
+                </BottomWrap>
             </Wrap>
         );
     else return <Navigate to="/" replace />;

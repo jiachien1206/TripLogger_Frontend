@@ -5,18 +5,19 @@ import styled from 'styled-components';
 import axios from 'axios';
 import api from '../../utils/api';
 import { AuthContext } from '../../context/authContext';
+import { LinearWithValueLabel, PlaceHolder } from './Components';
 
 const Quill = styled(ReactQuill)`
-    /* margin: 20px; */
     background-color: #ffffff;
 
     .ql-container {
-        min-height: 200px;
+        height: 500px;
         border-bottom-left-radius: 5px;
         border-bottom-right-radius: 5px;
         font-size: 16px;
         padding: 10px;
         line-height: 2;
+        overflow-y: auto;
     }
     .ql-toolbar {
         border-top-left-radius: 5px;
@@ -46,8 +47,15 @@ const Quill = styled(ReactQuill)`
 const TextEditor = ({ originContent, editContent }) => {
     const [content, setContent] = React.useState('<p></p>');
     const [initialContent, setInitialContent] = React.useState();
+    const [progress, setProgress] = React.useState(0);
     const quillRef = React.useRef(null);
     const { jwtToken } = React.useContext(AuthContext);
+
+    const onUploadProgress = (progressEvent) => {
+        const { loaded, total } = progressEvent;
+        let percent = Math.floor((loaded * 100) / total);
+        setProgress(percent);
+    };
 
     const uploadImage = async (file) => {
         try {
@@ -57,6 +65,7 @@ const TextEditor = ({ originContent, editContent }) => {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
+                onUploadProgress,
             });
             const imageUrl = url.split('?')[0];
             return imageUrl;
@@ -114,17 +123,24 @@ const TextEditor = ({ originContent, editContent }) => {
         },
     };
     return (
-        <Quill
-            modules={modules}
-            theme="snow"
-            value={content}
-            placeholder="寫點東西吧！"
-            onChange={(value) => {
-                setContent(value);
-                editContent(value);
-            }}
-            ref={quillRef}
-        />
+        <>
+            <Quill
+                modules={modules}
+                theme="snow"
+                value={content}
+                placeholder="寫點東西吧！"
+                onChange={(value) => {
+                    setContent(value);
+                    editContent(value);
+                }}
+                ref={quillRef}
+            />
+            {progress !== 0 && progress < 100 ? (
+                <LinearWithValueLabel variant="determinate" progress={progress} />
+            ) : (
+                <PlaceHolder></PlaceHolder>
+            )}
+        </>
     );
 };
 

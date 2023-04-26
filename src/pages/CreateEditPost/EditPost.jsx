@@ -18,6 +18,8 @@ import {
     SelectWrap,
     Selects,
     DateInput,
+    CircularStatic,
+    BottomWrap,
 } from './Components';
 import Button from '@mui/material/Button';
 
@@ -32,6 +34,7 @@ function EditPost() {
     const [type, setType] = React.useState('');
     const [startDate, setStartDate] = React.useState('');
     const [endDate, setEndDate] = React.useState('');
+    const [progress, setProgress] = React.useState(0);
     const postId = useParams().id;
     const inputRef = React.useRef(null);
     const navigate = useNavigate();
@@ -63,6 +66,12 @@ function EditPost() {
         getEditPost(postId);
     }, []);
 
+    const onUploadProgress = (progressEvent) => {
+        const { loaded, total } = progressEvent;
+        let percent = Math.floor((loaded * 100) / total);
+        setProgress(percent);
+    };
+
     React.useEffect(() => {
         const uploadImage = async () => {
             try {
@@ -73,12 +82,13 @@ function EditPost() {
                     alert('檔案須小於2MB');
                     setFile();
                 } else {
-                    const res = await api.getPresignUrl();
+                    const res = await api.getPresignUrl(jwtToken);
                     const url = res.data.data;
                     await axios.put(url, file, {
                         headers: {
                             'Content-Type': 'multipart/form-data',
                         },
+                        onUploadProgress,
                     });
                     const mainImage = url.split('?')[0];
                     setMainImg(mainImage);
@@ -119,19 +129,12 @@ function EditPost() {
             alert('文章更新失敗');
         }
     }
-    const contentEndRef = React.useRef(null);
-    // const scrollToBottom = () => {
-    //     contentEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-    // };
-
-    // React.useEffect(() => {
-    //     scrollToBottom();
-    // }, [content]);
     if (!isLogin) return <Navigate to="/" replace />;
     return (
         <Wrap>
             <MainImgWrap>
                 <MainImg src={mainImg} />
+                {progress !== 0 && progress < 100 && <CircularStatic progress={progress} />}
                 <UploadImg>
                     <MainImgButton onClick={handleUploadClick}>
                         {file ? '變更首圖' : '上傳首圖'}
@@ -163,17 +166,17 @@ function EditPost() {
                     disabled="disabled"
                 ></DateInput>
             </SelectWrap>
-
-            {<TextEditor originContent={content} editContent={(value) => setContent(value)} />}
-            <Button
-                variant="contained"
-                sx={{ width: '100px', margin: '20px auto' }}
-                disableElevation
-                onClick={submitPost}
-            >
-                編輯完成
-            </Button>
-            <div ref={contentEndRef}></div>
+            <BottomWrap>
+                {<TextEditor originContent={content} editContent={(value) => setContent(value)} />}
+                <Button
+                    variant="contained"
+                    sx={{ width: '100px', margin: '0px auto' }}
+                    disableElevation
+                    onClick={submitPost}
+                >
+                    編輯完成
+                </Button>
+            </BottomWrap>
         </Wrap>
     );
 }
