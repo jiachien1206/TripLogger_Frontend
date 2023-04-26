@@ -144,7 +144,6 @@ function CreatePost() {
     if (isLogin)
         return (
             <Wrap>
-                {console.log(country[1], country[0])}
                 <MainImgWrap>
                     {mainImg && <MainImg src={mainImg} />}
                     {progress !== 0 && progress < 100 && <CircularStatic progress={progress} />}

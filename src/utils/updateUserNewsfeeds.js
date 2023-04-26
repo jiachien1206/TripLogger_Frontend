@@ -2,8 +2,9 @@ import api from './api';
 
 const updateNewsfeeds = async (jwtToken) => {
     if (jwtToken) {
-        const status = await api.getLikeSaveStatus(jwtToken);
-        const { saved_posts, liked_posts } = status.data.data;
+        const res = await api.getLikeSaveStatus(jwtToken);
+        console.log(res.data);
+        const { saved_posts, liked_posts } = res.data.data;
         window.localStorage.setItem('likedPosts', JSON.stringify(liked_posts));
         window.localStorage.setItem('savedPosts', JSON.stringify(saved_posts));
         let relevantPosts = await api.getRelevantPosts(jwtToken);
