@@ -51,7 +51,7 @@ const Home = () => {
     return (
         <Wrapper>
             <LeftSidebar />
-            {/* <PostsWrap>
+            <PostsWrap>
                 <FilterWrap>
                     {filters.map((filter) => {
                         return (
@@ -68,7 +68,7 @@ const Home = () => {
                     })}
                 </FilterWrap>
                 <PostList filter={activeFilter} />
-            </PostsWrap> */}
+            </PostsWrap>
             <RightSidebar className="right-sidebar"></RightSidebar>
         </Wrapper>
     );

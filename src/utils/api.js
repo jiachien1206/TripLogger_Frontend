@@ -1,6 +1,6 @@
 import axios from 'axios';
 const api = {
-    HOST_NAME: 'http://localhost:8000/api',
+    HOST_NAME: 'https://chiaproject.com/api',
     getNewPosts() {
         return axios(`${this.HOST_NAME}/latest-posts`);
     },
