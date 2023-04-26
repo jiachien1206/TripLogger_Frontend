@@ -7,6 +7,10 @@ import api from '../utils/api';
 import SearchIcon from '@mui/icons-material/Search';
 import { AuthContext } from '../context/authContext';
 import Avatar from '@mui/material/Avatar';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import { useNavigate } from 'react-router-dom';
+import { WifiTetheringErrorRoundedTwoTone } from '@mui/icons-material';
 
 const Navigation = styled.div`
     position: fixed;
@@ -132,20 +136,28 @@ const SignButton = styled(Link)`
     }
 `;
 
-const Membericon = styled.div`
-    width: 44px;
-    height: 44px;
-    cursor: pointer;
-    background-image: url(${membericon});
-    background-size: contain;
-`;
-
 const Header = () => {
     const [inputValue, setInputValue] = React.useState('');
-    const { isLogin, user } = React.useContext(AuthContext);
+    const { logout, isLogin, user } = React.useContext(AuthContext);
+    const [anchorEl, setAnchorEl] = React.useState(null);
+    const open = Boolean(anchorEl);
+    const navigate = useNavigate();
+    const handleClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
+
     const redirect = async () => {
         window.location.replace(`/search?keyword=${inputValue}`);
     };
+
+    const handleLogout = async () => {
+        logout();
+        window.location.reload();
+    };
+
     return (
         <Navigation>
             <NavigationContentWrap>
@@ -170,7 +182,42 @@ const Header = () => {
                     {isLogin ? (
                         <>
                             <CreatePost to="/create">發文</CreatePost>
-                            <Memberlink to="/user/setting">
+                            <Memberlink
+                                id="basic-button"
+                                aria-controls={open ? 'account-menu' : undefined}
+                                aria-haspopup="true"
+                                aria-expanded={open ? 'true' : undefined}
+                                onClick={handleClick}
+                                PaperProps={{
+                                    elevation: 0,
+                                    sx: {
+                                        overflow: 'visible',
+                                        filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
+                                        mt: 1.5,
+                                        '& .MuiAvatar-root': {
+                                            width: 32,
+                                            height: 32,
+                                            ml: -0.5,
+                                            mr: 1,
+                                        },
+                                        '&:before': {
+                                            content: '""',
+                                            display: 'block',
+                                            position: 'absolute',
+                                            top: 0,
+                                            right: 14,
+                                            width: 10,
+                                            height: 10,
+                                            bgcolor: 'background.paper',
+                                            transform: 'translateY(-50%) rotate(45deg)',
+                                            zIndex: 0,
+                                        },
+                                    },
+                                }}
+                                transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+                                anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+                                // to="/user/setting"
+                            >
                                 <Avatar src={user.image} sx={{ width: 43, height: 43 }} />
                             </Memberlink>
                         </>
@@ -185,6 +232,105 @@ const Header = () => {
                         </>
                     )}
                 </NavigationRight>
+                <Menu
+                    anchorEl={anchorEl}
+                    id="account-menu"
+                    open={open}
+                    onClose={handleClose}
+                    onClick={handleClose}
+                    PaperProps={{
+                        elevation: 0,
+                        sx: {
+                            width: '200px',
+                            color: '#65676b',
+                            fontWeight: 'bold',
+                            padding: '2px 10px',
+                            overflow: 'visible',
+                            borderRadius: '8px',
+                            filter: 'drop-shadow(0px 1px 4px rgba(0,0,0,0.16))',
+                            mt: 1.5,
+                            '& .MuiAvatar-root': {
+                                width: 32,
+                                height: 32,
+                                ml: -0.5,
+                                mr: 1,
+                            },
+                            '&:before': {
+                                content: '""',
+                                display: 'block',
+                                position: 'absolute',
+                                top: 0,
+                                right: 14,
+                                width: 10,
+                                height: 10,
+                                bgcolor: 'background.paper',
+                                transform: 'translateY(-50%) rotate(45deg)',
+                                zIndex: 0,
+                            },
+                        },
+                    }}
+                    transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+                    anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+                >
+                    <MenuItem
+                        onClick={() => {
+                            navigate('/user/setting');
+                        }}
+                        sx={{
+                            '&:hover': {
+                                borderRadius: '5px',
+                            },
+                        }}
+                    >
+                        個人資料
+                    </MenuItem>
+                    <MenuItem
+                        sx={{
+                            '&:hover': {
+                                borderRadius: '5px',
+                            },
+                        }}
+                        onClick={() => {
+                            navigate('/user/map');
+                        }}
+                    >
+                        旅遊足跡
+                    </MenuItem>
+                    <MenuItem
+                        sx={{
+                            '&:hover': {
+                                borderRadius: '5px',
+                            },
+                        }}
+                        onClick={() => {
+                            navigate('/user/posts');
+                        }}
+                    >
+                        我的文章
+                    </MenuItem>
+                    <MenuItem
+                        sx={{
+                            '&:hover': {
+                                borderRadius: '5px',
+                            },
+                        }}
+                        onClick={() => {
+                            navigate('/user/save');
+                        }}
+                    >
+                        收藏清單
+                    </MenuItem>
+                    <MenuItem
+                        sx={{
+                            '&:hover': {
+                                borderRadius: '5px',
+                            },
+                        }}
+                        onClick={handleLogout}
+                    >
+                        登出
+                    </MenuItem>
+                </Menu>
             </NavigationContentWrap>
         </Navigation>
     );

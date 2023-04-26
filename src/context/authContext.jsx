@@ -70,11 +70,14 @@ export const AuthContextProvider = ({ children }) => {
 
     const logout = async () => {
         setLoading(true);
-        //   await fb.logout();
         setIsLogin(false);
         setUser({});
         setJwtToken();
         window.localStorage.removeItem('jwtToken');
+        window.localStorage.removeItem('savedPosts');
+        window.localStorage.removeItem('user');
+        window.localStorage.removeItem('likedPosts');
+        window.localStorage.removeItem('relevantPosts');
         setLoading(false);
     };
     const getUserData = async (jwtToken) => {
