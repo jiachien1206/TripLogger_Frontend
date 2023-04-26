@@ -6,9 +6,6 @@ import TextEditor from './Editor';
 import api from '../../utils/api';
 import updateNewsfeeds from '../../utils/updateUserNewsfeeds';
 import axios from 'axios';
-import 'react-date-range/dist/styles.css'; // main style file
-import 'react-date-range/dist/theme/default.css'; // theme css file
-import { DateRange } from 'react-date-range';
 import {
     Wrap,
     MainImgWrap,
@@ -24,6 +21,7 @@ import {
 import Select from 'react-select';
 import Button from '@mui/material/Button';
 import { convertLength } from '@mui/material/styles/cssUtils';
+import { countryOptions } from './countryData';
 
 function CreatePost() {
     const { isLogin, jwtToken } = React.useContext(AuthContext);
@@ -32,16 +30,11 @@ function CreatePost() {
     const [title, setTitle] = React.useState('');
     const [content, setContent] = React.useState('');
     const [continent, setContinent] = React.useState('歐洲');
-    const [country, setCountry] = React.useState('奧地利');
+    const [country, setCountry] = React.useState([]);
     const [type, setType] = React.useState('景點');
     const [startDate, setStartDate] = React.useState(null);
     const [endDate, setEndDate] = React.useState(null);
     const navigate = useNavigate();
-    const countryOptions = [
-        { value: '奧地利', label: '奧地利' },
-        { value: '法國', label: '法國' },
-        { value: '義大利', label: '義大利' },
-    ];
 
     const typeOptions = [
         { value: '景點', label: '景點' },
@@ -114,7 +107,7 @@ function CreatePost() {
                         title,
                         content,
                         main_image: mainImg,
-                        location: { continent, country },
+                        location: { continent: country[1], country: country[0] },
                         type,
                         dates: { start_date: startDate, end_date: endDate },
                     },
@@ -174,7 +167,7 @@ function CreatePost() {
 
                 <SelectWrap>
                     <Selects
-                        defaultValue={{ value: '奧地利', label: '奧地利' }}
+                        defaultValue={{ value: ['臺灣', '亞洲'], label: '🇹🇼臺灣 Taiwan' }}
                         onChange={(e) => setCountry(e.value)}
                         options={countryOptions}
                     />
@@ -203,15 +196,6 @@ function CreatePost() {
                             setEndDate(e.target.value);
                         }}
                     ></DateInput>
-                    {/* <DateRangeWrap
-                        editableDateInputs={true}
-                        onChange={(item) => {
-                            setTravelDate([item.selection]);
-                        }}
-                        moveRangeOnFirstSelection={false}
-                        ranges={travelDate}
-                        rangeColors={['#37BEB0', '#3ecf8e', '#fed14c']}
-                    /> */}
                 </SelectWrap>
 
                 <TextEditor editContent={(value) => setContent(value)} />
