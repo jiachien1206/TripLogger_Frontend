@@ -2,7 +2,6 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import logo from '../images/logo.png';
-import membericon from '../images/profile.png';
 import api from '../utils/api';
 import SearchIcon from '@mui/icons-material/Search';
 import { AuthContext } from '../context/authContext';
@@ -10,7 +9,6 @@ import Avatar from '@mui/material/Avatar';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import { useNavigate } from 'react-router-dom';
-import { WifiTetheringErrorRoundedTwoTone } from '@mui/icons-material';
 
 const Navigation = styled.div`
     position: fixed;
@@ -138,7 +136,7 @@ const SignButton = styled(Link)`
 
 const Header = () => {
     const [inputValue, setInputValue] = React.useState('');
-    const { logout, isLogin, user } = React.useContext(AuthContext);
+    const { logout, isLogin, user, jwtToken } = React.useContext(AuthContext);
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
     const navigate = useNavigate();
@@ -155,6 +153,8 @@ const Header = () => {
 
     const handleLogout = async () => {
         logout();
+        const data = { logoutTime: new Date() };
+        await api.logout(data, jwtToken);
         window.location.reload();
     };
 
@@ -216,7 +216,6 @@ const Header = () => {
                                 }}
                                 transformOrigin={{ horizontal: 'right', vertical: 'top' }}
                                 anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
-                                // to="/user/setting"
                             >
                                 <Avatar src={user.image} sx={{ width: 43, height: 43 }} />
                             </Memberlink>

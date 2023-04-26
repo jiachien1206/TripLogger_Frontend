@@ -178,6 +178,14 @@ const api = {
             },
         });
     },
+    logout(data, jwtToken) {
+        return axios.post(`${this.HOST_NAME}/user/logout`, data, {
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${jwtToken}`,
+            },
+        });
+    },
 };
 
 export default api;
