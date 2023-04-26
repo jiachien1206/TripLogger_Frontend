@@ -3,13 +3,13 @@ import styled from 'styled-components';
 import { Block, Title } from './Components';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
-import profile from '../../images/profile.png';
 import api from '../../utils/api';
 import axios from 'axios';
 import Options from '../../components/PreferenceOptions';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 import { AuthContext } from '../../context/authContext';
+import CircularProgress from '@mui/material/CircularProgress';
 
 const Label = styled.label`
     margin-bottom: 5px;
@@ -17,19 +17,17 @@ const Label = styled.label`
 `;
 const Input = styled.input`
     width: 100%;
-    outline: 0;
+    outline: none;
     font-size: 16px;
     line-height: 28px;
-    transition: border-color 1s;
     border: solid 1px #d4d4d4;
     border-radius: 5px;
     padding-left: 10px;
     margin-bottom: 20px;
-    &:hover {
-        border: 2px solid #d4d4d4;
-    }
+    transition: all 0.2s;
     &:focus {
-        border: 2px solid #236262;
+        outline: 2px solid #236262;
+        border: solid 1px #ffffff;
     }
 `;
 
@@ -70,7 +68,7 @@ const UploadImgInput = styled.input``;
 
 const Setting = () => {
     const { jwtToken, setUser, user } = React.useContext(AuthContext);
-    const [profileImage, setProfileImage] = React.useState(profile);
+    const [profileImage, setProfileImage] = React.useState();
     const [name, setName] = React.useState('');
     const [email, setEmail] = React.useState('');
     const [file, setFile] = React.useState();
@@ -78,6 +76,7 @@ const Setting = () => {
     const [types, setTypes] = React.useState([]);
     const [snackbar, setSnackbar] = React.useState(false);
     const [success, setSuccess] = React.useState();
+    const [progress, setProgress] = React.useState(0);
     React.useEffect(() => {
         const getUserData = async () => {
             const jwtToken = window.localStorage.getItem('jwtToken');
@@ -108,6 +107,11 @@ const Setting = () => {
         }
 
         setFile(e.target.files[0]);
+    };
+    const onUploadProgress = (progressEvent) => {
+        const { loaded, total } = progressEvent;
+        let percent = Math.floor((loaded * 100) / total);
+        setProgress(percent);
     };
 
     const submitSetting = async () => {
@@ -153,6 +157,7 @@ const Setting = () => {
                         headers: {
                             'Content-Type': 'multipart/form-data',
                         },
+                        onUploadProgress,
                     });
                     const image = url.split('?')[0];
                     setProfileImage(image);
@@ -174,7 +179,11 @@ const Setting = () => {
                 <Input value={email} disabled="disabled" />
                 <Label>使用者照片 Profile Image</Label>
                 <ImageWrap>
-                    <Avatar src={profileImage} sx={{ width: 45, height: 45 }} />
+                    {progress === 0 || progress === 100 ? (
+                        <Avatar src={profileImage} sx={{ width: 45, height: 45 }} />
+                    ) : (
+                        <CircularProgress sx={{ width: 45, height: 45 }} value={progress} />
+                    )}
                     <UploadImgName>
                         <UploadImg>
                             <UploadImgButton
