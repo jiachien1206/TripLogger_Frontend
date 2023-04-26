@@ -11,19 +11,40 @@ const Quill = styled(ReactQuill)`
     background-color: #ffffff;
 
     .ql-container {
-        min-height: 400px;
+        min-height: 200px;
         border-bottom-left-radius: 5px;
         border-bottom-right-radius: 5px;
-        font-size: 15px;
+        font-size: 16px;
+        padding: 10px;
+        line-height: 2;
     }
     .ql-toolbar {
         border-top-left-radius: 5px;
         border-top-right-radius: 5px;
+        padding: 10px;
+        display: flex;
+    }
+    .ql-snow .ql-picker.ql-header {
+        width: 160px;
+        font-size: 16px;
+    }
+    .ql-snow.ql-toolbar button {
+        height: 30px;
+        width: 37px;
+    }
+    .ql-picker-label {
+        min-width: 34px;
+        height: 30px;
+    }
+    .ql-editor.ql-blank::before {
+        color: #515151;
+        opacity: 0.4;
+        padding-left: 14px;
     }
 `;
 
 const TextEditor = ({ originContent, editContent }) => {
-    const [content, setContent] = React.useState();
+    const [content, setContent] = React.useState('<p></p>');
     const [initialContent, setInitialContent] = React.useState();
     const quillRef = React.useRef(null);
     const { jwtToken } = React.useContext(AuthContext);
@@ -97,6 +118,7 @@ const TextEditor = ({ originContent, editContent }) => {
             modules={modules}
             theme="snow"
             value={content}
+            placeholder="寫點東西吧！"
             onChange={(value) => {
                 setContent(value);
                 editContent(value);

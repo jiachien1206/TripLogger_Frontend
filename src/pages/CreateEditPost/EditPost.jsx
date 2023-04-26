@@ -15,18 +15,11 @@ import {
     MainImgButton,
     MainImgInput,
     Title,
+    SelectWrap,
+    Selects,
+    DateInput,
 } from './Components';
-import Select from 'react-select';
 import Button from '@mui/material/Button';
-
-const SelectWrap = styled.div`
-    display: flex;
-
-    gap: 10px;
-`;
-const Selects = styled(Select)`
-    width: 250px;
-`;
 
 function EditPost() {
     const { isLogin, jwtToken } = React.useContext(AuthContext);
@@ -103,6 +96,8 @@ function EditPost() {
                 alert('請填寫標題');
             } else if (content === '') {
                 alert('請寫文章內容');
+            } else if (content.length > 30100) {
+                alert('文章內容勿超過30000字');
             } else {
                 alert('文章更新');
                 await api.editPost(
@@ -139,7 +134,7 @@ function EditPost() {
                 <MainImg src={mainImg} />
                 <UploadImg>
                     <MainImgButton onClick={handleUploadClick}>
-                        {file ? `${file.name}` : '上傳首圖'}
+                        {file ? '變更首圖' : '上傳首圖'}
                     </MainImgButton>
                     <MainImgInput
                         type="file"
@@ -155,12 +150,21 @@ function EditPost() {
             <SelectWrap>
                 <Selects isDisabled={true} placeholder={country} />
                 <Selects isDisabled={true} placeholder={type} />
+                <DateInput
+                    className="edit"
+                    type="date"
+                    value={startDate}
+                    disabled="disabled"
+                ></DateInput>
+                <DateInput
+                    className="edit"
+                    type="date"
+                    value={endDate}
+                    disabled="disabled"
+                ></DateInput>
             </SelectWrap>
 
             {<TextEditor originContent={content} editContent={(value) => setContent(value)} />}
-            <label>
-                旅遊時間：{startDate} ~ {endDate}
-            </label>
             <Button
                 variant="contained"
                 sx={{ width: '100px', margin: '20px auto' }}

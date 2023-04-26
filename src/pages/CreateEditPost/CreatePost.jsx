@@ -17,23 +17,13 @@ import {
     MainImgButton,
     MainImgInput,
     Title,
+    SelectWrap,
+    Selects,
+    DateInput,
 } from './Components';
 import Select from 'react-select';
 import Button from '@mui/material/Button';
-
-const SelectWrap = styled.div`
-    display: flex;
-
-    gap: 10px;
-`;
-const Selects = styled(Select)`
-    width: 250px;
-`;
-
-const DateRangeWrap = styled(DateRange)`
-    width: 320px;
-    margin: 0px auto;
-`;
+import { convertLength } from '@mui/material/styles/cssUtils';
 
 function CreatePost() {
     const { isLogin, jwtToken } = React.useContext(AuthContext);
@@ -44,13 +34,8 @@ function CreatePost() {
     const [continent, setContinent] = React.useState('歐洲');
     const [country, setCountry] = React.useState('奧地利');
     const [type, setType] = React.useState('景點');
-    const [travelDate, setTravelDate] = React.useState([
-        {
-            startDate: new Date(),
-            endDate: null,
-            key: 'selection',
-        },
-    ]);
+    const [startDate, setStartDate] = React.useState(null);
+    const [endDate, setEndDate] = React.useState(null);
     const navigate = useNavigate();
     const countryOptions = [
         { value: '奧地利', label: '奧地利' },
@@ -67,8 +52,6 @@ function CreatePost() {
         { value: '證件', label: '證件' },
         { value: '其他', label: '其他' },
     ];
-
-    const [selectedOption, setSelectedOption] = React.useState('阿富汗');
 
     const inputRef = React.useRef(null);
     const handleUploadClick = () => {
@@ -114,10 +97,17 @@ function CreatePost() {
         try {
             if (!mainImg) {
                 alert('請上傳首圖');
+                console.log(content.length);
             } else if (title === '') {
                 alert('請填寫標題');
+            } else if (startDate === null || !endDate === null) {
+                alert('請選擇旅遊日期');
+            } else if (new Date(endDate) - new Date(startDate) < 0) {
+                alert('旅行結束日期需晚於開始日期');
             } else if (content === '') {
                 alert('請寫文章內容');
+            } else if (content.length > 30100) {
+                alert('文章內容勿超過30000字');
             } else {
                 await api.createPost(
                     {
@@ -126,7 +116,7 @@ function CreatePost() {
                         main_image: mainImg,
                         location: { continent, country },
                         type,
-                        dates: { start_date: travelDate.startDate, end_date: travelDate.endDate },
+                        dates: { start_date: startDate, end_date: endDate },
                     },
                     jwtToken
                 );
@@ -147,7 +137,7 @@ function CreatePost() {
     const handleSelect = () => {};
 
     const selectionRange = {
-        startDate: new Date(),
+        startDate: new Date() - 1,
         endDate: new Date(),
         key: 'selection',
     };
@@ -155,15 +145,15 @@ function CreatePost() {
     // React.useEffect(() => {
     //     scrollToBottom();
     // }, [content]);
-
+    const ref = React.useRef();
     if (isLogin)
         return (
             <Wrap>
                 <MainImgWrap>
-                    <MainImg src={mainImg} />
+                    {mainImg && <MainImg src={mainImg} />}
                     <UploadImg>
                         <MainImgButton onClick={handleUploadClick}>
-                            {file ? `${file.name}` : '上傳首圖'}
+                            {file ? `變更首圖` : '上傳首圖'}
                         </MainImgButton>
                         <MainImgInput
                             type="file"
@@ -176,7 +166,8 @@ function CreatePost() {
                     </UploadImg>
                 </MainImgWrap>
                 <Title
-                    placeholder="輸入文章標題..."
+                    autoFocus
+                    placeholder=" 輸入文章標題..."
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
                 />
@@ -184,7 +175,6 @@ function CreatePost() {
                 <SelectWrap>
                     <Selects
                         defaultValue={{ value: '奧地利', label: '奧地利' }}
-                        // placeholder={'國家'}
                         onChange={(e) => setCountry(e.value)}
                         options={countryOptions}
                     />
@@ -193,25 +183,38 @@ function CreatePost() {
                         onChange={(e) => setType(e.value)}
                         options={typeOptions}
                     />
+                    <DateInput
+                        type="text"
+                        ref={ref}
+                        onFocus={(e) => (e.target.type = 'date')}
+                        onBlur={(e) => (e.target.type = 'text')}
+                        placeholder="旅行開始日期"
+                        onChange={(e) => {
+                            setStartDate(e.target.value);
+                        }}
+                    ></DateInput>
+                    <DateInput
+                        type="text"
+                        ref={ref}
+                        onFocus={(e) => (e.target.type = 'date')}
+                        onBlur={(e) => (e.target.type = 'text')}
+                        placeholder="旅行結束日期"
+                        onChange={(e) => {
+                            setEndDate(e.target.value);
+                        }}
+                    ></DateInput>
+                    {/* <DateRangeWrap
+                        editableDateInputs={true}
+                        onChange={(item) => {
+                            setTravelDate([item.selection]);
+                        }}
+                        moveRangeOnFirstSelection={false}
+                        ranges={travelDate}
+                        rangeColors={['#37BEB0', '#3ecf8e', '#fed14c']}
+                    /> */}
                 </SelectWrap>
 
-                {/* <label>
-                    旅遊時間：
-                    <TravelDate
-                        type="date"
-                        value={travelDate}
-                        onChange={(e) => setTravelDate(e.target.value)}
-                    />
-                </label> */}
                 <TextEditor editContent={(value) => setContent(value)} />
-
-                <DateRangeWrap
-                    editableDateInputs={true}
-                    onChange={(item) => setTravelDate([item.selection])}
-                    moveRangeOnFirstSelection={false}
-                    ranges={travelDate}
-                    rangeColors={['#37BEB0', '#3ecf8e', '#fed14c']}
-                />
                 <Button
                     variant="contained"
                     sx={{ width: '100px', margin: '20px auto' }}

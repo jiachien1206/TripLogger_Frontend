@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import Select from 'react-select';
 
 export const Wrap = styled.div`
     margin: 0px auto 10px;
@@ -14,10 +15,10 @@ export const Wrap = styled.div`
 
 export const MainImgWrap = styled.div`
     display: flex;
-    gap: 20px;
 `;
 export const MainImg = styled.img`
     max-height: 200px;
+    margin-right: 25px;
 `;
 export const UploadImg = styled.div``;
 
@@ -47,5 +48,30 @@ export const Title = styled.input`
     }
     &::placeholder {
         opacity: 0.3;
+    }
+`;
+export const SelectWrap = styled.div`
+    display: flex;
+    gap: 10px;
+    width: 100%;
+    justify-content: space-between;
+`;
+export const Selects = styled(Select)`
+    width: 24%;
+`;
+
+export const DateInput = styled.input`
+    display: flex;
+    width: 24%;
+    border: 1px solid #bfbfbf;
+    border-radius: 4px;
+    font-size: 16px;
+    color: #333333;
+    padding-left: 8px;
+    cursor: default;
+    &.edit {
+        background-color: #f2f2f2;
+        border-color: #e6e6e6;
+        color: grey;
     }
 `;
