@@ -90,17 +90,16 @@ const Continent = () => {
     if (!continents.includes(continent)) {
         window.location.replace('/');
     }
-    const [activeFilters, setActiveFilter] = React.useState([]);
+    const [activeFilter, setActiveFilter] = React.useState([]);
     const [posts, setPosts] = React.useState([]);
-
     const handleFilter = (filter) => {
-        if (activeFilters.includes(filter)) {
-            const newActiveFilters = activeFilters.filter((f) => {
+        if (activeFilter.includes(filter)) {
+            const newActiveFilters = activeFilter.filter((f) => {
                 return f !== filter;
             });
             setActiveFilter(newActiveFilters);
         } else {
-            setActiveFilter([...activeFilters, filter]);
+            setActiveFilter([...activeFilter, filter]);
         }
     };
     const filterPosts = async (continent, filters) => {
@@ -110,8 +109,8 @@ const Continent = () => {
     };
 
     React.useEffect(() => {
-        filterPosts(continent, activeFilters);
-    }, [continent, activeFilters]);
+        filterPosts(continent, activeFilter);
+    }, [continent, activeFilter]);
     return (
         <>
             <Banner
@@ -129,7 +128,7 @@ const Continent = () => {
                             return (
                                 <Filter
                                     key={filter}
-                                    className={activeFilters.includes(filter) && 'active'}
+                                    className={activeFilter.includes(filter) && 'active'}
                                     onClick={() => {
                                         handleFilter(filter);
                                     }}

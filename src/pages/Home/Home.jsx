@@ -5,6 +5,7 @@ import { AuthContext } from '../../context/authContext';
 import LeftSidebar from '../../components/LeftSidebar';
 import RightSidebar from '../../components/RightSidebar';
 import updateNewsfeeds from '../../utils/updateUserNewsfeeds.js';
+import Paging from '../../components/Pagination';
 
 const Wrapper = styled.div`
     display: flex;
@@ -37,7 +38,9 @@ const FilterButton = styled.button`
 const Home = () => {
     const [filters, setFilters] = React.useState(['熱門文章', '最新文章']);
     const [activeFilter, setActiveFilter] = React.useState('熱門文章');
+    const [page, setPage] = React.useState(1);
     const { isLogin } = React.useContext(AuthContext);
+    const [postNum, setPostNum] = React.useState(0);
     const handleActiveFilter = (filter) => {
         setActiveFilter(filter);
     };
@@ -45,8 +48,13 @@ const Home = () => {
         if (isLogin) {
             setFilters(['為你推薦', '熱門文章', '最新文章']);
             setActiveFilter('為你推薦');
+            setPage(1);
         }
     }, []);
+
+    React.useEffect(() => {
+        window.scrollTo(0, 0);
+    }, [activeFilter, page]);
 
     return (
         <Wrapper>
@@ -67,7 +75,13 @@ const Home = () => {
                         );
                     })}
                 </FilterWrap>
-                <PostList filter={activeFilter} />
+                <PostList
+                    setPostNum={setPostNum}
+                    setPage={setPage}
+                    page={page}
+                    filter={activeFilter}
+                />
+                <Paging setPage={setPage} postNum={postNum} currentPage={page}></Paging>
             </PostsWrap>
             <RightSidebar className="right-sidebar"></RightSidebar>
         </Wrapper>

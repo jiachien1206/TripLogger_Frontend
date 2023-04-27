@@ -9,12 +9,12 @@ const PostsWrap = styled.div`
     gap: 5px;
 `;
 
-const PostList = ({ filter }) => {
+const PostList = ({ setPostNum, filter, setPage, page }) => {
     const [posts, setPosts] = React.useState([]);
     const [likedPosts, setLikedPosts] = React.useState([]);
     const [savedPosts, setSavedPosts] = React.useState([]);
     const { isLogin } = React.useContext(AuthContext);
-    const getPosts = () => {
+    const getPosts = (page) => {
         let posts;
         if (filter === '為你推薦') {
             posts = window.localStorage.getItem('relevantPosts');
@@ -24,6 +24,8 @@ const PostList = ({ filter }) => {
             posts = window.localStorage.getItem('newPosts');
         }
         posts = JSON.parse(posts);
+        setPostNum(Math.ceil(posts.length / 10));
+        posts = posts.slice((page - 1) * 10, page * 10);
         if (posts) {
             setPosts(posts);
         }
@@ -37,13 +39,23 @@ const PostList = ({ filter }) => {
         const posts = window.localStorage.getItem('savedPosts');
         setSavedPosts(JSON.parse(posts));
     };
+
     React.useEffect(() => {
-        getPosts();
         if (isLogin) {
             getLikedPosts();
             getSavedPosts();
         }
+    }, []);
+
+    React.useEffect(() => {
+        getPosts(1);
+        setPage(1);
     }, [filter]);
+
+    React.useEffect(() => {
+        getPosts(page);
+        setPage(page);
+    }, [page]);
 
     return (
         <PostsWrap>
