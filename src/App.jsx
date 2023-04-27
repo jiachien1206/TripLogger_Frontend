@@ -25,6 +25,9 @@ const theme = createTheme({
         warning: {
             main: '#EEC0B0',
         },
+        red: {
+            main: '#D2042D',
+        },
     },
 });
 

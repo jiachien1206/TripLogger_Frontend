@@ -9,6 +9,9 @@ import Avatar from '@mui/material/Avatar';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import { useNavigate } from 'react-router-dom';
+import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
+// import bell from '../images/bell.png';
+import Badge from '@mui/material/Badge';
 
 const Navigation = styled.div`
     position: fixed;
@@ -113,6 +116,24 @@ const Memberlink = styled(Link)`
     margin-left: 10px;
 `;
 
+const Bell = styled.div`
+    margin-left: 5px;
+    width: 43px;
+    height: 43px;
+    border-radius: 100px;
+    background-color: #e2e6e7;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+`;
+
+// const BellIcon = styled.div`
+//     width: 30px;
+//     height: 30px;
+//     background-image: url(${bell});
+//     background-size: cover;
+// `;
+
 const SignButton = styled(Link)`
     font-size: 17px;
     text-decoration: none;
@@ -182,6 +203,11 @@ const Header = () => {
                     {isLogin ? (
                         <>
                             <CreatePost to="/create">發文</CreatePost>
+                            <Badge variant="dot" color="red" sx={{ color: '#050505' }}>
+                                <Bell>
+                                    <NotificationsNoneIcon />
+                                </Bell>
+                            </Badge>
                             <Memberlink
                                 id="basic-button"
                                 aria-controls={open ? 'account-menu' : undefined}
