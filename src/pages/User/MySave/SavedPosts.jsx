@@ -58,7 +58,6 @@ const Save = () => {
     return (
         <>
             <Title>我的收藏</Title>
-            {console.log(savedPosts)}
             <Wrap>
                 {savedPosts.map((post) => {
                     return (
