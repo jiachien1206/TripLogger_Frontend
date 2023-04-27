@@ -23,10 +23,10 @@ const PostList = ({ setPostNum, filter, setPage, page }) => {
         } else if (filter === '最新文章') {
             posts = window.localStorage.getItem('newPosts');
         }
-        posts = JSON.parse(posts);
-        setPostNum(Math.ceil(posts.length / 10));
-        posts = posts.slice((page - 1) * 10, page * 10);
         if (posts) {
+            posts = JSON.parse(posts);
+            setPostNum(Math.ceil(posts.length / 10));
+            posts = posts.slice((page - 1) * 10, page * 10);
             setPosts(posts);
         }
     };
