@@ -108,7 +108,7 @@ const CreatePost = styled(Link)`
     font-weight: 500;
     &:hover {
         border-radius: 25px;
-        color: #ffffff;
+        color: #000000de;
         background-color: #236262;
     }
 `;
@@ -155,12 +155,6 @@ const SignButton = styled(Link)`
     &:hover {
         border-radius: 100px;
     }
-`;
-const NotificationImg = styled.img`
-    border-radius: 100px;
-    width: 43px;
-    height: 43px;
-    object-fit: cover;
 `;
 
 const Header = () => {
@@ -213,8 +207,6 @@ const Header = () => {
         const _notifications = result.filter((n) => {
             return n.read === false;
         });
-        console.log(result);
-        console.log(_notifications);
         if (_notifications.length > 0) {
             setBadge(1);
         }
@@ -303,8 +295,8 @@ const Header = () => {
                                             filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
                                             mt: 1.5,
                                             '& .MuiAvatar-root': {
-                                                width: 32,
-                                                height: 32,
+                                                width: 40,
+                                                height: 40,
                                                 ml: -0.5,
                                                 mr: 1,
                                             },
@@ -497,8 +489,8 @@ const Header = () => {
                             filter: 'drop-shadow(0px 1px 4px rgba(0,0,0,0.16))',
                             mt: 1.5,
                             '& .MuiAvatar-root': {
-                                width: 32,
-                                height: 32,
+                                width: 45,
+                                height: 45,
                                 ml: -0.5,
                                 mr: 1,
                             },
@@ -556,8 +548,7 @@ const Header = () => {
                                             color: '#4a4a4a',
                                         }}
                                     >
-                                        <NotificationImg src={`${m.commenterImg}`} />
-
+                                        <Avatar src={m.commenterImg} />
                                         {m.commentor.length + m.postTitle.length > 16
                                             ? `${m.commentor}在你的「${m.postTitle.slice(
                                                   0,
@@ -582,9 +573,15 @@ const Header = () => {
                                             gap: '10px',
                                             backgroundColor: 'white',
                                             borderRadius: '5px',
+                                            '&:focus': {
+                                                backgroundColor: 'transparent',
+                                            },
+                                            '&:hover': {
+                                                backgroundColor: 'rgb(0 0 0 / 4%)',
+                                            },
                                         }}
                                     >
-                                        <NotificationImg src={`${m.commenterImg}`} />
+                                        <Avatar src={m.commenterImg} />
 
                                         {m.commentor.length + m.postTitle.length > 16
                                             ? `${m.commentor}在你的「${m.postTitle.slice(
