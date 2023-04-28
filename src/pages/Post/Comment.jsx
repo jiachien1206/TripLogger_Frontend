@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import api from '../../utils/api.js';
 import send from '../../images/send.svg';
+import { AuthContext } from '../../context/authContext';
 
 const Wrap = styled.div`
     margin: 30px 0px;
@@ -35,14 +36,19 @@ const SubmitComment = styled.div`
 
 const PostComment = styled.div``;
 
-const Comments = ({ postId, location, type, comments, setNewComment }) => {
+const Comments = ({ postId, location, type, comments, setNewComment, authorId, title }) => {
     const [comment, setComment] = React.useState('');
+    const { user } = React.useContext(AuthContext);
     const submitComment = async () => {
         const jwtToken = window.localStorage.getItem('jwtToken');
         const content = {
             location,
             type,
             comment,
+            commenter: user.name,
+            authorId,
+            title,
+            commenterImg: user.image,
         };
         const res = await api.writeComment(postId, content, jwtToken);
         setNewComment(true);

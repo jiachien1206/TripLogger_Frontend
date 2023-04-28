@@ -9,6 +9,14 @@ import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
 import Button from '@mui/material/Button';
+const Wrap = styled.div`
+    background-color: white;
+    width: 100%;
+    height: 100%;
+    z-index: 100;
+    position: fixed;
+    top: 0;
+`;
 
 const Title = styled.div`
     font-size: 24px;
@@ -85,18 +93,18 @@ const Signin = () => {
             window.localStorage.setItem('user', JSON.stringify(userData));
             await updateNewsfeeds(accessToken);
             userData['jwtToken'] = accessToken;
-            saveUserData(userData);
-            navigate('/');
+            await saveUserData(userData);
+            window.location.href = '/';
         } catch (e) {
             console.log(e);
             alert('帳號或密碼輸入錯誤');
         }
     }
 
-    if (isLogin) return <Navigate to="/" replace />;
+    if (isLogin) return <Navigate to="/" />;
 
     return (
-        <>
+        <Wrap>
             <Modal
                 aria-labelledby="spring-modal-title"
                 aria-describedby="spring-modal-description"
@@ -136,7 +144,7 @@ const Signin = () => {
                     </Box>
                 </Fade>
             </Modal>
-        </>
+        </Wrap>
     );
 };
 

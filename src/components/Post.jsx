@@ -232,7 +232,7 @@ const style = {
 };
 
 const Post = ({ post, likedPosts, savedPosts }) => {
-    const { isLogin } = React.useContext(AuthContext);
+    const { isLogin, user } = React.useContext(AuthContext);
     const [like, setLike] = React.useState(false);
     const [likeNum, setLikeNum] = React.useState(0);
     const [readNum, setReadNum] = React.useState(0);
@@ -272,14 +272,30 @@ const Post = ({ post, likedPosts, savedPosts }) => {
             setLikeNum(function (prev) {
                 return prev + 1;
             });
-            api.likePost(post._id, post.location.continent, post.type, true, jwtToken);
+            const data = {
+                location: post.location.continent,
+                type: post.type,
+                like: true,
+                authorId: post.authorId,
+                title: post.title,
+                liker: user.name,
+            };
+            api.likePost(post._id, data, jwtToken);
             localStorageLikedPosts.push(post._id);
             window.localStorage.setItem('likedPosts', JSON.stringify(localStorageLikedPosts));
         } else {
             setLikeNum(function (prev) {
                 return prev - 1;
             });
-            api.likePost(post._id, post.location.continent, post.type, false, jwtToken);
+            const data = {
+                location: post.location.continent,
+                type: post.type,
+                like: true,
+                authorId: post.authorId,
+                title: post.title,
+                liker: user.name,
+            };
+            api.likePost(post._id, data, jwtToken);
             const newLocalStorageLikedPosts = localStorageLikedPosts.filter((p) => {
                 if (p !== post._id) {
                     return true;

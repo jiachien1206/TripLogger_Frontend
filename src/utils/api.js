@@ -27,17 +27,13 @@ const api = {
     addRead(postId, userId, location, type) {
         return axios.post(`${this.HOST_NAME}/posts/${postId}/reads`, { userId, location, type });
     },
-    likePost(postId, location, type, like, jwtToken) {
-        return axios.post(
-            `${this.HOST_NAME}/posts/${postId}/like`,
-            { location, type, like },
-            {
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: `Bearer ${jwtToken}`,
-                },
-            }
-        );
+    likePost(postId, data, jwtToken) {
+        return axios.post(`${this.HOST_NAME}/posts/${postId}/like`, data, {
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${jwtToken}`,
+            },
+        });
     },
     savePost(postId, location, type, save, jwtToken) {
         return axios.post(
@@ -185,6 +181,26 @@ const api = {
                 Authorization: `Bearer ${jwtToken}`,
             },
         });
+    },
+    getNotification(jwtToken) {
+        return axios(`${this.HOST_NAME}/user/notification`, {
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${jwtToken}`,
+            },
+        });
+    },
+    readNotification(jwtToken) {
+        return axios.put(
+            `${this.HOST_NAME}/user/notification`,
+            {},
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${jwtToken}`,
+                },
+            }
+        );
     },
 };
 

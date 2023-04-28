@@ -8,7 +8,7 @@ export const AuthContext = React.createContext({
     loading: false,
     jwtToken: '',
     signin: () => {},
-    saveUserData: () => {},
+    saveUserData: async () => {},
     logout: () => {},
 });
 
@@ -21,7 +21,6 @@ export const AuthContextProvider = ({ children }) => {
     const handleLoginResponse = React.useCallback(async (response) => {
         const accessToken = response.authResponse.accessToken;
         const { data } = await api.signin({
-            provider: 'facebook',
             access_token: accessToken,
         });
         const { access_token: tokenFromServer, user: userData } = data;

@@ -98,9 +98,9 @@ const Post = () => {
                 postId={postId}
                 comments={post.comments}
                 setNewComment={setNewComment}
+                authorId={post.authorId}
+                title={post.title}
             />
-
-            {/* <LikeButton onClick={addLike}>{like}</LikeButton> */}
         </PostWrap>
     );
 };
