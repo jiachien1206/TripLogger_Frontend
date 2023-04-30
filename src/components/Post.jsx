@@ -290,7 +290,7 @@ const Post = ({ post, likedPosts, savedPosts }) => {
             const data = {
                 location: post.location.continent,
                 type: post.type,
-                like: true,
+                like: false,
                 authorId: post.authorId,
                 title: post.title,
                 liker: user.name,
