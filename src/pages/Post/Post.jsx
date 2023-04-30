@@ -225,7 +225,7 @@ const RightSidebar = styled.div`
     display: flex;
     flex-direction: column;
     background-color: #ffffff;
-    border-radius: 5px;
+    border-radius: 15px;
     box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
     width: 300px;
     padding: 20px 25px;
@@ -264,12 +264,9 @@ const NewPostImg = styled.img`
     width: 50px;
     height: 50px;
     border-radius: 5px;
+    object-fit: cover;
 `;
-const NewPostTitle = styled.div`
-    /* background-color: #f5f5f5;
-    padding: 5px;
-    border-radius: 5px; */
-`;
+const NewPostTitle = styled.div``;
 
 const Post = () => {
     const { isLogin, user, jwtToken } = React.useContext(AuthContext);
