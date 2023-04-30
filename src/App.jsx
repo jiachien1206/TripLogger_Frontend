@@ -38,7 +38,7 @@ const GlobalStyle = createGlobalStyle`
   body {
     margin: 50px 0px;
     background-color: #f0f4f5;
-    letter-spacing:0.1em;
+    letter-spacing:0.2em;
     color: #4a4a4a;
     width: 100%;
   }

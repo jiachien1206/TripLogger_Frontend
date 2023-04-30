@@ -11,10 +11,16 @@ import africa from '../images/africa.png';
 import antarctica from '../images/antarctica.png';
 
 const Wrapper = styled.div`
+    position: fixed;
+    top: 80px;
+    left: 5%;
     display: flex;
     flex-direction: column;
     margin: 20px 0px 20px 0px;
     gap: 30px;
+    &.continent {
+        position: static;
+    }
 `;
 const MapLink = styled(Link)``;
 const Map = styled.img`
@@ -54,9 +60,9 @@ const ContinentsTitle = styled.div`
     color: #65676b;
 `;
 
-const Sidebar = ({ active }) => {
+const Sidebar = ({ active, className }) => {
     return (
-        <Wrapper>
+        <Wrapper className={className}>
             <MapLink to="/map">
                 <Map src={mapImg} />
             </MapLink>

@@ -121,7 +121,7 @@ const Continent = () => {
                 <BannerText>{map[continent]}</BannerText>
             </Banner>
             <Wrapper>
-                <LeftSidebar active={continent} />
+                <LeftSidebar active={continent} className={'continent'} />
                 <ContinentWrap>
                     <FiltersWrap>
                         {filters.map((filter) => {
@@ -140,7 +140,7 @@ const Continent = () => {
                     </FiltersWrap>
                     <PostList posts={posts}></PostList>
                 </ContinentWrap>
-                <RightSidebar />
+                <RightSidebar className={'continent'} />
             </Wrapper>
         </>
     );

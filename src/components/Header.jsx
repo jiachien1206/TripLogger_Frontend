@@ -108,7 +108,7 @@ const CreatePost = styled(Link)`
     font-weight: 500;
     &:hover {
         border-radius: 25px;
-        color: #000000de;
+        color: #ffffff;
         background-color: #236262;
     }
 `;
@@ -549,10 +549,10 @@ const Header = () => {
                                         }}
                                     >
                                         <Avatar src={m.commenterImg} />
-                                        {m.commentor.length + m.postTitle.length > 16
+                                        {m.commentor.length + m.postTitle.length > 14
                                             ? `${m.commentor}在你的「${m.postTitle.slice(
                                                   0,
-                                                  16 - (m.commentor.length + m.postTitle.length)
+                                                  14 - (m.commentor.length + m.postTitle.length)
                                               )}...」留言囉！`
                                             : `${m.commentor}在你的「${m.postTitle}」留言囉！`}
                                     </MenuItem>
@@ -582,11 +582,10 @@ const Header = () => {
                                         }}
                                     >
                                         <Avatar src={m.commenterImg} />
-
-                                        {m.commentor.length + m.postTitle.length > 16
+                                        {m.commentor.length + m.postTitle.length > 14
                                             ? `${m.commentor}在你的「${m.postTitle.slice(
                                                   0,
-                                                  16 - (m.commentor.length + m.postTitle.length)
+                                                  14 - (m.commentor.length + m.postTitle.length)
                                               )}...」留言囉！`
                                             : `${m.commentor}在你的「${m.postTitle}」留言囉！`}
                                     </MenuItem>

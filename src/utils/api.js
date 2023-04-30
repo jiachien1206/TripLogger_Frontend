@@ -58,13 +58,8 @@ const api = {
     getMapPosts() {
         return axios(`${this.HOST_NAME}/map-posts`);
     },
-    getUserPosts(userId, jwtToken) {
-        return axios(`${this.HOST_NAME}/user/posts`, {
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${jwtToken}`,
-            },
-        });
+    getUserPosts(userId) {
+        return axios(`${this.HOST_NAME}/user/${userId}/posts`);
     },
     getUserVisited(userId, jwtToken) {
         return axios(`${this.HOST_NAME}/user/visited`, {

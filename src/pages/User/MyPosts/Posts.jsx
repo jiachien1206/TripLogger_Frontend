@@ -16,14 +16,14 @@ const Posts = () => {
 
     const jwtToken = window.localStorage.getItem('jwtToken');
     React.useEffect(() => {
-        const fetchUserPosts = async (userId, jwtToken) => {
-            const res = await api.getUserPosts(userId, jwtToken);
+        const fetchUserPosts = async (userId) => {
+            const res = await api.getUserPosts(userId);
             const userPosts = res.data.data;
             setPosts(userPosts);
         };
 
         const user = JSON.parse(window.localStorage.getItem('user'));
-        fetchUserPosts(user.id, jwtToken);
+        fetchUserPosts(user.id);
     }, []);
     return (
         <>

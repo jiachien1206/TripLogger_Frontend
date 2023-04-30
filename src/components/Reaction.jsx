@@ -10,12 +10,11 @@ import sad from '../images/sad.gif';
 import angry from '../images/angry.gif';
 import thumbR from '../images/thumbs-up-regular.svg';
 import thumbS from '../images/thumbs-up-solid.svg';
+import { AiOutlineHeart } from 'react-icons/ai';
 
 const ReactionsWrapper = styled(motion.div)`
     position: absolute;
     top: -100%;
-    /* left: 50%; */
-    /* transform: translateX(-50%); */
     width: 230px;
     padding: 10px 20px;
     border-radius: 100px;
@@ -24,13 +23,11 @@ const ReactionsWrapper = styled(motion.div)`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    /* opacity: 0; */
-`;
-
-const Container = styled.main`
-    height: 93vh;
-    display: flex;
-    align-items: center;
+    z-index: 100;
+    &.post {
+        top: -5%;
+        left: 103%;
+    }
 `;
 
 const list = {
@@ -80,6 +77,15 @@ const ReactionWrapper = styled.div`
     //     text-transform: capitalize;
     //     font-weight: 400;
     // }
+`;
+
+const AiOutlineHeartS = styled(AiOutlineHeart)`
+    font-size: 32px;
+    transition: all 0.3s;
+    &:hover {
+        color: #f52047;
+        font-size: 39px;
+    }
 `;
 const ReactionImage = styled.img`
     width: 100%;
@@ -138,31 +144,49 @@ const LikedButtonIcon = styled.div`
     filter: invert(29%) sepia(87%) saturate(293%) hue-rotate(131deg) brightness(94%) contrast(94%);
 `;
 
-const Reactions = ({ isHover, active }) => {
-    // const [isHover, setIsHover] = React.useState(false);
+const Reactions = ({ isHover, active, page }) => {
     return (
         <>
-            <LikeThumb>
-                {active ? (
-                    <Button className="active">{/* <LikedButtonIcon />讚 */}</Button>
-                ) : (
-                    <Button>
-                        <LikeButtonIcon />讚
-                    </Button>
-                )}
-                <ReactionsWrapper
-                    initial="hidden"
-                    animate={isHover ? 'visible' : 'hidden'}
-                    variants={list}
-                >
-                    <Reaction icon={like} />
-                    <Reaction icon={love} />
-                    <Reaction icon={haha} />
-                    <Reaction icon={wow} />
-                    <Reaction icon={sad} />
-                    <Reaction icon={angry} />
-                </ReactionsWrapper>
-            </LikeThumb>
+            {page === 'post' ? (
+                <>
+                    <AiOutlineHeartS />
+                    <ReactionsWrapper
+                        initial="hidden"
+                        animate={isHover ? 'visible' : 'hidden'}
+                        variants={list}
+                        className="post"
+                    >
+                        <Reaction icon={like} />
+                        <Reaction icon={love} />
+                        <Reaction icon={haha} />
+                        <Reaction icon={wow} />
+                        <Reaction icon={sad} />
+                        <Reaction icon={angry} />
+                    </ReactionsWrapper>
+                </>
+            ) : (
+                <LikeThumb>
+                    {active ? (
+                        <Button className="active">{/* <LikedButtonIcon />讚 */}</Button>
+                    ) : (
+                        <Button>
+                            <LikeButtonIcon />讚
+                        </Button>
+                    )}
+                    <ReactionsWrapper
+                        initial="hidden"
+                        animate={isHover ? 'visible' : 'hidden'}
+                        variants={list}
+                    >
+                        <Reaction icon={like} />
+                        <Reaction icon={love} />
+                        <Reaction icon={haha} />
+                        <Reaction icon={wow} />
+                        <Reaction icon={sad} />
+                        <Reaction icon={angry} />
+                    </ReactionsWrapper>
+                </LikeThumb>
+            )}
         </>
     );
 };
