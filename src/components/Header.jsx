@@ -214,12 +214,12 @@ const Header = () => {
 
     const [ws, setWs] = React.useState(null);
     React.useEffect(() => {
-        const newWs = webSocket('http://localhost:8000');
+        const newWs = webSocket('https://chiaproject.com');
         setWs(newWs);
     }, []);
     React.useEffect(() => {
         if (isLogin) {
-            const newWs = webSocket('http://localhost:8000');
+            const newWs = webSocket('https://chiaproject.com');
             setWs(newWs);
         }
         if (isLogin) {
