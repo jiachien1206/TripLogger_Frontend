@@ -13,6 +13,7 @@ import Badge from '@mui/material/Badge';
 import webSocket from 'socket.io-client';
 import updateNewsfeeds from '../utils/updateUserNewsfeeds.js';
 import { FaBell } from 'react-icons/fa';
+import { FiSearch } from 'react-icons/fi';
 
 const Navigation = styled.div`
     position: fixed;
@@ -21,11 +22,11 @@ const Navigation = styled.div`
     height: 60px;
     width: 100%;
     z-index: 50;
-    background-color: white;
+    background-color: var(--primary-color);
     box-shadow: 0 1px 6px 0 rgb(32 33 36 / 5%);
 `;
 const NavigationContentWrap = styled.div`
-    max-width: 1270px;
+    max-width: 95%;
     height: 100%;
     margin: 0px auto;
     display: flex;
@@ -37,14 +38,15 @@ const NavigationLeft = styled.div`
     display: flex;
     align-items: center;
     gap: 25px;
+    width: 50%;
 `;
 const NavigationRight = styled.div`
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 15px;
 `;
 const Logo = styled(Link)`
-    width: 60px;
+    width: 220px;
     height: 50px;
     background-image: url(${logo});
     background-size: contain;
@@ -56,25 +58,30 @@ const SearchBar = styled.div`
     display: flex;
     justify-content: space-between;
     height: 40px;
-    width: 260px;
-    margin-left: auto;
+    width: 40%;
+    &:focus-visible {
+        outline: none !important;
+    }
+    /* margin-left: auto; */
 `;
 const SearchInput = styled.input`
     height: 100%;
-    width: 260px;
+    width: 100%;
     outline: none;
     border: none;
     font-size: 18px;
     line-height: 19px;
-    transition: border-color 1s;
-    border: solid 1px #d4d4d4;
-    border-radius: 5px;
+    transition: border-color 0.5s;
+    border: solid 1px var(--white);
+    border-radius: 10px;
     padding-left: 10px;
+    background-color: var(--white);
+    color: var(--primary-color);
     &:hover {
-        border: 2px solid #d4d4d4;
+        border: 2px solid var(--secondary-color);
     }
     &:focus {
-        border: 2px solid #236262;
+        border: 2px solid var(--secondary-color);
     }
 `;
 
@@ -83,46 +90,46 @@ const SearchButton = styled.button`
     height: 36px;
     width: 36px;
     border: none;
-    background-color: #ffffff;
+    background-color: var(--white);
     right: 2px;
     top: 2px;
-    border-radius: 3px;
+    border-radius: 9px;
     padding: 0px;
     &:hover {
         cursor: pointer;
-        background-color: #b8f4cf;
     }
+`;
+
+const FiSearchS = styled(FiSearch)`
+    font-size: 23px;
+    color: var(--primary-color);
 `;
 
 const CreatePost = styled(Link)`
     padding: 7px 30px;
-    border: 1px solid #236262;
     border-radius: 5px;
     text-decoration: none;
     display: flex;
     justify-content: center;
     align-items: center;
     transition: all 0.2s;
-    color: #00684a;
-    font-size: 17px;
+    color: var(--white);
+    font-size: 19px;
     font-weight: 500;
+    background-color: var(--secondary-color);
     &:hover {
         border-radius: 25px;
-        color: #ffffff;
-        background-color: #236262;
     }
 `;
 
-const Memberlink = styled(Link)`
-    margin-left: 10px;
-`;
+const Memberlink = styled(Link)``;
 
-const Bell = styled.div`
+const Circle = styled.div`
     margin-left: 5px;
     width: 43px;
     height: 43px;
     border-radius: 100px;
-    background-color: #bdbdbd;
+    background-color: var(--secondary-color);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -133,27 +140,31 @@ const Bell = styled.div`
 const BellIcon = styled(FaBell)`
     width: 25px;
     height: 25px;
-    color: white;
+    color: var(--white);
 `;
 
 const SignButton = styled(Link)`
-    font-size: 17px;
-    text-decoration: none;
     padding: 7px 30px;
-    border-radius: 6px;
-    margin: 0px 5px;
-    transition: all 0.3s;
-    &.signup {
-        background-color: #236262;
-        border: 2px solid #236262;
-        color: #ffffff;
-    }
+    border-radius: 5px;
+    text-decoration: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.2s;
+    color: var(--white);
+    font-size: 19px;
+    font-weight: 500;
     &.signin {
-        border: 2px solid #236262;
-        color: #236262;
+        background-color: var(--secondary-color);
+        border: 2px solid var(--secondary-color);
+        color: var(--white);
+    }
+    &.signup {
+        border: 2px solid var(--white);
+        color: var(--white);
     }
     &:hover {
-        border-radius: 100px;
+        border-radius: 25px;
     }
 `;
 
@@ -257,7 +268,7 @@ const Header = () => {
                             }}
                         />
                         <SearchButton onClick={redirect}>
-                            <SearchIcon color="primary" sx={{ fontSize: 26 }} />
+                            <FiSearchS />
                         </SearchButton>
                     </SearchBar>
                 </NavigationLeft>
@@ -275,12 +286,12 @@ const Header = () => {
                                         width: 15,
                                         height: 15,
                                         borderRadius: 100,
-                                        backgroundColor: '#D22B2B',
+                                        backgroundColor: 'var(--red)',
                                     },
                                 }}
                                 badgeContent={badge}
                             >
-                                <Bell
+                                <Circle
                                     id="basic-button"
                                     aria-controls={open ? 'notification-menu' : undefined}
                                     aria-haspopup="true"
@@ -318,7 +329,7 @@ const Header = () => {
                                     anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
                                 >
                                     <BellIcon />
-                                </Bell>
+                                </Circle>
                             </Badge>
 
                             <Memberlink
@@ -361,11 +372,11 @@ const Header = () => {
                         </>
                     ) : (
                         <>
-                            <SignButton className="signup" to="/signup">
-                                註冊
-                            </SignButton>
                             <SignButton className="signin" to="/signin">
                                 登入
+                            </SignButton>
+                            <SignButton className="signup" to="/signup">
+                                註冊
                             </SignButton>
                         </>
                     )}
@@ -511,7 +522,7 @@ const Header = () => {
                     transformOrigin={{ horizontal: 'right', vertical: 'top' }}
                     anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
                 >
-                    {!notifications ? (
+                    {notifications.length === 0 ? (
                         <MenuItem
                             sx={{
                                 height: '30px',
@@ -522,7 +533,7 @@ const Header = () => {
                                 gap: '10px',
                             }}
                         >
-                            暫無訊息～快去發文吧！
+                            <p>暫無訊息～快去發文吧！</p>
                         </MenuItem>
                     ) : (
                         notifications.map((m) => {

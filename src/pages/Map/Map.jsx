@@ -6,6 +6,7 @@ import MapComponent from './MapConponent';
 import 'leaflet/dist/leaflet.css';
 
 const StyledMapContainer = styled(MapContainer)`
+    margin-top: 60px;
     z-index: 3;
 `;
 
@@ -24,13 +25,13 @@ function Map() {
     return (
         <StyledMapContainer
             center={[0, 0]}
-            zoom={2}
+            zoom={3}
             minZoom={2}
             scrollWheelZoom={true}
-            style={{ height: '80vh' }}
+            style={{ height: '95vh' }}
             maxBounds={[
-                [-90, -200],
-                [90, 200],
+                [-90, -220],
+                [90, 220],
             ]}
         >
             <TileLayer

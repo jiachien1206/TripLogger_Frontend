@@ -108,13 +108,13 @@ const Signup = () => {
             alert('註冊失敗');
         }
     }
-    if (isLogin) return <Navigate to="/" replace />;
+    if (isLogin) return <Navigate to="/" replace={false} />;
     return (
         <Wrap>
             <Modal
                 aria-labelledby="spring-modal-title"
                 aria-describedby="spring-modal-description"
-                open={open}
+                open={true}
                 closeAfterTransition
                 slots={{ backdrop: Backdrop }}
                 slotProps={{
@@ -123,7 +123,7 @@ const Signup = () => {
                     },
                 }}
             >
-                <Fade in={open}>
+                <Fade in={true}>
                     <Box sx={style}>
                         <Stepper activeStep={activeStep}>
                             {steps.map((label, index) => {
@@ -149,14 +149,14 @@ const Signup = () => {
                                     setPassword={setPassword}
                                 ></EmailPwd>
                                 <Box sx={{ display: 'flex', flexDirection: 'row', pt: 1 }}>
-                                    <Button color="inherit" disabled="disabled" sx={{ mr: 1 }}>
+                                    <Button color="inherit" disabled={true} sx={{ mr: 1 }}>
                                         Back
                                     </Button>
                                     <Box sx={{ flex: '1 1 auto' }} />
                                     {inputStatus ? (
                                         <Button onClick={handleNext}>Next</Button>
                                     ) : (
-                                        <Button disabled="disabled" onClick={handleNext}>
+                                        <Button disabled={true} onClick={handleNext}>
                                             Next
                                         </Button>
                                     )}

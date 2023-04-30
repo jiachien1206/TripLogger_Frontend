@@ -5,8 +5,8 @@ import Post from './Post';
 import LeftSidebar from '../../components/LeftSidebar';
 
 const SearchWrap = styled.div`
-    margin: 100px auto;
-    width: 700px;
+    margin: 100px 0px 50px 32%;
+    width: 50%;
     display: flex;
     flex-direction: column;
     gap: 24px;

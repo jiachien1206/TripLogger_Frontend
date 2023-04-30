@@ -82,21 +82,21 @@ const TbMessageCircle2S = styled(TbMessageCircle2)`
         font-size: 36px;
     }
 `;
+
 const PostWrap = styled.div`
     border-radius: 15px;
     background-color: #fff;
     box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
-    width: 800px;
     cursor: default;
-    z-index: 0;
     padding-bottom: 40px;
     margin-bottom: 40px;
+    max-width: 750px;
+    min-width: 70%;
 `;
 
 const PostMainImg = styled.img`
-    position: relative;
-    height: 500px;
-    width: 800px;
+    width: 100%;
+    aspect-ratio: 16/9;
     object-fit: cover;
     border-top-left-radius: 15px;
     border-top-right-radius: 15px;
@@ -122,7 +122,7 @@ const Location = styled.div`
     align-items: center;
     gap: 5px;
     color: #65676b;
-    font-size: 15px;
+    font-size: 18px;
     margin-right: 30px;
 `;
 
@@ -175,7 +175,8 @@ const Right = styled.div`
     flex-direction: column;
     position: fixed;
     top: 100px;
-    right: 5%;
+    right: 7%;
+    width: 20%;
 `;
 
 const ModalTitle = styled.div`
@@ -226,9 +227,10 @@ const RightSidebar = styled.div`
     background-color: #ffffff;
     border-radius: 15px;
     box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
-    width: 300px;
+    width: 100%;
     padding: 20px 25px;
     gap: 15px;
+    cursor: default;
 `;
 
 const RightAuthor = styled.div`
@@ -491,6 +493,7 @@ const Post = () => {
                     </>
                 )}
             </ButtonsWrap>
+
             <PostWrap>
                 <PostMainImg src={post.main_image}></PostMainImg>
                 <Buttom>
@@ -529,7 +532,6 @@ const Post = () => {
                     title={post.title}
                 />
             </PostWrap>
-
             <Right>
                 <RightSidebar className="right-sidebar">
                     <RightAuthor>

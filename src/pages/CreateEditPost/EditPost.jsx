@@ -129,7 +129,7 @@ function EditPost() {
             alert('文章更新失敗');
         }
     }
-    if (!isLogin) return <Navigate to="/" replace />;
+    if (!isLogin) return <Navigate to="/" replace={false} />;
     return (
         <Wrap>
             <MainImgWrap>

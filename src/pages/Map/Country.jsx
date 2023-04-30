@@ -6,10 +6,10 @@ import marker from '../../images/marker.svg';
 
 const MyPopup = styled(Popup)`
     min-width: 300px;
-
+    cursor: default;
     .leaflet-popup-content-wrapper {
         padding: 0px;
-        border-radius: 5px;
+        border-radius: 15px;
     }
     .leaflet-popup-content {
         margin: 0px;
@@ -20,17 +20,38 @@ const MyPopup = styled(Popup)`
 `;
 
 const CountryImage = styled.div`
-    height: 100px;
+    position: relative;
+    aspect-ratio: 18/9;
     width: 100%;
     background-size: cover;
     background-position: center center;
     background-repeat: no-repeat;
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    top: 5;
 `;
+const CountryImageCover = styled.div`
+    position: absolute;
+    padding: 10px;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--white);
+    cursor: default;
+    background-color: rgb(93 93 93 / 30%);
+    width: 100%;
+    text-align: right;
+    height: 100%;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    display: flex;
+    align-items: end;
+`;
+
 const CountryName = styled.div`
-    font-size: 15px;
+    width: 100%;
+    text-align: right;
 `;
+
 const PostLink = styled(Link)`
     text-decoration: none;
     padding: 5px;
@@ -57,19 +78,23 @@ function Country({ country, zoom }) {
             <Marker
                 icon={myIcon}
                 position={country.coordinate}
-                eventHandlers={{
-                    click: () => {
-                        map.setView(country.coordinate, 4);
-                    },
-                }}
+                // eventHandlers={{
+                //     click: () => {
+                //         map.setView(country.coordinate, 4);
+                //     },
+                // }}
             >
                 <MyPopup>
                     <CountryImage
                         style={{
                             backgroundImage: `url("${country.main_image}")`,
                         }}
-                    />
-                    <CountryName>{`${country.emoji} ${country.name.cn} ${country.name.en}`}</CountryName>
+                    >
+                        <CountryImageCover>
+                            <CountryName>{`${country.emoji} ${country.name.cn} ${country.name.en}`}</CountryName>
+                        </CountryImageCover>
+                    </CountryImage>
+
                     {country.posts.map((post) => {
                         return (
                             <PostLink key={post._id} to={`/post/${post._id}`} target="_blank">

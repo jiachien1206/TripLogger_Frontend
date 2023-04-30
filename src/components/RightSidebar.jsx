@@ -3,9 +3,10 @@ import styled from 'styled-components';
 import Block from './Block';
 
 const Wrapper = styled.div`
+    width: 20%;
     position: fixed;
     top: 80px;
-    right: 5%;
+    right: 3%;
     display: flex;
     flex-direction: column;
     margin: 20px 0px 20px 0px;
@@ -14,7 +15,7 @@ const Wrapper = styled.div`
         position: static;
     }
 `;
-const ProfileImage = styled.div``;
+
 const RightSidebar = ({ className }) => {
     return (
         <Wrapper className={className}>

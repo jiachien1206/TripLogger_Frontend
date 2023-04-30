@@ -213,7 +213,7 @@ function CreatePost() {
                 </BottomWrap>
             </Wrap>
         );
-    else return <Navigate to="/" replace />;
+    else return <Navigate to="/" replace={false} />;
 }
 
 export default CreatePost;

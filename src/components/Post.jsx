@@ -20,11 +20,11 @@ import Typography from '@mui/material/Typography';
 import { useIsFocusVisible } from '@mui/material';
 
 const PostWrap = styled.div`
-    border-radius: 8px;
+    border-radius: 15px;
     background-color: #fff;
     margin: 10px auto;
     box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
-    width: 650px;
+    width: 100%;
     cursor: default;
 `;
 
@@ -33,11 +33,11 @@ const PostLink = styled(Link)`
     color: inherit;
 `;
 const PostMainImg = styled.img`
-    height: 250px;
-    width: 650px;
+    height: 30vh;
+    width: 100%;
     object-fit: cover;
-    border-top-left-radius: 8px;
-    border-top-right-radius: 8px;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
 `;
 
 const Buttom = styled.div`

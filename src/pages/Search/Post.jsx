@@ -7,14 +7,14 @@ const PostWrap = styled(Link)`
     border-radius: 15px;
     background-color: #fff;
     box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
-    width: 800px;
     cursor: pointer;
     display: flex;
     text-decoration: none;
     color: inherit;
     height: 250px;
+    transition: all 0.2s;
     &:hover {
-        transform: translate(0, -1px);
+        transform: translate(0, -2px);
     }
 `;
 

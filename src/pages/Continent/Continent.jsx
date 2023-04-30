@@ -9,7 +9,7 @@ import api from '../../utils/api.js';
 const Banner = styled.div`
     margin-top: 60px;
     position: relative;
-    min-height: 350px;
+    aspect-ratio: 36/9;
     width: 100%;
     z-index: 1;
     background-size: cover;
@@ -50,7 +50,6 @@ const Filter = styled.div`
     padding: 5px 7px;
     border-radius: 8px;
     cursor: pointer;
-    color: #050505;
     &:hover {
         background-color: #b8f4cf;
     }
@@ -62,7 +61,7 @@ const Filter = styled.div`
 const ContinentWrap = styled.div`
     display: flex;
     flex-direction: column;
-    width: 650px;
+    width: 45%;
     margin-top: 20px;
 `;
 
