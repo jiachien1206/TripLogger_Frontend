@@ -214,12 +214,12 @@ const Header = () => {
 
     const [ws, setWs] = React.useState(null);
     React.useEffect(() => {
-        const newWs = webSocket('http://localhost:8000.com');
+        const newWs = webSocket('http://localhost:8000');
         setWs(newWs);
     }, []);
     React.useEffect(() => {
         if (isLogin) {
-            const newWs = webSocket('http://localhost:8000.com');
+            const newWs = webSocket('http://localhost:8000');
             setWs(newWs);
         }
         if (isLogin) {

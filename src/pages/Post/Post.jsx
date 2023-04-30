@@ -4,7 +4,6 @@ import styled from 'styled-components';
 import api from '../../utils/api.js';
 import Comments from './Comment';
 import { AuthContext } from '../../context/authContext';
-import LeftSidebar from '../../components/LeftSidebar';
 import { Link } from 'react-router-dom';
 import Avatar from '@mui/material/Avatar';
 import LocationOnRoundedIcon from '@mui/icons-material/LocationOnRounded';
