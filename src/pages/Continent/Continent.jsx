@@ -42,19 +42,23 @@ const FiltersWrap = styled.div`
     width: 100%;
     display: flex;
     gap: 10px;
-    height: 35px;
+    margin-bottom: 14px;
 `;
 
 const Filter = styled.div`
     font-size: 17px;
-    padding: 5px 7px;
+    padding: 5px 7px 5px 9px;
     border-radius: 8px;
     cursor: pointer;
+    color: var(--secondary-font);
+    font-weight: 500;
     &:hover {
-        background-color: #b8f4cf;
+        background-color: var(--light-orange);
+        color: var(--white);
     }
     &.active {
-        background-color: #b8f4cf;
+        color: var(--white);
+        background-color: var(--secondary-color);
     }
 `;
 
@@ -75,7 +79,7 @@ const Continent = () => {
         'africa',
         'antarctica',
     ];
-    const filters = ['交通', '住宿', '景點', '證件', '其他', '恐怖故事', '省錢妙招'];
+    const filters = ['交通', '住宿', '景點', '證件', '恐怖故事', '省錢妙招', '其他'];
     const map = {
         asia: '亞洲',
         europe: '歐洲',
@@ -89,7 +93,7 @@ const Continent = () => {
     if (!continents.includes(continent)) {
         window.location.replace('/');
     }
-    const [activeFilter, setActiveFilter] = React.useState([]);
+    const [activeFilter, setActiveFilter] = React.useState(filters);
     const [posts, setPosts] = React.useState([]);
     const handleFilter = (filter) => {
         if (activeFilter.includes(filter)) {

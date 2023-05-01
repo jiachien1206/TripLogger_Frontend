@@ -50,6 +50,7 @@ const GlobalStyle = createGlobalStyle`
     --background:#f0f5f2;
     --primary-font:#4a4a4a;
     --secondary-font:#65676b;
+    --third-font:#b4b8c1;
     --secondary-background:#dfdfdf;
     --white:#F3FFF4;
     --red:#f52047;
