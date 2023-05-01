@@ -33,9 +33,9 @@ const BannerText = styled.div`
 
 const Wrapper = styled.div`
     display: flex;
-    justify-content: center;
+    justify-content: start;
     margin-top: 20px;
-    gap: 50px;
+    gap: 100px;
 `;
 
 const FiltersWrap = styled.div`
@@ -139,7 +139,7 @@ const Continent = () => {
                     </FiltersWrap>
                     <PostList posts={posts}></PostList>
                 </ContinentWrap>
-                <RightSidebar className={'continent'} />
+                {/* <RightSidebar className={'continent'} /> */}
             </Wrapper>
         </>
     );

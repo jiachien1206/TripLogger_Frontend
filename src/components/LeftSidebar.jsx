@@ -14,7 +14,7 @@ const Wrapper = styled.div`
     width: 20%;
     position: fixed;
     top: 80px;
-    left: 3%;
+    left: 10%;
     display: flex;
     flex-direction: column;
     margin: 20px 0px 20px 0px;
@@ -24,6 +24,7 @@ const Wrapper = styled.div`
     }
     &.continent {
         position: static;
+        margin-left: 10%;
     }
 `;
 const MapLink = styled(Link)``;

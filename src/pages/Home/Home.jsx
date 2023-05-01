@@ -12,11 +12,13 @@ const Wrapper = styled.div`
     justify-content: center;
     margin-top: 80px;
     gap: 50px;
+    margin-left: 20vw;
 `;
 const PostsWrap = styled.div`
     display: flex;
     flex-direction: column;
-    width: 45%;
+    width: 50%;
+    min-width: 700px;
 `;
 
 const FilterWrap = styled.div``;
@@ -84,7 +86,7 @@ const Home = () => {
                 />
                 <Paging setPage={setPage} postNum={postNum} currentPage={page}></Paging>
             </PostsWrap>
-            <RightSidebar className="right-sidebar"></RightSidebar>
+            {/* <RightSidebar className="right-sidebar"></RightSidebar> */}
         </Wrapper>
     );
 };
