@@ -6,18 +6,16 @@ import { Link } from 'react-router-dom';
 import thumbR from '../images/thumbs-up-regular.svg';
 import thumbS from '../images/thumbs-up-solid.svg';
 import Avatar from '@mui/material/Avatar';
-import BookmarkBorderRoundedIcon from '@mui/icons-material/BookmarkBorderRounded';
-import BookmarkRoundedIcon from '@mui/icons-material/BookmarkRounded';
-import ChatBubbleOutlineRoundedIcon from '@mui/icons-material/ChatBubbleOutlineRounded';
-import LocationOnRoundedIcon from '@mui/icons-material/LocationOnRounded';
 import Reactions from './Reaction';
 import reactions from '../images/reactions.png';
 import Backdrop from '@mui/material/Backdrop';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
-import Typography from '@mui/material/Typography';
-import { useIsFocusVisible } from '@mui/material';
+import { AiOutlineHeart, AiFillHeart } from 'react-icons/ai';
+import { FaRegBookmark, FaBookmark } from 'react-icons/fa';
+import { TbMessageCircle2 } from 'react-icons/tb';
+import { RiMapPin2Fill } from 'react-icons/ri';
 
 const PostWrap = styled.div`
     border-radius: 15px;
@@ -152,7 +150,7 @@ const Button = styled.div`
         border-radius: 4px;
     }
     &.active {
-        color: #236262;
+        color: var(--dark-green);
     }
 `;
 
@@ -191,6 +189,9 @@ const LikedButtonIcon = styled.div`
 
 const ModalTitle = styled.div`
     font-size: 20px;
+    text-align: center;
+    font-weight: 500;
+    color: var(--primary-font);
 `;
 const SignButtonWrap = styled.div`
     display: flex;
@@ -203,14 +204,14 @@ const SignButton = styled(Link)`
     border-radius: 6px;
     transition: border-radius 0.4s;
     &.signup {
-        background-color: #236262;
+        background-color: var(--dark-green);
         color: #ffffff;
         font-size: 18px;
         padding-top: 6px;
     }
     &.signin {
-        border: 2px solid #236262;
-        color: #236262;
+        border: 2px solid var(--dark-green);
+        color: var(--dark-green);
     }
 `;
 
@@ -345,7 +346,9 @@ const Post = ({ post, likedPosts, savedPosts }) => {
                             </Info>
                         </Author>
                         <Location>
-                            <LocationOnRoundedIcon color="primary" />
+                            <RiMapPin2Fill
+                                style={{ fontSize: '20px', color: 'var(--dark-green)' }}
+                            />
                             {post.location.continent} | {post.location.country}
                             <PostType>#{post.type}</PostType>
                         </Location>
@@ -377,7 +380,8 @@ const Post = ({ post, likedPosts, savedPosts }) => {
                             onMouseOver={() => setIsHover(true)}
                             onMouseLeave={() => setIsHover(false)}
                         >
-                            <LikedButtonIcon />讚
+                            <AiFillHeart style={{ fontSize: '21px' }} />
+                            喜歡
                         </Button>
                     ) : (
                         <Button
@@ -390,17 +394,17 @@ const Post = ({ post, likedPosts, savedPosts }) => {
                     )}
                     {save ? (
                         <Button className="active" onClick={savePost}>
-                            <BookmarkRoundedIcon color="primary" sx={{ fontSize: 22 }} />
+                            <FaBookmark style={{ fontSize: '17px' }} />
                             收藏
                         </Button>
                     ) : (
                         <Button onClick={savePost}>
-                            <BookmarkBorderRoundedIcon sx={{ fontSize: 22 }} />
+                            <FaRegBookmark style={{ fontSize: '17px' }} />
                             收藏
                         </Button>
                     )}
                     <CommentButton to={`/post/${post._id}`}>
-                        <ChatBubbleOutlineRoundedIcon sx={{ fontSize: 20 }} />
+                        <TbMessageCircle2 style={{ fontSize: '22px' }} />
                         留言
                     </CommentButton>
                 </Buttons>
@@ -408,14 +412,15 @@ const Post = ({ post, likedPosts, savedPosts }) => {
                 <>
                     <Buttons>
                         <Button onClick={handleOpen}>
-                            <LikeButtonIcon />讚
+                            <AiOutlineHeart style={{ fontSize: '21px' }} />
+                            喜歡
                         </Button>
                         <Button onClick={handleOpen}>
-                            <BookmarkBorderRoundedIcon sx={{ fontSize: 22 }} />
+                            <FaRegBookmark style={{ fontSize: '17px' }} />
                             收藏
                         </Button>
                         <Button onClick={handleOpen}>
-                            <ChatBubbleOutlineRoundedIcon sx={{ fontSize: 20 }} />
+                            <TbMessageCircle2 style={{ fontSize: '22px' }} />
                             留言
                         </Button>
                     </Buttons>

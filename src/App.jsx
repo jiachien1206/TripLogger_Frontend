@@ -24,7 +24,7 @@ const theme = createTheme({
             main: '#EEC0B0',
         },
         red: {
-            main: '#D2042D',
+            main: '#f52047',
         },
     },
 });
@@ -43,6 +43,7 @@ const GlobalStyle = createGlobalStyle`
     width: 100%;
     --primary-color: #459a82;
     --light-green:#4DAB9A;
+    --dark-green:#2C6353;
     --super-light-green:#94CFBE;
     --secondary-color:#fea44a;
     --light-orange:#F8D6B5;
@@ -52,6 +53,7 @@ const GlobalStyle = createGlobalStyle`
     --secondary-background:#dfdfdf;
     --white:#F3FFF4;
     --red:#f52047;
+    --blue:#0051a5;
   }
 `;
 function App() {
