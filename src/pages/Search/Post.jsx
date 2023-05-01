@@ -67,14 +67,15 @@ const PostTime = styled.div`
 
 const RiMapPin2FillS = styled(RiMapPin2Fill)`
     font-size: 19px;
-    color: #005647;
+    color: var(--secondary-color);
 `;
 
 const Highlight = styled(Highlighter)`
     .highlight {
-        margin: 0px 3px;
-        padding: 0px 8px;
-        background-color: #a0d9a0;
+        margin: 0px 2px;
+        padding: 0px 9px;
+        background-color: var(--light-green);
+        color: white;
         border-radius: 20px;
     }
 `;
@@ -100,7 +101,6 @@ const Post = ({ post, keyword }) => {
 
     return (
         <PostWrap to={post.url}>
-            {console.log(post)}
             <PostMainImg src={post.main_image}></PostMainImg>
             <PostText>
                 <PostTitle>
@@ -135,20 +135,6 @@ const Post = ({ post, keyword }) => {
                     <PostTime>{date}</PostTime>
                 </Bottom>
             </PostText>
-            {/* <ReadIcon />
-                <ReadNum>{readNum}</ReadNum>
-                <PostContinent>{post.location.continent}</PostContinent>
-                <PostCountry>{post.location.country}</PostCountry>
-                <PostType>{post.type}</PostType>
-                <PostAuthor>{post.authorId}</PostAuthor>
-                
-                <PostTime>{post.dates.post_date}</PostTime> */}
-            {/* </PostLink> */}
-            {/* <Bottom>
-                {like ? <LikedButton onClick={likePost} /> : <LikeButton onClick={likePost} />}
-                <LikeNum>{likeNum}</LikeNum>
-                {save ? <SavedButton onClick={savePost} /> : <SaveButton onClick={savePost} />}
-            </Bottom> */}
         </PostWrap>
     );
 };
