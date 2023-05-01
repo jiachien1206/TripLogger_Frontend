@@ -1,5 +1,6 @@
 import axios from 'axios';
 const api = {
+    // eslint-disable-next-line no-undef
     HOST_NAME: `${process.env.REACT_APP_SERVER}/api`,
     getNewPosts() {
         return axios(`${this.HOST_NAME}/latest-posts`);

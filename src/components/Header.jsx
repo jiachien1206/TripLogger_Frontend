@@ -225,11 +225,13 @@ const Header = () => {
 
     const [ws, setWs] = React.useState(null);
     React.useEffect(() => {
+        // eslint-disable-next-line no-undef
         const newWs = webSocket(process.env.REACT_APP_SERVER);
         setWs(newWs);
     }, []);
     React.useEffect(() => {
         if (isLogin) {
+            // eslint-disable-next-line no-undef
             const newWs = webSocket(process.env.REACT_APP_SERVER);
             setWs(newWs);
         }
