@@ -11,8 +11,9 @@ const PostWrap = styled(Link)`
     display: flex;
     text-decoration: none;
     color: inherit;
-    height: 250px;
+    /* height: 250px; */
     transition: all 0.2s;
+    line-height: 1.7;
     &:hover {
         transform: translate(0, -2px);
     }
@@ -39,7 +40,7 @@ const PostTitle = styled.h2`
 
 const PostContent = styled.div`
     font-size: 15px;
-    line-height: 1.6;
+    line-height: 1.8;
     & img {
         max-width: 100%;
     }
@@ -72,11 +73,14 @@ const RiMapPin2FillS = styled(RiMapPin2Fill)`
 
 const Highlight = styled(Highlighter)`
     .highlight {
-        margin: 0px 2px;
+        /* margin: 0px 2px;
         padding: 0px 9px;
         background-color: var(--light-green);
         color: white;
-        border-radius: 20px;
+        border-radius: 20px; */
+        background-color: transparent;
+        border-bottom: 3px solid var(--primary-color);
+        /* padding-bottom: 1px; */
     }
 `;
 
@@ -111,19 +115,16 @@ const Post = ({ post, keyword }) => {
                         textToHighlight={post.title}
                     />
                 </PostTitle>
-
                 {paragraphs.map((paragraph) => {
                     return (
-                        <>
-                            <PostContent key={paragraph}>
-                                <Highlight
-                                    highlightClassName="highlight"
-                                    searchWords={keywordList}
-                                    autoEscape={true}
-                                    textToHighlight={paragraph}
-                                />
-                            </PostContent>
-                        </>
+                        <PostContent key={paragraph}>
+                            <Highlight
+                                highlightClassName="highlight"
+                                searchWords={keywordList}
+                                autoEscape={true}
+                                textToHighlight={paragraph}
+                            />
+                        </PostContent>
                     );
                 })}
                 <Bottom>

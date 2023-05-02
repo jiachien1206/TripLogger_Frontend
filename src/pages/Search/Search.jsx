@@ -7,6 +7,7 @@ import LeftSidebar from '../../components/LeftSidebar';
 const SearchWrap = styled.div`
     margin: 100px 0px 50px 32%;
     width: 50%;
+    min-width: 800px;
     display: flex;
     flex-direction: column;
     gap: 24px;
