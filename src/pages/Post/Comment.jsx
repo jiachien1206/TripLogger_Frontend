@@ -65,7 +65,7 @@ const IoSendS = styled(IoSend)`
     color: #c5c5c5;
     cursor: not-allowed;
     &.active {
-        color: #1ca8ff;
+        color: var(--primary-color);
         cursor: pointer;
     }
 `;

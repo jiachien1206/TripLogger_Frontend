@@ -151,6 +151,7 @@ const EmailPwd = ({ setInputStatus, name, setName, email, setEmail, password, se
                     <Password
                         placeholder="密碼 (最少7個字元)"
                         value={password}
+                        type="password"
                         onChange={(e) => {
                             setPassword(e.target.value);
                             verifyPassword(e.target.value);
