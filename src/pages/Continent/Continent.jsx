@@ -3,8 +3,9 @@ import React from 'react';
 import styled from 'styled-components';
 import LeftSidebar from '../../components/LeftSidebar';
 import PostList from './PostList';
-import RightSidebar from '../../components/RightSidebar';
 import api from '../../utils/api.js';
+import Paging from '../../components/Pagination';
+import { useNavigate } from 'react-router-dom';
 
 const Banner = styled.div`
     margin-top: 60px;
@@ -67,6 +68,7 @@ const ContinentWrap = styled.div`
     flex-direction: column;
     width: 45%;
     margin-top: 20px;
+    align-items: center;
 `;
 
 const Continent = () => {
@@ -91,10 +93,13 @@ const Continent = () => {
     };
     const continent = useParams().continent;
     if (!continents.includes(continent)) {
-        window.location.replace('/');
+        navigate('/');
     }
     const [activeFilter, setActiveFilter] = React.useState(filters);
     const [posts, setPosts] = React.useState([]);
+    const [page, setPage] = React.useState(1);
+    const [postNum, setPostNum] = React.useState(0);
+    const navigate = useNavigate();
     const handleFilter = (filter) => {
         if (activeFilter.includes(filter)) {
             const newActiveFilters = activeFilter.filter((f) => {
@@ -106,16 +111,24 @@ const Continent = () => {
         }
     };
     const filterPosts = async (continent, filters) => {
-        const res = await api.getContinentPosts(continent, filters.join(','));
-        const posts = res.data.data;
+        const res = await api.getContinentPosts(continent, filters.join(','), page);
+        const { posts, postsNum } = res.data.data;
         setPosts(posts);
+        setPostNum(Math.ceil(postsNum / 10));
     };
+    const scollToRef = React.useRef();
 
     React.useEffect(() => {
         filterPosts(continent, activeFilter);
+        scollToRef.current.scrollIntoView();
+    }, [page]);
+    React.useEffect(() => {
+        filterPosts(continent, activeFilter);
+        setPage(1);
     }, [continent, activeFilter]);
     return (
         <>
+            <div ref={scollToRef}></div>
             <Banner
                 style={{
                     backgroundImage: `url(https://triplogger.s3.ap-northeast-1.amazonaws.com/banner/${continent}.jpg)`,
@@ -123,6 +136,7 @@ const Continent = () => {
             >
                 <BannerText>{map[continent]}</BannerText>
             </Banner>
+
             <Wrapper>
                 <LeftSidebar active={continent} className={'continent'} />
                 <ContinentWrap>
@@ -142,8 +156,8 @@ const Continent = () => {
                         })}
                     </FiltersWrap>
                     <PostList posts={posts}></PostList>
+                    <Paging setPage={setPage} postNum={postNum} currentPage={page}></Paging>
                 </ContinentWrap>
-                {/* <RightSidebar className={'continent'} /> */}
             </Wrapper>
         </>
     );

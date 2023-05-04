@@ -25,8 +25,8 @@ const api = {
     getPostNumbers(postId) {
         return axios(`${this.HOST_NAME}/posts/${postId}/num`);
     },
-    getContinentPosts(continent, types) {
-        return axios(`${this.HOST_NAME}/continents/${continent}?types=${types}`);
+    getContinentPosts(continent, types, page) {
+        return axios(`${this.HOST_NAME}/continents/${continent}?types=${types}&paging=${page}`);
     },
     addRead(postId, userId, location, type) {
         return axios.post(`${this.HOST_NAME}/posts/${postId}/reads`, { userId, location, type });
