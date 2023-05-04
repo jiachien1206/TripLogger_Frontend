@@ -62,8 +62,8 @@ const api = {
     getMapPosts() {
         return axios(`${this.HOST_NAME}/map-posts`);
     },
-    getUserPosts(userId) {
-        return axios(`${this.HOST_NAME}/user/${userId}/posts`);
+    getUserPosts(userId, num) {
+        return axios(`${this.HOST_NAME}/user/${userId}/posts?num=${num}`);
     },
     getUserVisited(userId, jwtToken) {
         return axios(`${this.HOST_NAME}/user/visited`, {

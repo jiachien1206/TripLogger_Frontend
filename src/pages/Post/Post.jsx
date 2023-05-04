@@ -395,8 +395,8 @@ const Post = () => {
             const dateTime = utcDate.toLocaleString();
             const [date] = dateTime.split(' ');
             setDate(date);
-            const response = await api.getUserPosts(post.authorId._id);
-            setAuthorPosts(response.data.data.slice(0, 6));
+            const response = await api.getUserPosts(post.authorId._id, 6);
+            setAuthorPosts(response.data.data);
             setNewComment(false);
         }
 
