@@ -1,20 +1,17 @@
 import React from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
-
 import like from '../images/like.gif';
 import love from '../images/love.gif';
 import haha from '../images/haha.gif';
 import wow from '../images/wow.gif';
 import sad from '../images/sad.gif';
 import angry from '../images/angry.gif';
-import thumbR from '../images/thumbs-up-regular.svg';
-import thumbS from '../images/thumbs-up-solid.svg';
 import { AiOutlineHeart } from 'react-icons/ai';
 
 const ReactionsWrapper = styled(motion.div)`
     position: absolute;
-    top: -100%;
+    top: -300%;
     width: 230px;
     padding: 10px 20px;
     border-radius: 100px;
@@ -83,10 +80,11 @@ const AiOutlineHeartS = styled(AiOutlineHeart)`
     font-size: 32px;
     transition: all 0.3s;
     &:hover {
-        color: #f52047;
+        color: var(--red);
         font-size: 39px;
     }
 `;
+
 const ReactionImage = styled.img`
     width: 100%;
     height: 100%;
@@ -102,7 +100,6 @@ const LikeThumb = styled.span`
     font-weight: 600;
     color: #606770;
     fill: #606770;
-    padding: 15px 20px;
     cursor: pointer;
     &:after {
         position: absolute;
@@ -124,24 +121,10 @@ const Reaction = ({ icon, name }) => {
 const Button = styled.div`
     font-weight: 400;
     display: flex;
-    gap: 6px;
+    gap: 5px;
     &.active {
-        color: #236262;
+        color: var(--red);
     }
-`;
-const LikeButtonIcon = styled.div`
-    width: 20px;
-    height: 20px;
-    background-repeat: no-repeat;
-    background-image: url(${thumbR});
-    filter: invert(41%) sepia(6%) saturate(315%) hue-rotate(182deg) brightness(93%) contrast(84%);
-`;
-const LikedButtonIcon = styled.div`
-    width: 20px;
-    height: 20px;
-    background-repeat: no-repeat;
-    background-image: url(${thumbS});
-    filter: invert(29%) sepia(87%) saturate(293%) hue-rotate(131deg) brightness(94%) contrast(94%);
 `;
 
 const Reactions = ({ isHover, active, page }) => {
@@ -167,10 +150,11 @@ const Reactions = ({ isHover, active, page }) => {
             ) : (
                 <LikeThumb>
                     {active ? (
-                        <Button className="active">{/* <LikedButtonIcon />讚 */}</Button>
+                        <Button className="active"></Button>
                     ) : (
                         <Button>
-                            <LikeButtonIcon />讚
+                            <AiOutlineHeart style={{ fontSize: '21px', fontWeight: 'bold' }} />
+                            喜歡
                         </Button>
                     )}
                     <ReactionsWrapper

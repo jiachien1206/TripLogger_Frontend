@@ -9,7 +9,7 @@ import api from '../../utils/api.js';
 const Banner = styled.div`
     margin-top: 60px;
     position: relative;
-    min-height: 350px;
+    aspect-ratio: 36/9;
     width: 100%;
     z-index: 1;
     background-size: cover;
@@ -33,36 +33,39 @@ const BannerText = styled.div`
 
 const Wrapper = styled.div`
     display: flex;
-    justify-content: center;
+    justify-content: start;
     margin-top: 20px;
-    gap: 50px;
+    gap: 100px;
 `;
 
 const FiltersWrap = styled.div`
     width: 100%;
     display: flex;
     gap: 10px;
-    height: 35px;
+    margin-bottom: 14px;
 `;
 
 const Filter = styled.div`
     font-size: 17px;
-    padding: 5px 7px;
+    padding: 5px 7px 5px 9px;
     border-radius: 8px;
     cursor: pointer;
-    color: #050505;
+    color: var(--secondary-font);
+    font-weight: 500;
     &:hover {
-        background-color: #b8f4cf;
+        background-color: var(--light-orange);
+        color: var(--white);
     }
     &.active {
-        background-color: #b8f4cf;
+        color: var(--white);
+        background-color: var(--secondary-color);
     }
 `;
 
 const ContinentWrap = styled.div`
     display: flex;
     flex-direction: column;
-    width: 650px;
+    width: 45%;
     margin-top: 20px;
 `;
 
@@ -76,7 +79,7 @@ const Continent = () => {
         'africa',
         'antarctica',
     ];
-    const filters = ['交通', '住宿', '景點', '證件', '其他', '恐怖故事', '省錢妙招'];
+    const filters = ['交通', '住宿', '景點', '證件', '恐怖故事', '省錢妙招', '其他'];
     const map = {
         asia: '亞洲',
         europe: '歐洲',
@@ -90,7 +93,7 @@ const Continent = () => {
     if (!continents.includes(continent)) {
         window.location.replace('/');
     }
-    const [activeFilter, setActiveFilter] = React.useState([]);
+    const [activeFilter, setActiveFilter] = React.useState(filters);
     const [posts, setPosts] = React.useState([]);
     const handleFilter = (filter) => {
         if (activeFilter.includes(filter)) {
@@ -140,7 +143,7 @@ const Continent = () => {
                     </FiltersWrap>
                     <PostList posts={posts}></PostList>
                 </ContinentWrap>
-                <RightSidebar className={'continent'} />
+                {/* <RightSidebar className={'continent'} /> */}
             </Wrapper>
         </>
     );

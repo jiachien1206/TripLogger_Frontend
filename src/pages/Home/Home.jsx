@@ -10,11 +10,13 @@ const Wrapper = styled.div`
     justify-content: center;
     margin-top: 80px;
     gap: 50px;
+    margin-left: 20vw;
 `;
 const PostsWrap = styled.div`
     display: flex;
     flex-direction: column;
-    max-width: 680px;
+    width: 50%;
+    min-width: 700px;
 `;
 
 const FilterWrap = styled.div``;
@@ -25,7 +27,7 @@ const FilterButton = styled.button`
     border: none;
     background: none;
     font-size: 18px;
-    color: #65676b;
+    color: var(--secondary-font);
     cursor: pointer;
     &.active {
         font-size: 23px;
@@ -75,6 +77,7 @@ const Home = () => {
                         );
                     })}
                 </FilterWrap>
+
                 <PostList
                     setPostNum={setPostNum}
                     setPage={setPage}

@@ -132,6 +132,7 @@ const Signin = () => {
                             placeholder="密碼"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
+                            type="password"
                         />
                         <Button
                             variant="contained"

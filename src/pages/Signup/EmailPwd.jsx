@@ -84,14 +84,17 @@ const EmailPwd = ({ setInputStatus, name, setName, email, setEmail, password, se
     };
     const verifyEmail = async (email) => {
         if (isValidEmail(email)) {
-            setTimeout(async () => {
+            try {
                 const res = await api.checkUser({ email });
-                if (!res.error) {
+
+                if (res.status === 200) {
                     setEmailPass(true);
-                } else {
-                    setEmailPass(false);
+                    console.log(emailPass);
                 }
-            }, 700);
+            } catch (e) {
+                setEmailPass(false);
+                console.log(emailPass);
+            }
         } else {
             setEmailPass(false);
         }
@@ -128,7 +131,7 @@ const EmailPwd = ({ setInputStatus, name, setName, email, setEmail, password, se
                         value={name}
                         onChange={(e) => {
                             setName(e.target.value);
-                            verifyName(name);
+                            verifyName(e.target.value);
                         }}
                     />
                     {namePass && <CheckCircle color="primary" />}
@@ -139,18 +142,19 @@ const EmailPwd = ({ setInputStatus, name, setName, email, setEmail, password, se
                         value={email}
                         onChange={(e) => {
                             setEmail(e.target.value);
-                            verifyEmail(email);
+                            verifyEmail(e.target.value);
                         }}
                     />
-                    {emailPass && <CheckCircle color="primary" />}
+                    {emailPass ? <CheckCircle color="primary" /> : <></>}
                 </RowlWrap>
                 <RowlWrap>
                     <Password
                         placeholder="密碼 (最少7個字元)"
                         value={password}
+                        type="password"
                         onChange={(e) => {
                             setPassword(e.target.value);
-                            verifyPassword(password);
+                            verifyPassword(e.target.value);
                         }}
                     />
                     {pwdPass && <CheckCircle color="primary" />}

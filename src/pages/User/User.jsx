@@ -40,11 +40,13 @@ const Option = styled(Link)`
     padding: 14px 0px 14px 10px;
     margin: 3px 0px;
     text-decoration: none;
+    color: var(--secondary-font);
     &:hover {
-        background-color: #dbf5f0;
+        background-color: var(--light-orange);
     }
     &.active {
-        background-color: #ffffff;
+        background-color: var(--secondary-color);
+        color: var(--white);
     }
 `;
 const OptionIcon = styled.img`
@@ -52,7 +54,6 @@ const OptionIcon = styled.img`
 `;
 const OptionTitle = styled.div`
     font-size: 20px;
-    color: #5c5c5c;
     font-weight: 500;
 `;
 
@@ -138,7 +139,7 @@ const User = () => {
                 </Section>
             </Wrap>
         );
-    else return <Navigate to="/" replace />;
+    else return <Navigate to="/" replace={false} />;
 };
 
 export default User;

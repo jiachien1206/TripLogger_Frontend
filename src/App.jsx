@@ -9,7 +9,7 @@ import { useLocation } from 'react-router-dom';
 const theme = createTheme({
     palette: {
         primary: {
-            main: '#236262',
+            main: '#459a82',
             light: '#a5dfdf',
         },
         secondary: {
@@ -24,7 +24,7 @@ const theme = createTheme({
             main: '#EEC0B0',
         },
         red: {
-            main: '#D2042D',
+            main: '#f52047',
         },
     },
 });
@@ -37,10 +37,24 @@ const GlobalStyle = createGlobalStyle`
   }
   body {
     margin: 50px 0px;
-    background-color: #f0f4f5;
+    background-color: #f0f5f2;
     letter-spacing:0.2em;
     color: #4a4a4a;
     width: 100%;
+    --primary-color: #459a82;
+    --light-green:#4DAB9A;
+    --dark-green:#2C6353;
+    --super-light-green:#94CFBE;
+    --secondary-color:#fea44a;
+    --light-orange:#F8D6B5;
+    --background:#f0f5f2;
+    --primary-font:#4a4a4a;
+    --secondary-font:#65676b;
+    --third-font:#b4b8c1;
+    --secondary-background:#dfdfdf;
+    --white:#F3FFF4;
+    --red:#f52047;
+    --blue:#0051a5;
   }
 `;
 function App() {
