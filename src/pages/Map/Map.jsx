@@ -99,13 +99,12 @@ function Map() {
     const [country, setCountry] = React.useState('全站');
     const [posts, setPosts] = React.useState([]);
 
-    // TODO: 打API拿所有國家的文章的座標、國名和文章摘要連結那些（首圖？）
     React.useEffect(() => {
         const fetchMapPosts = async () => {
             const res = await api.getMapPosts();
             const contryData = res.data.data;
             const top = await api.getTopPosts();
-            setPosts(top.data.data.slice(0, 8));
+            setPosts(top.data.data.posts.slice(0, 8));
             setCountries(contryData);
         };
         fetchMapPosts();
