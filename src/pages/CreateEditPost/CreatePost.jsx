@@ -6,7 +6,7 @@ import api from '../../utils/api';
 import updateNewsfeeds from '../../utils/updateUserNewsfeeds';
 import axios from 'axios';
 import {
-    Wrap,
+    EditorWrap,
     MainImgWrap,
     MainImg,
     UploadImg,
@@ -97,18 +97,17 @@ function CreatePost() {
             if (!mainImg) {
                 alert('請上傳首圖');
                 console.log(content.length);
-            } else if (title === '') {
-                alert('請填寫標題');
-            } else if (startDate === null || !endDate === null) {
+            } else if (title.length < 1 || title.length > 100) {
+                alert('請填寫 1 至 100 個字元的標題');
+            } else if (startDate === null || endDate === null) {
                 alert('請選擇旅遊日期');
             } else if (new Date(endDate) - new Date(startDate) < 0) {
                 alert('旅行結束日期需晚於開始日期');
-            } else if (content === '') {
-                alert('請寫文章內容');
-            } else if (content.length > 30100) {
-                alert('文章內容勿超過30000字');
+            } else if (content.length < 17 || content.length > 20500) {
+                alert('請撰寫 10 至 20000 個字元的內文');
             } else {
-                await api.createPost(
+                alert('送出文章');
+                const res = await api.createPost(
                     {
                         title,
                         content,
@@ -119,9 +118,8 @@ function CreatePost() {
                     },
                     jwtToken
                 );
-                alert('送出文章');
-                await updateNewsfeeds(jwtToken);
-                navigate('/');
+                // await updateNewsfeeds(jwtToken);
+                navigate(`/post/${res.data.data}`);
             }
         } catch (e) {
             console.log(e);
@@ -129,21 +127,10 @@ function CreatePost() {
         }
     }
 
-    const handleSelect = () => {};
-
-    const selectionRange = {
-        startDate: new Date() - 1,
-        endDate: new Date(),
-        key: 'selection',
-    };
-
-    // React.useEffect(() => {
-    //     scrollToBottom();
-    // }, [content]);
     const ref = React.useRef();
     if (isLogin)
         return (
-            <Wrap>
+            <EditorWrap>
                 <MainImgWrap>
                     {mainImg && <MainImg src={mainImg} />}
                     {progress !== 0 && progress < 100 && <CircularStatic progress={progress} />}
@@ -211,7 +198,7 @@ function CreatePost() {
                         發文
                     </Button>
                 </BottomWrap>
-            </Wrap>
+            </EditorWrap>
         );
     else return <Navigate to="/" replace={false} />;
 }

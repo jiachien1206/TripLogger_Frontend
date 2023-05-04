@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import logo from '../images/logo.png';
 import api from '../utils/api';
-import SearchIcon from '@mui/icons-material/Search';
 import { AuthContext } from '../context/authContext';
 import Avatar from '@mui/material/Avatar';
 import Menu from '@mui/material/Menu';
@@ -244,13 +243,13 @@ const Header = () => {
         if (ws) {
             if (isLogin) {
                 ws.emit('Map user id and socket id', { userId: user.userId });
+                ws.on('Update user newsfeeds', async () => {
+                    await updateNewsfeeds(jwtToken);
+                });
+                ws.on('New notification', (data) => {
+                    setBadge(1);
+                });
             }
-            ws.on('Update user newsfeeds', async () => {
-                await updateNewsfeeds(jwtToken);
-            });
-            ws.on('New notification', (data) => {
-                setBadge(1);
-            });
         }
     }, [ws]);
 

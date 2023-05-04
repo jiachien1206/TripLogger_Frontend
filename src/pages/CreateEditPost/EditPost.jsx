@@ -8,7 +8,7 @@ import api from '../../utils/api';
 import updateNewsfeeds from '../../utils/updateUserNewsfeeds';
 import axios from 'axios';
 import {
-    Wrap,
+    EditorWrap,
     MainImgWrap,
     MainImg,
     UploadImg,
@@ -102,13 +102,12 @@ function EditPost() {
 
     async function submitPost() {
         try {
-            if (title === '') {
-                alert('請填寫標題');
-            } else if (content === '') {
-                alert('請寫文章內容');
-            } else if (content.length > 30100) {
-                alert('文章內容勿超過30000字');
+            if (title.length < 1 || title.length > 100) {
+                alert('請填寫 1 至 100 個字元的標題');
+            } else if (content.length < 17 || content.length > 20500) {
+                alert('請撰寫 10 至 20000 個字元的內文');
             } else {
+                console.log(content);
                 alert('文章更新');
                 await api.editPost(
                     postId,
@@ -116,13 +115,11 @@ function EditPost() {
                         title,
                         content,
                         main_image: mainImg,
-                        location: { continent, country },
-                        type,
                     },
                     jwtToken
                 );
-                await updateNewsfeeds(jwtToken);
-                navigate('/');
+                // await updateNewsfeeds(jwtToken);
+                navigate(`/post/${postId}`);
             }
         } catch (e) {
             console.log(e);
@@ -131,7 +128,7 @@ function EditPost() {
     }
     if (!isLogin) return <Navigate to="/" replace={false} />;
     return (
-        <Wrap>
+        <EditorWrap>
             <MainImgWrap>
                 <MainImg src={mainImg} />
                 {progress !== 0 && progress < 100 && <CircularStatic progress={progress} />}
@@ -177,7 +174,7 @@ function EditPost() {
                     編輯完成
                 </Button>
             </BottomWrap>
-        </Wrap>
+        </EditorWrap>
     );
 }
 

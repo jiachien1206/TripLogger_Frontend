@@ -6,7 +6,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 
-export const Wrap = styled.div`
+export const EditorWrap = styled.div`
     margin: 0px auto 10px;
     background-color: #ffffff;
     box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
@@ -16,6 +16,7 @@ export const Wrap = styled.div`
     display: flex;
     flex-direction: column;
     gap: 20px;
+    z-index: 100;
 `;
 
 export const MainImgWrap = styled.div`
