@@ -1,11 +1,12 @@
 import axios from 'axios';
 const api = {
-    HOST_NAME: 'http://localhost:8000/api',
-    getNewPosts() {
-        return axios(`${this.HOST_NAME}/latest-posts`);
+    // eslint-disable-next-line no-undef
+    HOST_NAME: `${process.env.REACT_APP_SERVER}/api`,
+    getNewPosts(page = 1) {
+        return axios(`${this.HOST_NAME}/latest-posts?paging=${page}`);
     },
-    getTopPosts() {
-        return axios(`${this.HOST_NAME}/top-posts`);
+    getTopPosts(page = 1) {
+        return axios(`${this.HOST_NAME}/top-posts?paging=${page}`);
     },
     getRelevantPosts(jwtToken) {
         return axios(`${this.HOST_NAME}/relevant-posts`, {
@@ -17,6 +18,9 @@ const api = {
     },
     getPost(postId) {
         return axios(`${this.HOST_NAME}/posts/${postId}`);
+    },
+    getPosts(postIds) {
+        return axios(`${this.HOST_NAME}/posts?ids=${postIds}`);
     },
     getPostNumbers(postId) {
         return axios(`${this.HOST_NAME}/posts/${postId}/num`);

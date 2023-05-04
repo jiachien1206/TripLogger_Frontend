@@ -2,6 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 import Post from '../../components/Post';
 import { AuthContext } from '../../context/authContext';
+import api from '../../utils/api';
+import updateNewsfeeds from '../../utils/updateUserNewsfeeds';
 
 const PostsWrap = styled.div`
     display: flex;
@@ -13,22 +15,33 @@ const PostList = ({ setPostNum, filter, setPage, page }) => {
     const [posts, setPosts] = React.useState([]);
     const [likedPosts, setLikedPosts] = React.useState([]);
     const [savedPosts, setSavedPosts] = React.useState([]);
-    const { isLogin } = React.useContext(AuthContext);
-    const getPosts = (page) => {
-        let posts;
+    const { isLogin, jwtToken } = React.useContext(AuthContext);
+    const getPosts = async (page) => {
+        let pagePosts;
         if (filter === '為你推薦') {
-            posts = window.localStorage.getItem('relevantPosts');
+            let allPostIds = window.localStorage.getItem('relevantPosts');
+            if (!allPostIds) {
+                await updateNewsfeeds(jwtToken);
+                allPostIds = window.localStorage.getItem('relevantPosts');
+            }
+            const postIdsArr = JSON.parse(allPostIds);
+            setPostNum(Math.ceil(postIdsArr.length / 10));
+            const pagePostIds = postIdsArr.slice((page - 1) * 10, page * 10);
+            const postIdsStr = pagePostIds.toString();
+            const res = await api.getPosts(postIdsStr);
+            pagePosts = res.data.data;
         } else if (filter === '熱門文章') {
-            posts = window.localStorage.getItem('topPosts');
+            const res = await api.getTopPosts(page);
+            pagePosts = res.data.data.posts;
+            const postNum = res.data.data.postsNum;
+            setPostNum(Math.ceil(postNum / 10));
         } else if (filter === '最新文章') {
-            posts = window.localStorage.getItem('newPosts');
+            const res = await api.getNewPosts(page);
+            pagePosts = res.data.data.posts;
+            const postNum = res.data.data.postsNum;
+            setPostNum(Math.ceil(postNum / 10));
         }
-        if (posts) {
-            posts = JSON.parse(posts);
-            setPostNum(Math.ceil(posts.length / 10));
-            posts = posts.slice((page - 1) * 10, page * 10);
-            setPosts(posts);
-        }
+        setPosts(pagePosts);
     };
     const getLikedPosts = () => {
         const posts = window.localStorage.getItem('likedPosts');
@@ -54,14 +67,19 @@ const PostList = ({ setPostNum, filter, setPage, page }) => {
 
     React.useEffect(() => {
         getPosts(page);
-        setPage(page);
     }, [page]);
 
     return (
         <PostsWrap>
-            {posts.map((post) => (
-                <Post key={post._id} post={post} likedPosts={likedPosts} savedPosts={savedPosts} />
-            ))}
+            {posts &&
+                posts.map((post) => (
+                    <Post
+                        key={post._id}
+                        post={post}
+                        likedPosts={likedPosts}
+                        savedPosts={savedPosts}
+                    />
+                ))}
         </PostsWrap>
     );
 };

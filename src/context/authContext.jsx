@@ -18,34 +18,6 @@ export const AuthContextProvider = ({ children }) => {
     const [loading, setLoading] = React.useState(true);
     const [jwtToken, setJwtToken] = React.useState();
 
-    const handleLoginResponse = React.useCallback(async (response) => {
-        const accessToken = response.authResponse.accessToken;
-        const { data } = await api.signin({
-            access_token: accessToken,
-        });
-        const { access_token: tokenFromServer, user: userData } = data;
-        setUser(userData);
-        setJwtToken(tokenFromServer);
-        window.localStorage.setItem('jwtToken', tokenFromServer);
-        setIsLogin(true);
-        return tokenFromServer;
-    }, []);
-
-    React.useEffect(() => {
-        const checkAuthStatus = async () => {
-            // await fb.init();
-            // const response = await fb.getLoginStatus();
-            // if (response.status === 'connected') {
-            //   handleLoginResponse(response);
-            //   setLoading(false);
-            // } else {
-            //   window.localStorage.removeItem('jwtToken');
-            //   setLoading(false);
-            // }
-        };
-        checkAuthStatus();
-    }, [handleLoginResponse]);
-
     const saveUserData = async (userData) => {
         setJwtToken(userData.jwtToken);
         delete userData.jwtToken;
@@ -55,16 +27,6 @@ export const AuthContextProvider = ({ children }) => {
 
     const signin = async () => {
         setLoading(true);
-        //   const response = await fb.login();
-        //   if (response.status === 'connected') {
-        //     const tokenFromServer = handleLoginResponse(response);
-        //     setLoading(false);
-        //     return tokenFromServer;
-        //   } else {
-        //     window.localStorage.removeItem('jwtToken');
-        //     setLoading(false);
-        //     return null;
-        //   }
     };
 
     const logout = async () => {
@@ -94,16 +56,12 @@ export const AuthContextProvider = ({ children }) => {
         }
     };
 
-    const guestGetNewsfeed = async () => {
-        await updateNewsfeeds(null);
-        setLoading(false);
-    };
     React.useEffect(() => {
         const jwtToken = window.localStorage.getItem('jwtToken');
         if (jwtToken) {
             getUserData(jwtToken);
         } else {
-            guestGetNewsfeed();
+            setLoading(false);
         }
     }, []);
 

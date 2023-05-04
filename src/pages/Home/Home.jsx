@@ -3,8 +3,6 @@ import React from 'react';
 import styled from 'styled-components';
 import { AuthContext } from '../../context/authContext';
 import LeftSidebar from '../../components/LeftSidebar';
-import RightSidebar from '../../components/RightSidebar';
-import updateNewsfeeds from '../../utils/updateUserNewsfeeds.js';
 import Paging from '../../components/Pagination';
 
 const Wrapper = styled.div`
@@ -37,7 +35,7 @@ const FilterButton = styled.button`
 
 const Home = () => {
     const [filters, setFilters] = React.useState(['熱門文章', '最新文章']);
-    const [activeFilter, setActiveFilter] = React.useState('熱門文章');
+    const [activeFilter, setActiveFilter] = React.useState('');
     const [page, setPage] = React.useState(1);
     const { isLogin } = React.useContext(AuthContext);
     const [postNum, setPostNum] = React.useState(0);
@@ -48,8 +46,10 @@ const Home = () => {
         if (isLogin) {
             setFilters(['為你推薦', '熱門文章', '最新文章']);
             setActiveFilter('為你推薦');
-            setPage(1);
+        } else {
+            setActiveFilter('熱門文章');
         }
+        setPage(1);
     }, []);
 
     React.useEffect(() => {
@@ -83,7 +83,7 @@ const Home = () => {
                 />
                 <Paging setPage={setPage} postNum={postNum} currentPage={page}></Paging>
             </PostsWrap>
-            <RightSidebar className="right-sidebar"></RightSidebar>
+            {/* <RightSidebar className="right-sidebar"></RightSidebar> */}
         </Wrapper>
     );
 };
