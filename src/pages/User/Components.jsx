@@ -5,7 +5,7 @@ export const Block = styled.div`
     flex-direction: column;
     align-items: center;
     background-color: #ffffff;
-    border-radius: 7px;
+    border-radius: 15px;
     gap: 15px;
     width: 650px;
     padding: 40px 10px;

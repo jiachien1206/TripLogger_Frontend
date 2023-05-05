@@ -7,8 +7,8 @@ const Wrap = styled.div`
     display: flex;
     flex-direction: column;
     width: 100%;
-    box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
-    border-radius: 8px;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+    border-radius: 15px;
 `;
 
 const Posts = () => {

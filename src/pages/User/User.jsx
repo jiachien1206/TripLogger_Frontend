@@ -9,6 +9,10 @@ import setting from '../../images/user_setting.png';
 import map from '../../images/user_map.png';
 import posts from '../../images/user_posts.png';
 import save from '../../images/user_save.png';
+import { BsPersonFill } from 'react-icons/bs';
+import { RiProfileLine } from 'react-icons/ri';
+import { MdMap } from 'react-icons/md';
+import { BiBookBookmark } from 'react-icons/bi';
 const Map = lazy(() => import('./Map/Map'));
 const Wrap = styled.div`
     margin: 100px auto 0px;
@@ -33,7 +37,7 @@ const OptionsList = styled.div`
 const Option = styled(Link)`
     display: flex;
     align-items: center;
-    gap: 15px;
+    gap: 10px;
     height: 45px;
     border-radius: 5px;
     cursor: pointer;
@@ -78,45 +82,49 @@ const User = () => {
                     <OptionsList>
                         {section === 'setting' ? (
                             <Option className="active" to={'/user/setting'}>
-                                <OptionIcon src={setting} />
+                                {/* <OptionIcon src={setting} /> */}
+                                <BsPersonFill style={{ fontSize: '26px' }} />
                                 <OptionTitle>個人資料</OptionTitle>
                             </Option>
                         ) : (
                             <Option to={'/user/setting'}>
-                                <OptionIcon src={setting} />
+                                {/* <OptionIcon src={setting} /> */}
+                                <BsPersonFill style={{ fontSize: '26px' }} />
                                 <OptionTitle>個人資料</OptionTitle>
                             </Option>
                         )}
                         {section === 'map' ? (
                             <Option className="active" to={'/user/map'}>
-                                <OptionIcon src={map} />
+                                {/* <OptionIcon src={map} /> */}
+                                <MdMap style={{ fontSize: '26px' }} />
                                 <OptionTitle>旅遊足跡</OptionTitle>
                             </Option>
                         ) : (
                             <Option to={'/user/map'}>
-                                <OptionIcon src={map} />
+                                {/* <OptionIcon src={map} /> */}
+                                <MdMap style={{ fontSize: '26px' }} />
                                 <OptionTitle>旅遊足跡</OptionTitle>
                             </Option>
                         )}
                         {section === 'posts' ? (
                             <Option className="active" to={'/user/posts'}>
-                                <OptionIcon src={posts} />
+                                <RiProfileLine style={{ fontSize: '26px' }} />
                                 <OptionTitle>我的文章</OptionTitle>
                             </Option>
                         ) : (
                             <Option to={'/user/posts'}>
-                                <OptionIcon src={posts} />
+                                <RiProfileLine style={{ fontSize: '26px' }} />
                                 <OptionTitle>我的文章</OptionTitle>
                             </Option>
                         )}
                         {section === 'save' ? (
                             <Option className="active" to={'/user/save'}>
-                                <OptionIcon src={save} />
+                                <BiBookBookmark style={{ fontSize: '25px' }} />
                                 <OptionTitle>收藏清單</OptionTitle>
                             </Option>
                         ) : (
                             <Option to={'/user/save'}>
-                                <OptionIcon src={save} />
+                                <BiBookBookmark style={{ fontSize: '25px' }} />
                                 <OptionTitle>收藏清單</OptionTitle>
                             </Option>
                         )}

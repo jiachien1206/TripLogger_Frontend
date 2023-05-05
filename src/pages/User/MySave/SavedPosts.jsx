@@ -8,30 +8,39 @@ const Wrap = styled.div`
     display: flex;
     flex-direction: column;
     width: 100%;
-    box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
-    border-radius: 8px;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+    border-radius: 15px;
 `;
 
-const Post = styled.div`
+const Post = styled(Link)`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 1px solid #efefef;
+    border-bottom: 2px solid #efefef;
     background-color: #ffffff;
     height: 90px;
     width: 100%;
     padding: 10px 30px;
+    text-decoration: none;
     &:hover {
         background-color: #efefef;
     }
     gap: 40px;
+    &:first-child {
+        border-top-left-radius: 15px;
+        border-top-right-radius: 15px;
+    }
+    &:last-child {
+        border-bottom-left-radius: 15px;
+        border-bottom-right-radius: 15px;
+        border-bottom: none;
+    }
 `;
 
-const PostTitle = styled(Link)`
+const PostTitle = styled.div`
     font-size: 18px;
     cursor: pointer;
-    color: #236262;
-    text-decoration: none;
+    color: var(--dark-green);
     font-weight: 500;
 `;
 
@@ -61,8 +70,8 @@ const Save = () => {
             <Wrap>
                 {savedPosts.map((post) => {
                     return (
-                        <Post key={post._id}>
-                            <PostTitle to={`/post/${post._id}`}>{post.title}</PostTitle>
+                        <Post to={`/post/${post._id}`} key={post._id}>
+                            <PostTitle>{post.title}</PostTitle>
                         </Post>
                     );
                 })}

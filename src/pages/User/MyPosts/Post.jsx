@@ -9,7 +9,7 @@ const Wrapper = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 1px solid #efefef;
+    border-bottom: 2px solid #efefef;
     background-color: #ffffff;
     height: 90px;
     width: 100%;
@@ -18,12 +18,21 @@ const Wrapper = styled.div`
         background-color: #efefef;
     }
     gap: 40px;
+    &:first-child {
+        border-top-left-radius: 15px;
+        border-top-right-radius: 15px;
+    }
+    &:last-child {
+        border-bottom-left-radius: 15px;
+        border-bottom-right-radius: 15px;
+        border-bottom: none;
+    }
 `;
 
 const PostTitle = styled(Link)`
     font-size: 18px;
     cursor: pointer;
-    color: #236262;
+    color: var(--dark-green);
     text-decoration: none;
     font-weight: 500;
 `;

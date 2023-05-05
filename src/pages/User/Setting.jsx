@@ -79,9 +79,9 @@ const Setting = () => {
     const [progress, setProgress] = React.useState(0);
     React.useEffect(() => {
         const getUserData = async () => {
-            const jwtToken = window.localStorage.getItem('jwtToken');
-            const user = window.localStorage.getItem('user');
-            const userId = JSON.parse(user).id;
+            // const user = window.localStorage.getItem('user');
+            // const userId = JSON.parse(user).id;
+            const userId = user.id;
             const res = await api.getUser(userId, jwtToken);
             const { name, email, location, type, image } = res.data.data;
             setName(name);
@@ -115,12 +115,16 @@ const Setting = () => {
     };
 
     const submitSetting = async () => {
-        const jwtToken = window.localStorage.getItem('jwtToken');
-        const _user = window.localStorage.getItem('user');
-        const userId = JSON.parse(_user).id;
+        // const jwtToken = window.localStorage.getItem('jwtToken');
+        // const _user = window.localStorage.getItem('user');
+        // const userId = JSON.parse(_user).id;
+        if (name.length < 1) {
+            alert('使用者名稱需大於 1 個字元');
+            return;
+        }
+        const userId = user.id;
         const data = {
             name,
-            email,
             image: profileImage,
             location_pre: locations,
             type_pre: types,
@@ -174,7 +178,12 @@ const Setting = () => {
             <Title>個人資料</Title>
             <Block className="profile">
                 <Label>使用者名稱 Username</Label>
-                <Input value={name} onChange={(e) => setName(e.target.value)} />
+                <Input
+                    value={name}
+                    required
+                    maxLength={30}
+                    onChange={(e) => setName(e.target.value)}
+                />
                 <Label>電子郵件 Email</Label>
                 <Input value={email} disabled="disabled" />
                 <Label>使用者照片 Profile Image</Label>
@@ -225,7 +234,7 @@ const Setting = () => {
             <Snackbar
                 open={snackbar}
                 autoHideDuration={2000}
-                anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+                anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
                 onClose={closeSnackbar}
             >
                 {success ? (
