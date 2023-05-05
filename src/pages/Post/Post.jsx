@@ -370,10 +370,14 @@ const Post = () => {
             const likedPosts = window.localStorage.getItem('likedPosts');
             if (likedPosts.includes(postId)) {
                 setLike(true);
+            } else {
+                setLike(false);
             }
             const savedPosts = window.localStorage.getItem('savedPosts');
             if (savedPosts.includes(postId)) {
                 setSave(true);
+            } else {
+                setSave(false);
             }
         };
         async function getPost(postId) {
