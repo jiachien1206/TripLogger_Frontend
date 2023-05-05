@@ -11,14 +11,16 @@ import africa from '../images/africa.png';
 import antarctica from '../images/antarctica.png';
 
 const Wrapper = styled.div`
-    width: 20%;
     position: fixed;
     top: 80px;
     left: 10%;
     display: flex;
     flex-direction: column;
     margin: 20px 0px 20px 0px;
-    gap: 30px;
+    gap: 20px;
+    max-width: 20vw;
+    z-index: 100;
+    /* flex-wrap: wrap; */
     &.home {
         top: 120px;
     }
@@ -28,47 +30,65 @@ const Wrapper = styled.div`
     }
 `;
 const MapLink = styled(Link)``;
-const Map = styled.img`
+
+const MapText = styled.div`
+    width: 100%;
+    height: 100%;
+    border-radius: 15px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    opacity: 0;
+    justify-content: center;
+    align-items: center;
+    color: #ffffff;
+    z-index: 110;
+    transition: all 0.3s;
+    font-size: 22px;
+    font-weight: 600;
+    &::before {
+        content: '';
+        border-radius: 15px;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(116, 116, 116, 0.2);
+        z-index: -1;
+    }
+`;
+
+const Map = styled.div`
     width: 100%;
     margin: 0px auto;
-    /* border: 1px solid rgba(255, 255, 255, 0.1); */
+    height: 20vh;
+    aspect-ratio: 20/9;
+    background-size: cover;
+    background-repeat: no-repeat;
     border-radius: 15px;
     box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+    position: relative;
+
+    &:hover {
+        ${MapText} {
+            opacity: 1;
+        }
+    }
 `;
 
 const ContinentList = styled.div`
-    display: flex;
-    /* flex-direction: column; */
+    width: 100%;
     background-color: #ffffff;
     border-radius: 15px;
     padding: 10px;
     box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
-    flex-wrap: wrap;
-    /* justify-content: center; */
-    gap: 5px;
+    gap: 3px;
+    display: grid;
+    grid-template-columns: 33% 33% 33%;
 `;
-// const Continent = styled(Link)`
-//     text-decoration: none;
-//     display: flex;
-//     align-items: center;
-//     gap: 12px;
-//     border-radius: 5px;
-//     cursor: pointer;
-//     padding: 9px 0px 9px 12px;
-//     font-weight: 500;
-//     font-size: 20px;
-//     color: var(--secondary-font);
-//     transition: all 0.1s;
-//     width: 70%;
-//     &:hover {
-//         background-color: var(--light-orange);
-//         color: var(--white);
-//     }
-//     &.active {
-//         background-color: var(--secondary-color);
-//         color: var(--white);
-//     }
-// `;
 
 const Continent = styled(Link)`
     text-decoration: none;
@@ -76,9 +96,10 @@ const Continent = styled(Link)`
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 5px;
-    padding: 5px 15px;
+    gap: 8px;
+    padding: 8px 15px;
     border-radius: 15px;
+    transition: all 0.2s;
     &:hover {
         background-color: var(--background);
     }
@@ -88,18 +109,21 @@ const Continent = styled(Link)`
     }
 `;
 const ContinentIcon = styled.img`
-    height: 55px;
+    width: 8vh;
 `;
-const ContinentsTitle = styled.div`
-    /* font-size: 19px; */
-    /* color: #65676b; */
-`;
+const ContinentsTitle = styled.div``;
 
 const Sidebar = ({ active, className }) => {
     return (
         <Wrapper className={className}>
             <MapLink to="/map">
-                <Map src={mapImg} />
+                <Map
+                    style={{
+                        backgroundImage: `url(${mapImg})`,
+                    }}
+                >
+                    <MapText>地圖找靈感</MapText>
+                </Map>
             </MapLink>
             <ContinentList>
                 {active === 'asia' ? (
@@ -124,17 +148,6 @@ const Sidebar = ({ active, className }) => {
                         <ContinentsTitle>歐洲</ContinentsTitle>
                     </Continent>
                 )}
-                {active === 'north-america' ? (
-                    <Continent className="active" to="/location/north-america">
-                        <ContinentIcon src={north} />
-                        <ContinentsTitle>北美洲</ContinentsTitle>
-                    </Continent>
-                ) : (
-                    <Continent to="/location/north-america">
-                        <ContinentIcon src={north} />
-                        <ContinentsTitle>北美洲</ContinentsTitle>
-                    </Continent>
-                )}
                 {active === 'oceania' ? (
                     <Continent className="active" to="/location/oceania">
                         <ContinentIcon src={oceania} />
@@ -146,17 +159,6 @@ const Sidebar = ({ active, className }) => {
                         <ContinentsTitle>大洋洲</ContinentsTitle>
                     </Continent>
                 )}
-                {active === 'south-america' ? (
-                    <Continent className="active" to="/location/south-america">
-                        <ContinentIcon src={south} />
-                        <ContinentsTitle>南美洲</ContinentsTitle>
-                    </Continent>
-                ) : (
-                    <Continent to="/location/south-america">
-                        <ContinentIcon src={south} />
-                        <ContinentsTitle>南美洲</ContinentsTitle>
-                    </Continent>
-                )}
                 {active === 'africa' ? (
                     <Continent className="active" to="/location/africa">
                         <ContinentIcon src={africa} />
@@ -166,6 +168,28 @@ const Sidebar = ({ active, className }) => {
                     <Continent to="/location/africa">
                         <ContinentIcon src={africa} />
                         <ContinentsTitle>非洲</ContinentsTitle>
+                    </Continent>
+                )}
+                {active === 'north-america' ? (
+                    <Continent className="active" to="/location/north-america">
+                        <ContinentIcon src={north} />
+                        <ContinentsTitle>北美洲</ContinentsTitle>
+                    </Continent>
+                ) : (
+                    <Continent to="/location/north-america">
+                        <ContinentIcon src={north} />
+                        <ContinentsTitle>北美洲</ContinentsTitle>
+                    </Continent>
+                )}
+                {active === 'south-america' ? (
+                    <Continent className="active" to="/location/south-america">
+                        <ContinentIcon src={south} />
+                        <ContinentsTitle>南美洲</ContinentsTitle>
+                    </Continent>
+                ) : (
+                    <Continent to="/location/south-america">
+                        <ContinentIcon src={south} />
+                        <ContinentsTitle>南美洲</ContinentsTitle>
                     </Continent>
                 )}
                 {active === 'antarctica' ? (

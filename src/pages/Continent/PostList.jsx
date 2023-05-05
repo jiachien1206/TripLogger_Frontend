@@ -8,6 +8,7 @@ const PostsWrap = styled.div`
     display: flex;
     flex-direction: column;
     gap: 5px;
+    width: 45vw;
 `;
 
 const PostList = ({ posts }) => {

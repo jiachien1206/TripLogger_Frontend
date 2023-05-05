@@ -10,28 +10,51 @@ const Wrapper = styled.div`
     justify-content: center;
     margin-top: 80px;
     gap: 50px;
-    margin-left: 20vw;
+    margin-left: 18vw;
 `;
 const PostsWrap = styled.div`
     display: flex;
     flex-direction: column;
-    width: 50%;
+    width: 45vw;
     min-width: 700px;
 `;
 
-const FilterWrap = styled.div``;
+const FilterWrap = styled.div`
+    display: flex;
+    align-items: end;
+`;
+
+const FilterAndUnderline = styled.div`
+    display: flex;
+    flex-direction: column;
+`;
 
 const FilterButton = styled.button`
-    margin: 10px;
-    padding: 5px;
+    margin: 10px 30px 5px 0px;
+    padding: 0px;
     border: none;
     background: none;
     font-size: 18px;
     color: var(--secondary-font);
     cursor: pointer;
+    transition: all 0.3s;
     &.active {
         font-size: 23px;
         font-weight: 800;
+    }
+    &:hover {
+        font-weight: 600;
+    }
+`;
+
+const UnderLine = styled.div`
+    background-color: var(--primary-color);
+    height: 5px;
+    margin: 2px 30px 10px 0px;
+    border-radius: 100px;
+    visibility: hidden;
+    &.active {
+        visibility: visible;
     }
 `;
 
@@ -64,17 +87,36 @@ const Home = () => {
             <PostsWrap>
                 <FilterWrap>
                     {filters.map((filter) => {
-                        return (
-                            <FilterButton
-                                className={activeFilter === filter && 'active'}
-                                key={filter}
-                                onClick={() => {
-                                    handleActiveFilter(filter);
-                                }}
-                            >
-                                {filter}
-                            </FilterButton>
-                        );
+                        if (activeFilter === filter) {
+                            return (
+                                <FilterAndUnderline key={filter}>
+                                    <FilterButton
+                                        className="active"
+                                        key={filter}
+                                        onClick={() => {
+                                            handleActiveFilter(filter);
+                                        }}
+                                    >
+                                        {filter}
+                                    </FilterButton>
+                                    <UnderLine className="active" />
+                                </FilterAndUnderline>
+                            );
+                        } else {
+                            return (
+                                <FilterAndUnderline key={filter}>
+                                    <FilterButton
+                                        key={filter}
+                                        onClick={() => {
+                                            handleActiveFilter(filter);
+                                        }}
+                                    >
+                                        {filter}
+                                    </FilterButton>
+                                    <UnderLine />
+                                </FilterAndUnderline>
+                            );
+                        }
                     })}
                 </FilterWrap>
 
