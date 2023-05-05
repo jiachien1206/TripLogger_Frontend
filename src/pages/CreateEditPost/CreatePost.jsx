@@ -115,7 +115,6 @@ function CreatePost() {
                     },
                     jwtToken
                 );
-                // await updateNewsfeeds(jwtToken);
                 navigate(`/post/${res.data.data}`);
             }
         } catch (e) {
