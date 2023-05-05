@@ -77,10 +77,13 @@ const TextEditor = ({ originContent, editContent }) => {
     const imageHandler = (quill) => {
         const input = document.createElement('input');
         input.setAttribute('type', 'file');
-        input.setAttribute('accept', 'image/*');
+        input.setAttribute('accept', 'image/png, image/jpeg');
         input.click();
         input.onchange = async () => {
             const file = input.files[0];
+            if (!file || (file.type !== 'image/png' && file.type !== 'image/jpeg')) {
+                return;
+            }
             if (file.size > 2097152) {
                 alert('檔案須小於2MB');
             } else {

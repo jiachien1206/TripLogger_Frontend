@@ -3,7 +3,6 @@ import { AuthContext } from '../../context/authContext';
 import { Navigate, useNavigate } from 'react-router-dom';
 import TextEditor from './Editor';
 import api from '../../utils/api';
-import updateNewsfeeds from '../../utils/updateUserNewsfeeds';
 import axios from 'axios';
 import {
     EditorWrap,
@@ -54,7 +53,6 @@ function CreatePost() {
         if (!e.target.files) {
             return;
         }
-
         setFile(e.target.files[0]);
     };
 
@@ -67,7 +65,7 @@ function CreatePost() {
     React.useEffect(() => {
         const uploadImage = async () => {
             try {
-                if (!file) {
+                if (!file || (file.type !== 'image/png' && file.type !== 'image/jpeg')) {
                     return;
                 }
                 if (file.size > 2097152) {
@@ -96,7 +94,6 @@ function CreatePost() {
         try {
             if (!mainImg) {
                 alert('請上傳首圖');
-                console.log(content.length);
             } else if (title.length < 1 || title.length > 100) {
                 alert('請填寫 1 至 100 個字元的標題');
             } else if (startDate === null || endDate === null) {
@@ -141,7 +138,7 @@ function CreatePost() {
                         <MainImgInput
                             type="file"
                             ref={inputRef}
-                            accept="image/*"
+                            accept="image/png, image/jpeg"
                             style={{ display: 'none' }}
                             onChange={handleFileChange}
                             multiple={false}

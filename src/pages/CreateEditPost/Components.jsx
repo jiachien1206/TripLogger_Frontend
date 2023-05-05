@@ -95,9 +95,9 @@ export const MainImgButton = styled.button`
     border-radius: 6px;
     font-size: 16px;
     font-weight: bold;
-    border: 1px solid #00684a;
+    border: 1px solid var(--dark-green);
     cursor: pointer;
-    color: #00684a;
+    color: var(--dark-green);
 `;
 
 export const MainImgInput = styled.input`

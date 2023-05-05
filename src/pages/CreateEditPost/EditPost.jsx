@@ -5,7 +5,6 @@ import { AuthContext } from '../../context/authContext';
 import { Navigate, useNavigate } from 'react-router-dom';
 import TextEditor from './Editor';
 import api from '../../utils/api';
-import updateNewsfeeds from '../../utils/updateUserNewsfeeds';
 import axios from 'axios';
 import {
     EditorWrap,
@@ -75,7 +74,7 @@ function EditPost() {
     React.useEffect(() => {
         const uploadImage = async () => {
             try {
-                if (!file) {
+                if (!file || (file.type !== 'image/png' && file.type !== 'image/jpeg')) {
                     return;
                 }
                 if (file.size > 2097152) {
@@ -139,7 +138,7 @@ function EditPost() {
                     <MainImgInput
                         type="file"
                         ref={inputRef}
-                        accept="image/*"
+                        accept="image/png, image/jpeg"
                         style={{ display: 'none' }}
                         onChange={handleFileChange}
                         multiple={false}
