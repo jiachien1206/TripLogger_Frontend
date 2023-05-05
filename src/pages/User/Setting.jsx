@@ -26,7 +26,7 @@ const Input = styled.input`
     margin-bottom: 20px;
     transition: all 0.2s;
     &:focus {
-        outline: 2px solid #236262;
+        outline: 2px solid var(--secondary-color);
         border: solid 1px #ffffff;
     }
 `;
@@ -79,8 +79,6 @@ const Setting = () => {
     const [progress, setProgress] = React.useState(0);
     React.useEffect(() => {
         const getUserData = async () => {
-            // const user = window.localStorage.getItem('user');
-            // const userId = JSON.parse(user).id;
             const userId = user.id;
             const res = await api.getUser(userId, jwtToken);
             const { name, email, location, type, image } = res.data.data;
@@ -115,9 +113,6 @@ const Setting = () => {
     };
 
     const submitSetting = async () => {
-        // const jwtToken = window.localStorage.getItem('jwtToken');
-        // const _user = window.localStorage.getItem('user');
-        // const userId = JSON.parse(_user).id;
         if (name.length < 1) {
             alert('使用者名稱需大於 1 個字元');
             return;
@@ -148,7 +143,7 @@ const Setting = () => {
     React.useEffect(() => {
         const uploadImage = async () => {
             try {
-                if (!file) {
+                if (!file || (file.type !== 'image/png' && file.type !== 'image/jpeg')) {
                     return;
                 }
                 if (file.size > 2097152) {
@@ -205,7 +200,7 @@ const Setting = () => {
                             <UploadImgInput
                                 type="file"
                                 ref={inputRef}
-                                accept="image/*"
+                                accept="image/png, image/jpeg"
                                 style={{ display: 'none' }}
                                 onChange={handleFileChange}
                                 multiple={false}

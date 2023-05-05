@@ -78,26 +78,22 @@ const User = () => {
                     <OptionsList>
                         {section === 'setting' ? (
                             <Option className="active" to={'/user/setting'}>
-                                {/* <OptionIcon src={setting} /> */}
                                 <BsPersonFill style={{ fontSize: '26px' }} />
                                 <OptionTitle>個人資料</OptionTitle>
                             </Option>
                         ) : (
                             <Option to={'/user/setting'}>
-                                {/* <OptionIcon src={setting} /> */}
                                 <BsPersonFill style={{ fontSize: '26px' }} />
                                 <OptionTitle>個人資料</OptionTitle>
                             </Option>
                         )}
                         {section === 'map' ? (
                             <Option className="active" to={'/user/map'}>
-                                {/* <OptionIcon src={map} /> */}
                                 <MdMap style={{ fontSize: '26px' }} />
                                 <OptionTitle>旅遊足跡</OptionTitle>
                             </Option>
                         ) : (
                             <Option to={'/user/map'}>
-                                {/* <OptionIcon src={map} /> */}
                                 <MdMap style={{ fontSize: '26px' }} />
                                 <OptionTitle>旅遊足跡</OptionTitle>
                             </Option>
