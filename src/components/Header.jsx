@@ -174,6 +174,7 @@ const Header = () => {
     const [anchorEln, setAnchorEln] = React.useState(null);
     const [badge, setBadge] = React.useState(0);
     const [notifications, setNotifications] = React.useState([]);
+    const [ws, setWs] = React.useState(null);
     const open = Boolean(anchorEl);
     const openN = Boolean(anchorEln);
     const navigate = useNavigate();
@@ -189,7 +190,6 @@ const Header = () => {
     };
     const handleCloseN = () => {
         setAnchorEln(null);
-        setBadge(0);
     };
 
     const redirect = async () => {
@@ -206,6 +206,8 @@ const Header = () => {
     const handleRead = async (e) => {
         handleClickN(e);
         await getNotification();
+        setBadge(0);
+        ws.emit('Read notification', { userId: user.userId });
         api.readNotification(jwtToken);
     };
 
@@ -222,7 +224,6 @@ const Header = () => {
         }
     }
 
-    const [ws, setWs] = React.useState(null);
     React.useEffect(() => {
         // eslint-disable-next-line no-undef
         const newWs = webSocket(process.env.REACT_APP_SERVER);
@@ -242,12 +243,15 @@ const Header = () => {
     React.useEffect(() => {
         if (ws) {
             if (isLogin) {
-                ws.emit('Map user id and socket id', { userId: user.userId });
+                ws.emit('Join user id room', { userId: user.userId });
                 ws.on('Update user newsfeeds', async () => {
                     await updateNewsfeeds(jwtToken);
                 });
                 ws.on('New notification', (data) => {
                     setBadge(1);
+                });
+                ws.on('Browser read notification', (data) => {
+                    setBadge(0);
                 });
             }
         }
