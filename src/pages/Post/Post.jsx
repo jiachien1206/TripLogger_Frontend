@@ -103,7 +103,7 @@ const PostMainImg = styled.img`
 `;
 
 const Buttom = styled.div`
-    padding: 18px 20px 0px;
+    padding: 18px 30px 0px;
 `;
 
 const Upper = styled.div`
@@ -123,7 +123,7 @@ const Location = styled.div`
     gap: 5px;
     color: #65676b;
     font-size: 18px;
-    margin-right: 30px;
+    margin-right: 5px;
 `;
 
 const Info = styled.div`
@@ -140,7 +140,7 @@ const AuthorName = styled.div`
 const Lower = styled.div`
     display: flex;
     flex-direction: column;
-    padding: 24px;
+    padding: 24px 3px;
 `;
 
 const PostTitle = styled.h2`
@@ -152,7 +152,7 @@ const PostType = styled.div``;
 
 const PostContent = styled.div`
     font-size: 17px;
-
+    word-wrap: break-word;
     & img {
         max-width: 100%;
     }
@@ -165,7 +165,6 @@ const PostTime = styled.div`
 const Divider = styled.div`
     margin: 0px auto;
     height: 2px;
-    width: 95%;
     background-color: #dbdbdb;
     border-radius: 100px;
 `;
@@ -405,6 +404,7 @@ const Post = () => {
         }
 
         getPost(postId);
+        setIsHover(false);
     }, [newComment, postId]);
 
     if (!post) return null;

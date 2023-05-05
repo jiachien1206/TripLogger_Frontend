@@ -7,7 +7,7 @@ import { IoSend } from 'react-icons/io5';
 import Avatar from '@mui/material/Avatar';
 
 const Wrap = styled.div`
-    margin: 0px 40px;
+    margin: 0px 30px;
 `;
 
 const TitleWrap = styled.div`
