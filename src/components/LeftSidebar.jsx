@@ -56,7 +56,7 @@ const MapText = styled.div`
         left: 0;
         width: 100%;
         height: 100%;
-        background-color: rgba(116, 116, 116, 0.2);
+        background-color: rgb(68 68 68 / 36%);
         z-index: -1;
     }
 `;
@@ -64,8 +64,7 @@ const MapText = styled.div`
 const Map = styled.div`
     width: 100%;
     margin: 0px auto;
-    height: 20vh;
-    aspect-ratio: 20/9;
+    aspect-ratio: 16/9;
     background-size: cover;
     background-repeat: no-repeat;
     border-radius: 15px;
