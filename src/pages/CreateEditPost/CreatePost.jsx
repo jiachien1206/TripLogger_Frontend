@@ -171,6 +171,7 @@ function CreatePost() {
                         onChange={(e) => {
                             setStartDate(e.target.value);
                         }}
+                        max={new Date().toISOString().split('T')[0]}
                     ></DateInput>
                     <DateInput
                         type="text"
@@ -181,6 +182,7 @@ function CreatePost() {
                         onChange={(e) => {
                             setEndDate(e.target.value);
                         }}
+                        max={new Date().toISOString().split('T')[0]}
                     ></DateInput>
                 </SelectWrap>
                 <BottomWrap>
