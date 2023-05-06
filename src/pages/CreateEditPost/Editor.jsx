@@ -6,6 +6,8 @@ import axios from 'axios';
 import api from '../../utils/api';
 import { AuthContext } from '../../context/authContext';
 import { LinearWithValueLabel, PlaceHolder } from './Components';
+import Swal from 'sweetalert2';
+import warn from '../../images/warn.gif';
 
 const Quill = styled(ReactQuill)`
     background-color: #ffffff;
@@ -85,7 +87,12 @@ const TextEditor = ({ originContent, editContent }) => {
                 return;
             }
             if (file.size > 2097152) {
-                alert('檔案須小於2MB');
+                Swal.fire({
+                    type: 'warning',
+                    confirmButtonColor: 'var(--primary-color)',
+                    text: 'This action cannot be undone.',
+                    html: `<div style="width: 100%; margin: 0px auto"><img src="${warn}" width="140px"><div style="font-weight:500;">檔案須小於2MB</div></div>`,
+                });
             } else {
                 const imageUrl = await uploadImage(file);
                 if (imageUrl) {
