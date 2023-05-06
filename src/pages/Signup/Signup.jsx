@@ -16,6 +16,21 @@ import StepLabel from '@mui/material/StepLabel';
 import Button from '@mui/material/Button';
 import { Title } from './Components.jsx';
 import styled from 'styled-components';
+import Swal from 'sweetalert2';
+import travel from '../../images/travel.gif';
+import warn from '../../images/warn.gif';
+
+const Toast = Swal.mixin({
+    toast: true,
+    position: 'top-end',
+    showConfirmButton: false,
+    timer: 1500,
+    timerProgressBar: false,
+    didOpen: (toast) => {
+        toast.addEventListener('mouseenter', Swal.stopTimer);
+        toast.addEventListener('mouseleave', Swal.resumeTimer);
+    },
+});
 
 const Wrap = styled.div`
     background-color: white;
@@ -94,6 +109,10 @@ const Signup = () => {
                 location_pre: locations,
                 type_pre: types,
             });
+            Toast.fire({
+                iconHtml: `<div style="width:50px; background-color: #ffffff; display:flex;" ><img width="100%" src="${travel}" ></div>`,
+                title: '註冊成功！',
+            });
             const { user, accessToken } = res.data.data;
             const userData = { id: user._id, name: user.name, image: user.image };
             window.localStorage.setItem('user', JSON.stringify(userData));
@@ -104,8 +123,13 @@ const Signup = () => {
             saveUserData(userData);
             navigate('/');
         } catch (e) {
+            Swal.fire({
+                type: 'warning',
+                confirmButtonColor: 'var(--primary-color)',
+                text: 'This action cannot be undone.',
+                html: `<div style="width: 100%; margin: 0px auto;"><img src="${warn}" width="140px"><div style="font-weight:500;">註冊失敗，請稍後再試</div></div>`,
+            });
             console.log(e);
-            alert('註冊失敗');
         }
     }
     if (isLogin) return <Navigate to="/" replace={false} />;

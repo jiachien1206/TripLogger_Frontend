@@ -56,6 +56,9 @@ const GlobalStyle = createGlobalStyle`
     --red:#f52047;
     --blue:#0051a5;
   }
+  .swal2-container{
+    z-index:10000;
+  }
 `;
 function App() {
     const location = useLocation();

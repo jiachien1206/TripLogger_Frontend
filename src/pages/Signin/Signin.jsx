@@ -9,6 +9,22 @@ import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
 import Button from '@mui/material/Button';
+import Swal from 'sweetalert2';
+import travel from '../../images/travel.gif';
+import warn from '../../images/warn.gif';
+
+const Toast = Swal.mixin({
+    toast: true,
+    position: 'top-end',
+    showConfirmButton: false,
+    timer: 1500,
+    timerProgressBar: false,
+    didOpen: (toast) => {
+        toast.addEventListener('mouseenter', Swal.stopTimer);
+        toast.addEventListener('mouseleave', Swal.resumeTimer);
+    },
+});
+
 const Wrap = styled.div`
     background-color: white;
     width: 100%;
@@ -81,11 +97,20 @@ const Signin = () => {
     async function signin() {
         try {
             if (!isValidEmail(email) || password.length < 8) {
-                return alert('帳號或密碼輸入錯誤');
+                return Swal.fire({
+                    type: 'warning',
+                    confirmButtonColor: 'var(--primary-color)',
+                    text: 'This action cannot be undone.',
+                    html: `<div style="width: 100%; margin: 0px auto;"><img src="${warn}" width="140px"><div style="font-weight:500;">帳號或密碼輸入錯誤</div></div>`,
+                });
             }
             const res = await api.signin({
                 email,
                 password,
+            });
+            Toast.fire({
+                iconHtml: `<div style="width:50px; background-color: #ffffff; display:flex;" ><img width="100%" src="${travel}" ></div>`,
+                title: '登入成功！',
             });
             const { user, accessToken } = res.data.data;
             const userData = { id: user._id, name: user.name, image: user.image };
@@ -94,10 +119,15 @@ const Signin = () => {
             await updateNewsfeeds(accessToken);
             userData['jwtToken'] = accessToken;
             await saveUserData(userData);
-            window.location.href = '/';
+            navigate('/');
         } catch (e) {
+            Swal.fire({
+                type: 'warning',
+                confirmButtonColor: 'var(--primary-color)',
+                text: 'This action cannot be undone.',
+                html: `<div style="width: 100%; margin: 0px auto;"><img src="${warn}" width="140px"><div style="font-weight:500;">帳號或密碼輸入錯誤</div></div>`,
+            });
             console.log(e);
-            alert('帳號或密碼輸入錯誤');
         }
     }
 
