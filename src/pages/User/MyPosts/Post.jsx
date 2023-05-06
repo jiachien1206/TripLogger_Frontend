@@ -35,6 +35,7 @@ const PostTitle = styled(Link)`
     color: var(--dark-green);
     text-decoration: none;
     font-weight: 500;
+    word-break: break-word;
 `;
 
 const Buttons = styled.div`

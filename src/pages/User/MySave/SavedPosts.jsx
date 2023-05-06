@@ -22,6 +22,7 @@ const Post = styled(Link)`
     width: 100%;
     padding: 10px 30px;
     text-decoration: none;
+    word-break: break-word;
     &:hover {
         background-color: #efefef;
     }
