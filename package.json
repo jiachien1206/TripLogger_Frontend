@@ -28,6 +28,7 @@
         "react-select": "^5.7.2",
         "socket.io-client": "^4.6.1",
         "styled-components": "^5.3.10",
+        "sweetalert2": "^11.7.5",
         "web-vitals": "^2.1.4"
     },
     "scripts": {

@@ -6,6 +6,10 @@ import { Navigate, useNavigate } from 'react-router-dom';
 import TextEditor from './Editor';
 import api from '../../utils/api';
 import axios from 'axios';
+import Swal from 'sweetalert2';
+import warn from '../../images/warn.gif';
+import send from '../../images/send.gif';
+import travel from '../../images/travel.gif';
 import {
     EditorWrap,
     MainImgWrap,
@@ -19,6 +23,7 @@ import {
     DateInput,
     CircularStatic,
     BottomWrap,
+    Toast,
 } from './Components';
 import Button from '@mui/material/Button';
 
@@ -78,7 +83,12 @@ function EditPost() {
                     return;
                 }
                 if (file.size > 2097152) {
-                    alert('檔案須小於2MB');
+                    Swal.fire({
+                        type: 'warning',
+                        confirmButtonColor: 'var(--primary-color)',
+                        text: 'This action cannot be undone.',
+                        html: `<div style="width: 100%; margin: 0px auto"><img src="${warn}" width="140px"><div style="font-weight:500;">檔案須小於2MB</div></div>`,
+                    });
                     setFile();
                 } else {
                     const res = await api.getPresignUrl(jwtToken);
@@ -102,27 +112,61 @@ function EditPost() {
     async function submitPost() {
         try {
             if (title.length < 1 || title.length > 100) {
-                alert('請填寫 1 至 100 個字元的標題');
+                Swal.fire({
+                    type: 'warning',
+                    confirmButtonColor: 'var(--primary-color)',
+                    html: `<div style="width: 100%; margin: 0px auto"><img src="${warn}" width="140px"><div style="font-weight:500;">請填寫 1 至 100 個字元的標題</div></div>`,
+                });
             } else if (content.length < 17 || content.length > 20500) {
-                alert('請撰寫 10 至 20000 個字元的內文');
+                Swal.fire({
+                    type: 'warning',
+                    confirmButtonColor: 'var(--primary-color)',
+                    html: `<div style="width: 100%; margin: 0px auto"><img src="${warn}" width="140px"><div style="font-weight:500;">請撰寫 10 至 20000 個字元的內文</div></div>`,
+                });
             } else {
-                console.log(content);
-                alert('文章更新');
-                await api.editPost(
-                    postId,
-                    {
-                        title,
-                        content,
-                        main_image: mainImg,
-                    },
-                    jwtToken
-                );
-                // await updateNewsfeeds(jwtToken);
-                navigate(`/post/${postId}`);
+                Swal.fire({
+                    confirmButtonColor: 'var(--primary-color)',
+                    cancelButtonColor: 'var(--third-font)',
+                    showCancelButton: true,
+                    confirmButtonText: '送出',
+                    cancelButtonText: '取消',
+                    html: `<div style="width: 100%; margin: 0px auto"><img src="${send}" width="140px"><div style="font-weight:500;">更新文章</div></div>`,
+                })
+                    .then((result) => {
+                        if (result.isConfirmed) {
+                            const res = api.editPost(
+                                postId,
+                                {
+                                    title,
+                                    content,
+                                    main_image: mainImg,
+                                },
+                                jwtToken
+                            );
+                            Toast.fire({
+                                iconHtml: `<div style="width:50px; background-color: #ffffff; display:flex;" ><img width="100%" src="${travel}" ></div>`,
+                                title: '更新中～',
+                            });
+                            return res;
+                        }
+                    })
+                    .then((res) => window.location.replace(`/post/${postId}`))
+                    .catch((e) => {
+                        Swal.fire({
+                            type: 'warning',
+                            confirmButtonColor: 'var(--primary-color)',
+                            html: `<div style="width: 100%; margin: 0px auto"><img src="${warn}" width="140px"><div style="font-weight:500;">更新失敗，請稍後再試！</div></div>`,
+                        });
+                        console.log(e);
+                    });
             }
         } catch (e) {
+            Swal.fire({
+                type: 'warning',
+                confirmButtonColor: 'var(--primary-color)',
+                html: `<div style="width: 100%; margin: 0px auto"><img src="${warn}" width="140px"><div style="font-weight:500;">發文失敗，請稍後再試！</div></div>`,
+            });
             console.log(e);
-            alert('文章更新失敗');
         }
     }
     if (!isLogin) return <Navigate to="/" replace={false} />;

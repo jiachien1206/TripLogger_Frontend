@@ -91,7 +91,7 @@ const PostWrap = styled.div`
     padding-bottom: 40px;
     margin-bottom: 40px;
     max-width: 750px;
-    min-width: 70%;
+    min-width: 50vw;
 `;
 
 const PostMainImg = styled.img`
@@ -230,6 +230,7 @@ const RightSidebar = styled.div`
     padding: 20px 25px;
     gap: 15px;
     cursor: default;
+    word-break: break-word;
 `;
 
 const RightAuthor = styled.div`
