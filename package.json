@@ -34,7 +34,9 @@
         "start": "react-scripts start",
         "build": "react-scripts build",
         "test": "react-scripts test",
-        "eject": "react-scripts eject"
+        "eject": "react-scripts eject",
+        "sync": "aws s3 ./build sync directory-path 's3://chiaproject.com/'",
+        "invalidation": "aws cloudfront create-invalidation --distribution-id E3VDBJYZAJYF4 | -paths '/*'"
     },
     "eslintConfig": {
         "extends": [
