@@ -300,7 +300,7 @@ const Post = () => {
             const data = {
                 location: post.location.continent,
                 type: post.type,
-                like: true,
+                isPositive: true,
                 authorId: post.authorId,
                 title: post.title,
                 liker: user.name,
@@ -315,7 +315,7 @@ const Post = () => {
             const data = {
                 location: post.location.continent,
                 type: post.type,
-                like: false,
+                isPositive: false,
                 authorId: post.authorId,
                 title: post.title,
                 liker: user.name,

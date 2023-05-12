@@ -39,10 +39,10 @@ const api = {
             },
         });
     },
-    savePost(postId, location, type, save, jwtToken) {
+    savePost(postId, location, type, isPositive, jwtToken) {
         return axios.post(
             `${this.HOST_NAME}/posts/${postId}/save`,
-            { location, type, save },
+            { location, type, isPositive },
             {
                 headers: {
                     'Content-Type': 'application/json',
