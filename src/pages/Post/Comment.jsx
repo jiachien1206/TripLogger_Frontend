@@ -100,7 +100,16 @@ const CommentTime = styled.div`
     color: #949494;
 `;
 
-const Comments = ({ postId, location, type, comments, setNewComment, authorId, title }) => {
+const Comments = ({
+    postId,
+    location,
+    type,
+    comments,
+    setNewComment,
+    setCommentNum,
+    authorId,
+    title,
+}) => {
     const [comment, setComment] = React.useState('');
     const { jwtToken, isLogin, user } = React.useContext(AuthContext);
     const handleKeyDown = (event) => {
@@ -120,6 +129,9 @@ const Comments = ({ postId, location, type, comments, setNewComment, authorId, t
         };
         await api.writeComment(postId, content, jwtToken);
         setComment('');
+        setCommentNum(function (prev) {
+            return prev + 1;
+        });
         setNewComment(true);
     };
     return (

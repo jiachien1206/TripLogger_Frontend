@@ -406,7 +406,82 @@ const Post = () => {
 
         getPost(postId);
         setIsHover(false);
-    }, [newComment, postId]);
+    }, [postId]);
+
+    React.useEffect(() => {
+        async function renderNewComment(postId) {
+            const res = await api.getPost(postId);
+            const post = res.data.data;
+            const sortedComments = post.comments.sort(function (a, b) {
+                return new Date(b.timestamp) - new Date(a.timestamp);
+            });
+            setComments(sortedComments);
+            setNewComment(false);
+            // if (isLogin) {
+            //     const user = JSON.parse(window.localStorage.getItem('user'));
+            //     await api.addRead(postId, user.id, post.location.continent, post.type);
+            //     await matchPostStatus();
+            // } else {
+            //     await api.addRead(postId, null, post.location.continent, post.type);
+            // }
+            // const utcDate = new Date(post.dates.post_date);
+            // const dateTime = utcDate.toLocaleString();
+            // const [date] = dateTime.split(' ');
+            // setDate(date);
+            // const response = await api.getUserPosts(post.authorId._id, 6);
+            // setAuthorPosts(response.data.data);
+            // setNewComment(false);
+        }
+
+        renderNewComment(postId);
+        // const matchPostStatus = async () => {
+        //     const res = await api.getPostNumbers(postId);
+        //     const { read_num, like_num, save_num, comment_num } = res.data.data;
+
+        //     setReadNum(read_num);
+        //     setLikeNum(like_num);
+        //     setSaveNum(save_num);
+        //     setCommentNum(comment_num);
+        //     const likedPosts = window.localStorage.getItem('likedPosts');
+        //     if (likedPosts.includes(postId)) {
+        //         setLike(true);
+        //     } else {
+        //         setLike(false);
+        //     }
+        //     const savedPosts = window.localStorage.getItem('savedPosts');
+        //     if (savedPosts.includes(postId)) {
+        //         setSave(true);
+        //     } else {
+        //         setSave(false);
+        //     }
+        // };
+        // async function getPost(postId) {
+        //     const res = await api.getPost(postId);
+        //     const post = res.data.data;
+        //     setPost(post);
+        //     const sortedComments = post.comments.sort(function (a, b) {
+        //         return new Date(b.timestamp) - new Date(a.timestamp);
+        //     });
+        //     setComments(sortedComments);
+        //     if (isLogin) {
+        //         const user = JSON.parse(window.localStorage.getItem('user'));
+        //         await api.addRead(postId, user.id, post.location.continent, post.type);
+        //         await matchPostStatus();
+        //     } else {
+        //         await api.addRead(postId, null, post.location.continent, post.type);
+        //     }
+        //     const utcDate = new Date(post.dates.post_date);
+        //     const dateTime = utcDate.toLocaleString();
+        //     const [date] = dateTime.split(' ');
+        //     setDate(date);
+        //     const response = await api.getUserPosts(post.authorId._id, 6);
+        //     setAuthorPosts(response.data.data);
+        //     setNewComment(false);
+        // }
+
+        // getPost(postId);
+        // setIsHover(false);
+    }, [newComment]);
 
     if (!post) return null;
 
@@ -533,6 +608,7 @@ const Post = () => {
                     postId={postId}
                     comments={comments}
                     setNewComment={setNewComment}
+                    setCommentNum={setCommentNum}
                     authorId={post.authorId}
                     title={post.title}
                 />
