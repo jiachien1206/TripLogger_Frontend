@@ -196,13 +196,6 @@ const Header = () => {
         window.location.replace(`/search?keyword=${inputValue}`);
     };
 
-    const handleLogout = async () => {
-        logout();
-        const data = { logoutTime: new Date() };
-        await api.logout(data, jwtToken);
-        window.location.reload();
-    };
-
     const handleRead = async (e) => {
         handleClickN(e);
         await getNotification();
@@ -480,7 +473,7 @@ const Header = () => {
                                 borderRadius: '5px',
                             },
                         }}
-                        onClick={handleLogout}
+                        onClick={() => logout()}
                     >
                         登出
                     </MenuItem>

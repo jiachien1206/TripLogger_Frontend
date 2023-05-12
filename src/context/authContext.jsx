@@ -32,6 +32,8 @@ export const AuthContextProvider = ({ children }) => {
     const logout = async () => {
         setLoading(true);
         setIsLogin(false);
+        const data = { logoutTime: new Date() };
+        await api.logout(data, jwtToken);
         setUser({});
         setJwtToken();
         window.localStorage.removeItem('jwtToken');
