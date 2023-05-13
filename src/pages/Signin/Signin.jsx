@@ -11,19 +11,7 @@ import Fade from '@mui/material/Fade';
 import Button from '@mui/material/Button';
 import Swal from 'sweetalert2';
 import travel from '../../images/travel.gif';
-import warn from '../../images/warn.gif';
-
-const Toast = Swal.mixin({
-    toast: true,
-    position: 'top-end',
-    showConfirmButton: false,
-    timer: 1500,
-    timerProgressBar: false,
-    didOpen: (toast) => {
-        toast.addEventListener('mouseenter', Swal.stopTimer);
-        toast.addEventListener('mouseleave', Swal.resumeTimer);
-    },
-});
+import { Alerts, Toast } from '../../utils/alerts';
 
 const Wrap = styled.div`
     background-color: white;
@@ -87,8 +75,8 @@ const Password = styled.input`
 
 const Signin = () => {
     const { isLogin, saveUserData } = React.useContext(AuthContext);
-    const [email, setEmail] = React.useState('');
-    const [password, setPassword] = React.useState('');
+    const [email, setEmail] = React.useState('nini@gmail.com');
+    const [password, setPassword] = React.useState('chatchat');
     const navigate = useNavigate();
 
     function isValidEmail(email) {
@@ -97,21 +85,13 @@ const Signin = () => {
     async function signin() {
         try {
             if (!isValidEmail(email) || password.length < 8) {
-                return Swal.fire({
-                    type: 'warning',
-                    confirmButtonColor: 'var(--primary-color)',
-                    text: 'This action cannot be undone.',
-                    html: `<div style="width: 100%; margin: 0px auto;"><img src="${warn}" width="140px"><div style="font-weight:500;">帳號或密碼輸入錯誤</div></div>`,
-                });
+                return Alerts.signinFailed();
             }
             const res = await api.signin({
                 email,
                 password,
             });
-            Toast.fire({
-                iconHtml: `<div style="width:50px; background-color: #ffffff; display:flex;" ><img width="100%" src="${travel}" ></div>`,
-                title: '登入成功！',
-            });
+            Toast.signinSuccess();
             const { user, accessToken } = res.data.data;
             const userData = { id: user._id, name: user.name, image: user.image };
             window.localStorage.setItem('jwtToken', accessToken);
@@ -121,13 +101,11 @@ const Signin = () => {
             await saveUserData(userData);
             navigate('/');
         } catch (e) {
-            Swal.fire({
-                type: 'warning',
-                confirmButtonColor: 'var(--primary-color)',
-                text: 'This action cannot be undone.',
-                html: `<div style="width: 100%; margin: 0px auto;"><img src="${warn}" width="140px"><div style="font-weight:500;">帳號或密碼輸入錯誤</div></div>`,
-            });
-            console.log(e);
+            if (e.response.status === 401) {
+                Alerts.signinFailed();
+            } else {
+                Alerts.serverError();
+            }
         }
     }
 
@@ -139,7 +117,6 @@ const Signin = () => {
                 aria-labelledby="spring-modal-title"
                 aria-describedby="spring-modal-description"
                 open={open}
-                // onClose={handleClose}
                 closeAfterTransition
                 slots={{ backdrop: Backdrop }}
                 slotProps={{

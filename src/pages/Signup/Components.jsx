@@ -1,7 +1,5 @@
 import styled from 'styled-components';
 import React from 'react';
-import bar from '../../images/bar.svg';
-import MenuRoundedIcon from '@mui/icons-material/MenuRounded';
 
 export const Title = styled.div`
     margin: 15px auto 0px;
@@ -35,13 +33,6 @@ const Option = styled.div`
     &.drag-position {
     }
 `;
-
-// const Bar = styled.div`
-//     width: 13px;
-//     height: 16px;
-//     background-image: url(${bar});
-//     background-repeat: no-reapeat;
-// `;
 
 const Options = ({ options, setOrder }) => {
     const [dragItemIndex, setDragItemIndex] = React.useState();

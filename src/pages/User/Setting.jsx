@@ -9,10 +9,8 @@ import Options from '../../components/PreferenceOptions';
 import { AuthContext } from '../../context/authContext';
 import CircularProgress from '@mui/material/CircularProgress';
 import Swal from 'sweetalert2';
-import warn from '../../images/warn.gif';
 import success from '../../images/success.gif';
 import { Alerts } from '../../utils/alerts';
-import { Alert } from '@mui/material';
 
 const Toast = Swal.mixin({
     toast: true,

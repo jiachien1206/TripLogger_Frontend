@@ -128,7 +128,6 @@ const Home = () => {
                 />
                 <Paging setPage={setPage} postNum={postNum} currentPage={page}></Paging>
             </PostsWrap>
-            {/* <RightSidebar className="right-sidebar"></RightSidebar> */}
         </Wrapper>
     );
 };

@@ -45,11 +45,15 @@ const PostList = ({ setPostNum, filter, setPage, page }) => {
             }
             setPosts(pagePosts);
         } catch (e) {
-            Alerts.serverError().then((result) => {
-                if (result.isConfirmed) {
-                    logout();
-                }
-            });
+            if (e.response.status === 401) {
+                Alerts.unauthorized().then((result) => {
+                    if (result.isConfirmed) {
+                        logout();
+                    }
+                });
+            } else {
+                Alerts.serverError();
+            }
         }
     };
     const getLikedPosts = () => {

@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import Button from '@mui/material/Button';
 import api from '../../utils/api';
 import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded';
 
@@ -69,7 +68,7 @@ const Password = styled.input`
 
 const EmailPwd = ({ setInputStatus, name, setName, email, setEmail, password, setPassword }) => {
     const [namePass, setNamePass] = React.useState(false);
-    const [emailPass, setEmailPass] = React.useState(false);
+    const [emailPass, setEmailPass] = React.useState();
     const [pwdPass, setPwdPass] = React.useState(false);
     function isValidEmail(email) {
         return /\S+@\S+\.\S+/.test(email);
@@ -83,17 +82,15 @@ const EmailPwd = ({ setInputStatus, name, setName, email, setEmail, password, se
         }
     };
     const verifyEmail = async (email) => {
+        setEmailPass(false);
         if (isValidEmail(email)) {
             try {
                 const res = await api.checkUser({ email });
-
                 if (res.status === 200) {
                     setEmailPass(true);
-                    console.log(emailPass);
                 }
             } catch (e) {
                 setEmailPass(false);
-                console.log(emailPass);
             }
         } else {
             setEmailPass(false);

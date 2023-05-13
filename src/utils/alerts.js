@@ -19,7 +19,7 @@ export const Alerts = {
     serverError: function () {
         return Swal.fire({
             confirmButtonColor: 'var(--primary-color)',
-            html: `<div style="width: 100%; margin: 0px auto"><img src="${warn}" width="140px"><div style="font-weight:500;">暫時無法讀取內容，請嘗試重新登入，謝謝！</div></div>`,
+            html: `<div style="width: 100%; margin: 0px auto"><img src="${warn}" width="140px"><div style="font-weight:500;">暫時無法讀取內容，請稍後再試，謝謝！</div></div>`,
         });
     },
     signupServerError: function () {
@@ -55,6 +55,12 @@ export const Alerts = {
             html: `<div style="width: 100%; margin: 0px auto"><img src="${warn}" width="140px"><div style="font-weight:500;">確認刪除文章</div>`,
         });
     },
+    signinFailed: function () {
+        return Swal.fire({
+            confirmButtonColor: 'var(--primary-color)',
+            html: `<div style="width: 100%; margin: 0px auto"><img src="${warn}" width="140px"><div style="font-weight:500;">帳號或密碼輸入錯誤</div></div>`,
+        });
+    },
 };
 
 export const Toast = {
@@ -62,6 +68,12 @@ export const Toast = {
         return toast.fire({
             iconHtml: `<div style="width:50px; background-color: #ffffff; display:flex;" ><img width="100%" src="${travel}" ></div>`,
             title: '註冊成功！',
+        });
+    },
+    signinSuccess: function () {
+        return toast.fire({
+            iconHtml: `<div style="width:50px; background-color: #ffffff; display:flex;" ><img width="100%" src="${travel}" ></div>`,
+            title: '登入成功！',
         });
     },
 };

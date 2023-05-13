@@ -1,6 +1,6 @@
 import React from 'react';
 import api from '../utils/api';
-import updateNewsfeeds from '../utils/updateUserNewsfeeds';
+import { Alerts } from '../utils/alerts';
 
 export const AuthContext = React.createContext({
     isLogin: false,
@@ -30,18 +30,29 @@ export const AuthContextProvider = ({ children }) => {
     };
 
     const logout = async () => {
-        setLoading(true);
-        setIsLogin(false);
-        const data = { logoutTime: new Date() };
-        await api.logout(data, jwtToken);
-        setUser({});
-        setJwtToken();
-        window.localStorage.removeItem('jwtToken');
-        window.localStorage.removeItem('savedPosts');
-        window.localStorage.removeItem('user');
-        window.localStorage.removeItem('likedPosts');
-        window.localStorage.removeItem('relevantPosts');
-        setLoading(false);
+        try {
+            setLoading(true);
+            setIsLogin(false);
+            const data = { logoutTime: new Date() };
+            await api.logout(user.id, data, jwtToken);
+            setUser({});
+            setJwtToken();
+            window.localStorage.removeItem('jwtToken');
+            window.localStorage.removeItem('savedPosts');
+            window.localStorage.removeItem('user');
+            window.localStorage.removeItem('likedPosts');
+            window.localStorage.removeItem('relevantPosts');
+            setLoading(false);
+        } catch (e) {
+            setIsLogin(false);
+            Alerts.serverError().then((result) => {
+                if (result.isConfirmed) {
+                    window.localStorage.removeItem('jwtToken');
+                    setJwtToken();
+                    window.location.replace(`/`);
+                }
+            });
+        }
     };
     const getUserData = async (jwtToken) => {
         try {
@@ -53,7 +64,17 @@ export const AuthContextProvider = ({ children }) => {
                 setIsLogin(true);
             }
             setLoading(false);
-        } catch {
+        } catch (e) {
+            if (e.response.status === 401) {
+                setIsLogin(false);
+                Alerts.unauthorized().then((result) => {
+                    if (result.isConfirmed) {
+                        window.localStorage.removeItem('jwtToken');
+                        setJwtToken();
+                        window.location.replace(`/`);
+                    }
+                });
+            }
             setIsLogin(false);
         }
     };
