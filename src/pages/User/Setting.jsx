@@ -142,6 +142,8 @@ const Setting = () => {
         };
         try {
             const res = await api.editUser(userId, data, jwtToken);
+            const { relevantPosts } = res.data.data;
+            window.localStorage.setItem('relevantPosts', JSON.stringify(relevantPosts));
             Toast.fire({
                 iconHtml: `<div style="width:50px; background-color: #ffffff; display:flex;" ><img width="100%" src="${success}" ></div>`,
                 title: '更新成功',
