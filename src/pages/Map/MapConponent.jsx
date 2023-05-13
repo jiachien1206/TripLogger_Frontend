@@ -1,5 +1,4 @@
 import React from 'react';
-import styled from 'styled-components';
 import { useMapEvents } from 'react-leaflet';
 import Country from './Country';
 

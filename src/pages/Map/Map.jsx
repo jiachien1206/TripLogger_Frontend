@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import api from '../../utils/api';
-import { MapContainer, TileLayer, useMap, Marker, Popup, useMapEvents } from 'react-leaflet';
+import { MapContainer, TileLayer } from 'react-leaflet';
 import MapComponent from './MapConponent';
 import 'leaflet/dist/leaflet.css';
 import { Link } from 'react-router-dom';
@@ -28,7 +28,6 @@ const Sildebar = styled.div`
     padding: 20px 25px 10px;
     display: flex;
     flex-direction: column;
-    /* gap: 1vh; */
     box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
     align-items: center;
 `;
