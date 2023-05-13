@@ -3,6 +3,9 @@ import styled from 'styled-components';
 import api from '../../../utils/api.js';
 import Post from './Post.jsx';
 import { Title } from '../Components.jsx';
+import { AuthContext } from '../../../context/authContext';
+import { Alerts } from '../../../utils/alerts.js';
+
 const Wrap = styled.div`
     display: flex;
     flex-direction: column;
@@ -12,14 +15,26 @@ const Wrap = styled.div`
 `;
 
 const Posts = () => {
+    const { jwtToken, logout } = React.useContext(AuthContext);
     const [posts, setPosts] = React.useState([]);
 
-    const jwtToken = window.localStorage.getItem('jwtToken');
     React.useEffect(() => {
         const fetchUserPosts = async (userId) => {
-            const res = await api.getUserPosts(userId);
-            const userPosts = res.data.data;
-            setPosts(userPosts);
+            try {
+                const res = await api.getUserPosts(userId);
+                const userPosts = res.data.data;
+                setPosts(userPosts);
+            } catch (e) {
+                if (e.response.status === 401) {
+                    Alerts.unauthorized().then((result) => {
+                        if (result.isConfirmed) {
+                            logout();
+                        }
+                    });
+                } else {
+                    Alerts.serverError();
+                }
+            }
         };
 
         const user = JSON.parse(window.localStorage.getItem('user'));
@@ -30,7 +45,7 @@ const Posts = () => {
             <Title>我的文章</Title>
             <Wrap>
                 {posts.map((post) => {
-                    return <Post key={post._id} post={post} jwtToken={jwtToken} />;
+                    return <Post key={post._id} post={post} />;
                 })}
             </Wrap>
         </>

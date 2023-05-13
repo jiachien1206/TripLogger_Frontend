@@ -173,8 +173,8 @@ const api = {
             },
         });
     },
-    logout(data, jwtToken) {
-        return axios.post(`${this.HOST_NAME}/user/logout`, data, {
+    logout(userId, data, jwtToken) {
+        return axios.post(`${this.HOST_NAME}/users/${userId}/logout`, data, {
             headers: {
                 'Content-Type': 'application/json',
                 Authorization: `Bearer ${jwtToken}`,

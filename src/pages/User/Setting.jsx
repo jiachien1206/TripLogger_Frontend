@@ -11,6 +11,8 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Swal from 'sweetalert2';
 import warn from '../../images/warn.gif';
 import success from '../../images/success.gif';
+import { Alerts } from '../../utils/alerts';
+import { Alert } from '@mui/material';
 
 const Toast = Swal.mixin({
     toast: true,
@@ -80,7 +82,7 @@ const UploadImgButton = styled.div``;
 const UploadImgInput = styled.input``;
 
 const Setting = () => {
-    const { jwtToken, setUser, user } = React.useContext(AuthContext);
+    const { jwtToken, setUser, user, logout } = React.useContext(AuthContext);
     const [profileImage, setProfileImage] = React.useState();
     const [name, setName] = React.useState('');
     const [email, setEmail] = React.useState('');
@@ -90,15 +92,27 @@ const Setting = () => {
     const [progress, setProgress] = React.useState(0);
     React.useEffect(() => {
         const getUserData = async () => {
-            const userId = user.id;
-            const res = await api.getUser(userId, jwtToken);
-            const { name, email, location, type, image } = res.data.data;
-            setName(name);
-            setEmail(email);
-            setLocations(location);
-            setTypes(type);
-            if (image) {
-                setProfileImage(image);
+            try {
+                const userId = user.id;
+                const res = await api.getUser(userId, jwtToken);
+                const { name, email, location, type, image } = res.data.data;
+                setName(name);
+                setEmail(email);
+                setLocations(location);
+                setTypes(type);
+                if (image) {
+                    setProfileImage(image);
+                }
+            } catch (e) {
+                if (e.response.status === 401) {
+                    Alerts.unauthorized().then((result) => {
+                        if (result.isConfirmed) {
+                            logout();
+                        }
+                    });
+                } else {
+                    Alerts.serverError();
+                }
             }
         };
         getUserData();
@@ -125,12 +139,7 @@ const Setting = () => {
 
     const submitSetting = async () => {
         if (name.length < 1) {
-            Swal.fire({
-                type: 'warning',
-                confirmButtonColor: 'var(--primary-color)',
-                text: 'This action cannot be undone.',
-                html: `<div style="width: 100%; margin: 0px auto"><img src="${warn}" width="140px"><div style="font-weight:500;">使用者名稱至少需 1 個字元</div></div>`,
-            });
+            Alerts.nameLengthTooShort();
             return;
         }
         const userId = user.id;
@@ -152,12 +161,15 @@ const Setting = () => {
             newUser.image = profileImage;
             setUser(newUser);
         } catch (e) {
-            Swal.fire({
-                type: 'warning',
-                confirmButtonColor: 'var(--primary-color)',
-                text: 'This action cannot be undone.',
-                html: `<div style="width: 100%; margin: 0px auto"><img src="${warn}" width="140px"><div style="font-weight:500;">資料更新失敗，請稍後再試</div></div>`,
-            });
+            if (e.response.status === 401) {
+                Alerts.unauthorized().then((result) => {
+                    if (result.isConfirmed) {
+                        logout();
+                    }
+                });
+            } else {
+                Alerts.serverError();
+            }
         }
     };
 
@@ -168,12 +180,7 @@ const Setting = () => {
                     return;
                 }
                 if (file.size > 2097152) {
-                    Swal.fire({
-                        type: 'warning',
-                        confirmButtonColor: 'var(--primary-color)',
-                        text: 'This action cannot be undone.',
-                        html: `<div style="width: 100%; margin: 0px auto"><img src="${warn}" width="140px"><div style="font-weight:500;">檔案須小於2MB</div></div>`,
-                    });
+                    Alerts.imageTooBig();
                     setFile();
                 } else {
                     const res = await api.getPresignUrl(jwtToken);
@@ -187,8 +194,16 @@ const Setting = () => {
                     const image = url.split('?')[0];
                     setProfileImage(image);
                 }
-            } catch (error) {
-                console.log(error);
+            } catch (e) {
+                if (e.response.status === 401) {
+                    Alerts.unauthorized().then((result) => {
+                        if (result.isConfirmed) {
+                            logout();
+                        }
+                    });
+                } else {
+                    Alerts.serverError();
+                }
             }
         };
         uploadImage();

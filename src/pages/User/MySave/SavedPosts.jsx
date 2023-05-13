@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import api from '../../../utils/api.js';
 import { Title } from '../Components.jsx';
 import { Link } from 'react-router-dom';
+import { Alerts } from '../../../utils/alerts.js';
+import { AuthContext } from '../../../context/authContext';
 
 const Wrap = styled.div`
     display: flex;
@@ -45,22 +47,29 @@ const PostTitle = styled.div`
     font-weight: 500;
 `;
 
-const Buttons = styled.div`
-    display: flex;
-    gap: 30px;
-`;
-
 const Save = () => {
+    const { jwtToken, logout } = React.useContext(AuthContext);
     const [savedPosts, setSavedPosts] = React.useState([]);
 
     React.useEffect(() => {
         const getSavedPosts = async () => {
-            const user = JSON.parse(window.localStorage.getItem('user'));
-            const postsIds = JSON.parse(window.localStorage.getItem('savedPosts'));
-            const jwtToken = window.localStorage.getItem('jwtToken');
-            const res = await api.getUserSavedPosts(user.id, postsIds, jwtToken);
-            const posts = res.data.data;
-            setSavedPosts(posts);
+            try {
+                const user = JSON.parse(window.localStorage.getItem('user'));
+                const postsIds = JSON.parse(window.localStorage.getItem('savedPosts'));
+                const res = await api.getUserSavedPosts(user.id, postsIds, jwtToken);
+                const posts = res.data.data;
+                setSavedPosts(posts);
+            } catch (e) {
+                if (e.response.status === 401) {
+                    Alerts.unauthorized().then((result) => {
+                        if (result.isConfirmed) {
+                            logout();
+                        }
+                    });
+                } else {
+                    Alerts.serverError();
+                }
+            }
         };
 
         getSavedPosts();

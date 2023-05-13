@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom';
 import api from '../../../utils/api.js';
 import CreateRoundedIcon from '@mui/icons-material/CreateRounded';
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
+import { Alerts } from '../../../utils/alerts.js';
+import { AuthContext } from '../../../context/authContext';
 
 const Wrapper = styled.div`
     display: flex;
@@ -70,13 +72,28 @@ const Delete = styled.div`
     }
 `;
 
-const Post = ({ post, jwtToken }) => {
+const Post = ({ post }) => {
+    const { jwtToken, logout } = React.useContext(AuthContext);
     const [show, setShow] = React.useState(true);
-    const deletePost = () => {
-        if (window.confirm('確定刪除文章?')) {
-            api.deletePost(post._id, jwtToken);
-            setShow(false);
-        }
+    const deletePost = async () => {
+        Alerts.deletePost()
+            .then((result) => {
+                if (result.isConfirmed) {
+                    api.deletePost(post._id, jwtToken);
+                    setShow(false);
+                }
+            })
+            .catch((e) => {
+                if (e.response.status === 401) {
+                    Alerts.unauthorized().then((result) => {
+                        if (result.isConfirmed) {
+                            logout();
+                        }
+                    });
+                } else {
+                    Alerts.serverError();
+                }
+            });
     };
     return (
         <>
