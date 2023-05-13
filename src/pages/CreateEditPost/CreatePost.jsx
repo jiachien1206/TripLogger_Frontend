@@ -1,6 +1,6 @@
 import React from 'react';
 import { AuthContext } from '../../context/authContext';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import TextEditor from './Editor';
 import api from '../../utils/api';
 import axios from 'axios';
@@ -17,17 +17,13 @@ import {
     DateInput,
     CircularStatic,
     BottomWrap,
-    Toast,
 } from './Components';
 import Button from '@mui/material/Button';
 import { countryOptions } from './countryData';
-import Swal from 'sweetalert2';
-import warn from '../../images/warn.gif';
-import send from '../../images/send.gif';
-import travel from '../../images/travel.gif';
+import { Alerts, Toast } from '../../utils/alerts';
 
 function CreatePost() {
-    const { isLogin, jwtToken } = React.useContext(AuthContext);
+    const { isLogin, jwtToken, logout } = React.useContext(AuthContext);
     const [file, setFile] = React.useState();
     const [mainImg, setMainImg] = React.useState(null);
     const [title, setTitle] = React.useState('');
@@ -37,7 +33,6 @@ function CreatePost() {
     const [startDate, setStartDate] = React.useState(null);
     const [endDate, setEndDate] = React.useState(null);
     const [progress, setProgress] = React.useState(0);
-    const navigate = useNavigate();
 
     const typeOptions = [
         { value: '景點', label: '景點' },
@@ -74,12 +69,7 @@ function CreatePost() {
                     return;
                 }
                 if (file.size > 2097152) {
-                    Swal.fire({
-                        type: 'warning',
-                        confirmButtonColor: 'var(--primary-color)',
-                        text: 'This action cannot be undone.',
-                        html: `<div style="width: 100%; margin: 0px auto"><img src="${warn}" width="140px"><div style="font-weight:500;">檔案須小於2MB</div></div>`,
-                    });
+                    Alerts.imageTooBig();
                     setFile();
                 } else {
                     const res = await api.getPresignUrl(jwtToken);
@@ -93,93 +83,67 @@ function CreatePost() {
                     const mainImage = url.split('?')[0];
                     setMainImg(mainImage);
                 }
-            } catch (error) {
-                console.log(error);
+            } catch (e) {
+                if (e.response.status === 401) {
+                    const result = await Alerts.unauthorized();
+                    if (result.isConfirmed) {
+                        logout();
+                    }
+                } else {
+                    Alerts.serverError();
+                }
             }
         };
         uploadImage();
     }, [file]);
 
-    async function submitPost() {
+    const submitPost = async () => {
         try {
             if (!mainImg) {
-                Swal.fire({
-                    type: 'warning',
-                    confirmButtonColor: 'var(--primary-color)',
-                    html: `<div style="width: 100%; margin: 0px auto"><img src="${warn}" width="140px"><div style="font-weight:500;">請上傳首圖</div></div>`,
-                });
+                Alerts.noImage();
             } else if (title.length < 1 || title.length > 100) {
-                Swal.fire({
-                    type: 'warning',
-                    confirmButtonColor: 'var(--primary-color)',
-                    html: `<div style="width: 100%; margin: 0px auto"><img src="${warn}" width="140px"><div style="font-weight:500;">請填寫 1 至 100 個字元的標題</div></div>`,
-                });
-            } else if (startDate === null || endDate === null) {
-                Swal.fire({
-                    type: 'warning',
-                    confirmButtonColor: 'var(--primary-color)',
-                    html: `<div style="width: 100%; margin: 0px auto"><img src="${warn}" width="140px"><div style="font-weight:500;">請選擇旅遊日期</div></div>`,
-                });
-            } else if (new Date(endDate) - new Date(startDate) < 0) {
-                Swal.fire({
-                    type: 'warning',
-                    confirmButtonColor: 'var(--primary-color)',
-                    html: `<div style="width: 100%; margin: 0px auto"><img src="${warn}" width="140px"><div style="font-weight:500;">旅行結束日期需晚於開始日期</div></div>`,
-                });
+                Alerts.invalidPostTitle();
+            } else if (
+                startDate === null ||
+                endDate === null ||
+                new Date(endDate) - new Date(startDate) < 0
+            ) {
+                Alerts.invalidDates();
             } else if (content.length < 17 || content.length > 20500) {
-                Swal.fire({
-                    type: 'warning',
-                    confirmButtonColor: 'var(--primary-color)',
-                    html: `<div style="width: 100%; margin: 0px auto"><img src="${warn}" width="140px"><div style="font-weight:500;">請撰寫 10 至 20000 個字元的內文</div></div>`,
-                });
+                Alerts.invalidPostContent();
             } else {
-                Swal.fire({
-                    confirmButtonColor: 'var(--primary-color)',
-                    cancelButtonColor: 'var(--third-font)',
-                    showCancelButton: true,
-                    confirmButtonText: '送出',
-                    cancelButtonText: '取消',
-                    html: `<div style="width: 100%; margin: 0px auto"><img src="${send}" width="140px"><div style="font-weight:500;">送出文章</div></div>`,
-                })
-                    .then((result) => {
+                try {
+                    const result = await Alerts.submitPost();
+                    if (result.isConfirmed) {
+                        const res = await api.createPost(
+                            {
+                                title,
+                                content,
+                                main_image: mainImg,
+                                location: { continent: country[1], country: country[0] },
+                                type,
+                                dates: { start_date: startDate, end_date: endDate },
+                            },
+                            jwtToken
+                        );
+                        await Toast.submittingPost();
+                        window.location.replace(`/post/${res.data.data}`);
+                    }
+                } catch (e) {
+                    if (e.response.status === 401) {
+                        const result = await Alerts.unauthorized();
                         if (result.isConfirmed) {
-                            const res = api.createPost(
-                                {
-                                    title,
-                                    content,
-                                    main_image: mainImg,
-                                    location: { continent: country[1], country: country[0] },
-                                    type,
-                                    dates: { start_date: startDate, end_date: endDate },
-                                },
-                                jwtToken
-                            );
-                            Toast.fire({
-                                iconHtml: `<div style="width:50px; background-color: #ffffff; display:flex;" ><img width="100%" src="${travel}" ></div>`,
-                                title: '發文中～',
-                            });
-                            return res;
+                            logout();
                         }
-                    })
-                    .then((res) => window.location.replace(`/post/${res.data.data}`))
-                    .catch((e) => {
-                        Swal.fire({
-                            type: 'warning',
-                            confirmButtonColor: 'var(--primary-color)',
-                            html: `<div style="width: 100%; margin: 0px auto"><img src="${warn}" width="140px"><div style="font-weight:500;">發文失敗，請稍後再試！</div></div>`,
-                        });
-                        console.log(e);
-                    });
+                    } else {
+                        Alerts.serverError();
+                    }
+                }
             }
         } catch (e) {
-            Swal.fire({
-                type: 'warning',
-                confirmButtonColor: 'var(--primary-color)',
-                html: `<div style="width: 100%; margin: 0px auto"><img src="${warn}" width="140px"><div style="font-weight:500;">發文失敗，請稍後再試！</div></div>`,
-            });
-            console.log(e);
+            Alerts.serverError();
         }
-    }
+    };
 
     const ref = React.useRef();
     if (isLogin)

@@ -154,15 +154,3 @@ export const PlaceHolder = styled.div`
     width: 100%;
     height: 20.02px;
 `;
-
-export const Toast = Swal.mixin({
-    toast: true,
-    position: 'top-end',
-    showConfirmButton: false,
-    timer: 3000,
-    timerProgressBar: true,
-    didOpen: (toast) => {
-        toast.addEventListener('mouseenter', Swal.stopTimer);
-        toast.addEventListener('mouseleave', Swal.resumeTimer);
-    },
-});

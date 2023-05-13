@@ -6,8 +6,7 @@ import axios from 'axios';
 import api from '../../utils/api';
 import { AuthContext } from '../../context/authContext';
 import { LinearWithValueLabel, PlaceHolder } from './Components';
-import Swal from 'sweetalert2';
-import warn from '../../images/warn.gif';
+import { Alerts } from '../../utils/alerts';
 
 const Quill = styled(ReactQuill)`
     background-color: #ffffff;
@@ -51,7 +50,7 @@ const TextEditor = ({ originContent, editContent }) => {
     const [initialContent, setInitialContent] = React.useState();
     const [progress, setProgress] = React.useState(0);
     const quillRef = React.useRef(null);
-    const { jwtToken } = React.useContext(AuthContext);
+    const { jwtToken, logout } = React.useContext(AuthContext);
 
     const onUploadProgress = (progressEvent) => {
         const { loaded, total } = progressEvent;
@@ -71,8 +70,15 @@ const TextEditor = ({ originContent, editContent }) => {
             });
             const imageUrl = url.split('?')[0];
             return imageUrl;
-        } catch (error) {
-            console.log(error);
+        } catch (e) {
+            if (e.response.status === 401) {
+                const result = await Alerts.unauthorized();
+                if (result.isConfirmed) {
+                    logout();
+                }
+            } else {
+                Alerts.serverError();
+            }
         }
     };
 
@@ -87,12 +93,7 @@ const TextEditor = ({ originContent, editContent }) => {
                 return;
             }
             if (file.size > 2097152) {
-                Swal.fire({
-                    type: 'warning',
-                    confirmButtonColor: 'var(--primary-color)',
-                    text: 'This action cannot be undone.',
-                    html: `<div style="width: 100%; margin: 0px auto"><img src="${warn}" width="140px"><div style="font-weight:500;">檔案須小於2MB</div></div>`,
-                });
+                Alerts.imageTooBig();
             } else {
                 const imageUrl = await uploadImage(file);
                 if (imageUrl) {

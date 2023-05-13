@@ -1,15 +1,10 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import styled from 'styled-components';
 import { AuthContext } from '../../context/authContext';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import TextEditor from './Editor';
 import api from '../../utils/api';
 import axios from 'axios';
-import Swal from 'sweetalert2';
-import warn from '../../images/warn.gif';
-import send from '../../images/send.gif';
-import travel from '../../images/travel.gif';
 import {
     EditorWrap,
     MainImgWrap,
@@ -23,12 +18,12 @@ import {
     DateInput,
     CircularStatic,
     BottomWrap,
-    Toast,
 } from './Components';
 import Button from '@mui/material/Button';
+import { Alerts, Toast } from '../../utils/alerts';
 
 function EditPost() {
-    const { isLogin, jwtToken } = React.useContext(AuthContext);
+    const { isLogin, jwtToken, logout } = React.useContext(AuthContext);
     const [file, setFile] = React.useState('');
     const [mainImg, setMainImg] = React.useState('');
     const [title, setTitle] = React.useState('');
@@ -41,7 +36,6 @@ function EditPost() {
     const [progress, setProgress] = React.useState(0);
     const postId = useParams().id;
     const inputRef = React.useRef(null);
-    const navigate = useNavigate();
 
     const handleUploadClick = () => {
         inputRef.current.click();
@@ -56,16 +50,20 @@ function EditPost() {
 
     React.useEffect(() => {
         const getEditPost = async (postId) => {
-            const res = await api.getPost(postId);
-            const { title, main_image, content, location, type, dates } = res.data.data;
-            setMainImg(main_image);
-            setTitle(title);
-            setContinent(location.continent);
-            setCountry(location.country);
-            setType(type);
-            setStartDate(new Date(dates.start_date).toISOString().split('T')[0]);
-            setEndDate(new Date(dates.end_date).toISOString().split('T')[0]);
-            setContent(content);
+            try {
+                const res = await api.getPost(postId);
+                const { title, main_image, content, location, type, dates } = res.data.data;
+                setMainImg(main_image);
+                setTitle(title);
+                setContinent(location.continent);
+                setCountry(location.country);
+                setType(type);
+                setStartDate(new Date(dates.start_date).toISOString().split('T')[0]);
+                setEndDate(new Date(dates.end_date).toISOString().split('T')[0]);
+                setContent(content);
+            } catch (e) {
+                Alerts.serverError();
+            }
         };
         getEditPost(postId);
     }, []);
@@ -83,12 +81,7 @@ function EditPost() {
                     return;
                 }
                 if (file.size > 2097152) {
-                    Swal.fire({
-                        type: 'warning',
-                        confirmButtonColor: 'var(--primary-color)',
-                        text: 'This action cannot be undone.',
-                        html: `<div style="width: 100%; margin: 0px auto"><img src="${warn}" width="140px"><div style="font-weight:500;">檔案須小於2MB</div></div>`,
-                    });
+                    Alerts.imageTooBig();
                     setFile();
                 } else {
                     const res = await api.getPresignUrl(jwtToken);
@@ -102,73 +95,58 @@ function EditPost() {
                     const mainImage = url.split('?')[0];
                     setMainImg(mainImage);
                 }
-            } catch (error) {
-                console.log(error);
+            } catch (e) {
+                if (e.response.status === 401) {
+                    const result = await Alerts.unauthorized();
+                    if (result.isConfirmed) {
+                        logout();
+                    }
+                } else {
+                    Alerts.serverError();
+                }
             }
         };
         uploadImage();
     }, [file]);
 
-    async function submitPost() {
+    const submitPost = async () => {
         try {
             if (title.length < 1 || title.length > 100) {
-                Swal.fire({
-                    type: 'warning',
-                    confirmButtonColor: 'var(--primary-color)',
-                    html: `<div style="width: 100%; margin: 0px auto"><img src="${warn}" width="140px"><div style="font-weight:500;">請填寫 1 至 100 個字元的標題</div></div>`,
-                });
+                Alerts.invalidPostTitle();
             } else if (content.length < 17 || content.length > 20500) {
-                Swal.fire({
-                    type: 'warning',
-                    confirmButtonColor: 'var(--primary-color)',
-                    html: `<div style="width: 100%; margin: 0px auto"><img src="${warn}" width="140px"><div style="font-weight:500;">請撰寫 10 至 20000 個字元的內文</div></div>`,
-                });
+                Alerts.invalidPostContent();
             } else {
-                Swal.fire({
-                    confirmButtonColor: 'var(--primary-color)',
-                    cancelButtonColor: 'var(--third-font)',
-                    showCancelButton: true,
-                    confirmButtonText: '送出',
-                    cancelButtonText: '取消',
-                    html: `<div style="width: 100%; margin: 0px auto"><img src="${send}" width="140px"><div style="font-weight:500;">更新文章</div></div>`,
-                })
-                    .then((result) => {
+                try {
+                    const result = await Alerts.submitPost();
+
+                    if (result.isConfirmed) {
+                        const res = await api.editPost(
+                            postId,
+                            {
+                                title,
+                                content,
+                                main_image: mainImg,
+                            },
+                            jwtToken
+                        );
+                        await Toast.updatingPost();
+                        window.location.replace(`/post/${postId}`);
+                    }
+                } catch (e) {
+                    if (e.response.status === 401) {
+                        const result = await Alerts.unauthorized();
                         if (result.isConfirmed) {
-                            const res = api.editPost(
-                                postId,
-                                {
-                                    title,
-                                    content,
-                                    main_image: mainImg,
-                                },
-                                jwtToken
-                            );
-                            Toast.fire({
-                                iconHtml: `<div style="width:50px; background-color: #ffffff; display:flex;" ><img width="100%" src="${travel}" ></div>`,
-                                title: '更新中～',
-                            });
-                            return res;
+                            logout();
                         }
-                    })
-                    .then((res) => window.location.replace(`/post/${postId}`))
-                    .catch((e) => {
-                        Swal.fire({
-                            type: 'warning',
-                            confirmButtonColor: 'var(--primary-color)',
-                            html: `<div style="width: 100%; margin: 0px auto"><img src="${warn}" width="140px"><div style="font-weight:500;">更新失敗，請稍後再試！</div></div>`,
-                        });
-                        console.log(e);
-                    });
+                    } else {
+                        Alerts.serverError();
+                    }
+                }
             }
         } catch (e) {
-            Swal.fire({
-                type: 'warning',
-                confirmButtonColor: 'var(--primary-color)',
-                html: `<div style="width: 100%; margin: 0px auto"><img src="${warn}" width="140px"><div style="font-weight:500;">發文失敗，請稍後再試！</div></div>`,
-            });
-            console.log(e);
+            Alerts.serverError();
         }
-    }
+    };
     if (!isLogin) return <Navigate to="/" replace={false} />;
     return (
         <EditorWrap>
