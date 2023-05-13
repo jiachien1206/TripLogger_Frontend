@@ -58,6 +58,12 @@ const UnderLine = styled.div`
     }
 `;
 
+const PostListPagingWrap = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+`;
+
 const Home = () => {
     const [filters, setFilters] = React.useState(['熱門文章', '最新文章']);
     const [activeFilter, setActiveFilter] = React.useState('');
@@ -119,14 +125,15 @@ const Home = () => {
                         }
                     })}
                 </FilterWrap>
-
-                <PostList
-                    setPostNum={setPostNum}
-                    setPage={setPage}
-                    page={page}
-                    filter={activeFilter}
-                />
-                <Paging setPage={setPage} postNum={postNum} currentPage={page}></Paging>
+                <PostListPagingWrap>
+                    <PostList
+                        setPostNum={setPostNum}
+                        setPage={setPage}
+                        page={page}
+                        filter={activeFilter}
+                    />
+                    <Paging setPage={setPage} postNum={postNum} currentPage={page}></Paging>
+                </PostListPagingWrap>
             </PostsWrap>
         </Wrapper>
     );
