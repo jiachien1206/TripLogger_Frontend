@@ -5,6 +5,7 @@ import { MapContainer, TileLayer } from 'react-leaflet';
 import MapComponent from './MapConponent';
 import 'leaflet/dist/leaflet.css';
 import { Link } from 'react-router-dom';
+import { Alerts } from '../../utils/alerts.js';
 
 const Wrap = styled.div`
     margin-top: 60px;
@@ -100,11 +101,15 @@ function Map() {
 
     React.useEffect(() => {
         const fetchMapPosts = async () => {
-            const res = await api.getMapPosts();
-            const contryData = res.data.data;
-            const top = await api.getTopPosts();
-            setPosts(top.data.data.posts.slice(0, 8));
-            setCountries(contryData);
+            try {
+                const res = await api.getMapPosts();
+                const contryData = res.data.data;
+                const top = await api.getTopPosts();
+                setPosts(top.data.data.posts.slice(0, 8));
+                setCountries(contryData);
+            } catch (e) {
+                Alerts.serverError();
+            }
         };
         fetchMapPosts();
     }, []);
