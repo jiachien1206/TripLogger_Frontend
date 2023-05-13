@@ -120,12 +120,15 @@ const Continent = () => {
 
     React.useEffect(() => {
         filterPosts(continent, activeFilter);
+    }, [page, continent, activeFilter]);
+    React.useEffect(() => {
+        if (page !== 1) setPage(1);
+    }, [continent, activeFilter]);
+
+    React.useEffect(() => {
         scollToRef.current.scrollIntoView();
     }, [page]);
-    React.useEffect(() => {
-        filterPosts(continent, activeFilter);
-        setPage(1);
-    }, [continent, activeFilter]);
+
     return (
         <>
             <div ref={scollToRef}></div>
