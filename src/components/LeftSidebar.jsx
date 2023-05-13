@@ -19,8 +19,6 @@ const Wrapper = styled.div`
     margin: 20px 0px 20px 0px;
     gap: 20px;
     max-width: 20vw;
-    z-index: 100;
-    /* flex-wrap: wrap; */
     &.home {
         top: 120px;
     }
