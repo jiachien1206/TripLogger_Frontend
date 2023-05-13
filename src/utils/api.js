@@ -29,7 +29,7 @@ const api = {
         return axios(`${this.HOST_NAME}/continents/${continent}?types=${types}&paging=${page}`);
     },
     addRead(postId, userId, location, type) {
-        return axios.post(`${this.HOST_NAME}/posts/${postId}/reads`, { userId, location, type });
+        return axios.post(`${this.HOST_NAME}/posts/${postId}/read`, { userId, location, type });
     },
     likePost(postId, data, jwtToken) {
         return axios.post(`${this.HOST_NAME}/posts/${postId}/like`, data, {

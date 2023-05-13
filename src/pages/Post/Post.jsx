@@ -15,7 +15,7 @@ import Backdrop from '@mui/material/Backdrop';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
-
+import { Alerts } from '../../utils/alerts.js';
 import Reactions from '../../components/Reaction.jsx';
 
 const Wrap = styled.div`
@@ -270,7 +270,7 @@ const NewPostImg = styled.img`
 const NewPostTitle = styled.div``;
 
 const Post = () => {
-    const { isLogin, user, jwtToken } = React.useContext(AuthContext);
+    const { isLogin, user, jwtToken, logout } = React.useContext(AuthContext);
     const [post, setPost] = React.useState();
     const [comments, setComments] = React.useState([]);
     const [newComment, setNewComment] = React.useState(false);
@@ -289,84 +289,105 @@ const Post = () => {
     const postId = useParams().id;
     const scollToRef = React.useRef();
 
-    function likePost() {
-        const jwtToken = window.localStorage.getItem('jwtToken');
-        let localStorageLikedPosts = window.localStorage.getItem('likedPosts');
-        localStorageLikedPosts = JSON.parse(localStorageLikedPosts);
-        if (!like) {
-            setLikeNum(function (prev) {
-                return prev + 1;
-            });
-            const data = {
-                location: post.location.continent,
-                type: post.type,
-                isPositive: true,
-                authorId: post.authorId,
-                title: post.title,
-                liker: user.name,
-            };
-            api.likePost(post._id, data, jwtToken);
-            localStorageLikedPosts.push(post._id);
-            window.localStorage.setItem('likedPosts', JSON.stringify(localStorageLikedPosts));
-        } else {
-            setLikeNum(function (prev) {
-                return prev - 1;
-            });
-            const data = {
-                location: post.location.continent,
-                type: post.type,
-                isPositive: false,
-                authorId: post.authorId,
-                title: post.title,
-                liker: user.name,
-            };
-            api.likePost(post._id, data, jwtToken);
-            const newLocalStorageLikedPosts = localStorageLikedPosts.filter((p) => {
-                if (p !== post._id) {
-                    return true;
-                }
-                return false;
-            });
-            window.localStorage.setItem('likedPosts', JSON.stringify(newLocalStorageLikedPosts));
-        }
+    const likePost = async () => {
+        try {
+            let localStorageLikedPosts = window.localStorage.getItem('likedPosts');
+            localStorageLikedPosts = JSON.parse(localStorageLikedPosts);
+            if (!like) {
+                const data = {
+                    location: post.location.continent,
+                    type: post.type,
+                    isPositive: true,
+                    authorId: post.authorId,
+                    title: post.title,
+                    liker: user.name,
+                };
+                await api.likePost(post._id, data, jwtToken);
+                setLikeNum(function (prev) {
+                    return prev + 1;
+                });
+                localStorageLikedPosts.push(post._id);
+                window.localStorage.setItem('likedPosts', JSON.stringify(localStorageLikedPosts));
+            } else {
+                const data = {
+                    location: post.location.continent,
+                    type: post.type,
+                    isPositive: false,
+                    authorId: post.authorId,
+                    title: post.title,
+                    liker: user.name,
+                };
+                await api.likePost(post._id, data, jwtToken);
+                setLikeNum(function (prev) {
+                    return prev - 1;
+                });
+                const newLocalStorageLikedPosts = localStorageLikedPosts.filter((p) => {
+                    if (p !== post._id) {
+                        return true;
+                    }
+                    return false;
+                });
+                window.localStorage.setItem(
+                    'likedPosts',
+                    JSON.stringify(newLocalStorageLikedPosts)
+                );
+            }
 
-        setLike(!like);
-    }
-    function savePost() {
-        const jwtToken = window.localStorage.getItem('jwtToken');
-        const localStorageSavedPosts = JSON.parse(window.localStorage.getItem('savedPosts'));
-        if (!save) {
-            setSaveNum(function (prev) {
-                return prev + 1;
-            });
-            api.savePost(post._id, post.location.continent, post.type, true, jwtToken);
-            localStorageSavedPosts.push(post._id);
-            window.localStorage.setItem('savedPosts', JSON.stringify(localStorageSavedPosts));
-        } else {
-            setSaveNum(function (prev) {
-                return prev - 1;
-            });
-            api.savePost(post._id, post.location.continent, post.type, false, jwtToken);
-            const newLocalStorageSavedPosts = localStorageSavedPosts.filter((p) => {
-                if (p !== post._id) {
-                    return true;
-                }
-                return false;
-            });
-            window.localStorage.setItem('savedPosts', JSON.stringify(newLocalStorageSavedPosts));
+            setLike(!like);
+        } catch (e) {
+            if (e.response.status === 401) {
+                Alerts.unauthorized().then((result) => {
+                    if (result.isConfirmed) {
+                        logout();
+                    }
+                });
+            } else {
+                Alerts.serverError();
+            }
         }
-        setSave(!save);
-    }
+    };
+    const savePost = async () => {
+        try {
+            const localStorageSavedPosts = JSON.parse(window.localStorage.getItem('savedPosts'));
+            if (!save) {
+                await api.savePost(post._id, post.location.continent, post.type, true, jwtToken);
+                setSaveNum(function (prev) {
+                    return prev + 1;
+                });
+                localStorageSavedPosts.push(post._id);
+                window.localStorage.setItem('savedPosts', JSON.stringify(localStorageSavedPosts));
+            } else {
+                await api.savePost(post._id, post.location.continent, post.type, false, jwtToken);
+                setSaveNum(function (prev) {
+                    return prev - 1;
+                });
+                const newLocalStorageSavedPosts = localStorageSavedPosts.filter((p) => {
+                    if (p !== post._id) {
+                        return true;
+                    }
+                    return false;
+                });
+                window.localStorage.setItem(
+                    'savedPosts',
+                    JSON.stringify(newLocalStorageSavedPosts)
+                );
+            }
+            setSave(!save);
+        } catch (e) {
+            if (e.response.status === 401) {
+                Alerts.unauthorized().then((result) => {
+                    if (result.isConfirmed) {
+                        logout();
+                    }
+                });
+            } else {
+                Alerts.serverError();
+            }
+        }
+    };
 
     React.useEffect(() => {
         const matchPostStatus = async () => {
-            const res = await api.getPostNumbers(postId);
-            const { read_num, like_num, save_num, comment_num } = res.data.data;
-
-            setReadNum(read_num);
-            setLikeNum(like_num);
-            setSaveNum(save_num);
-            setCommentNum(comment_num);
             const likedPosts = window.localStorage.getItem('likedPosts');
             if (likedPosts.includes(postId)) {
                 setLike(true);
@@ -380,107 +401,60 @@ const Post = () => {
                 setSave(false);
             }
         };
-        async function getPost(postId) {
-            const res = await api.getPost(postId);
-            const post = res.data.data;
-            setPost(post);
-            const sortedComments = post.comments.sort(function (a, b) {
-                return new Date(b.timestamp) - new Date(a.timestamp);
-            });
-            setComments(sortedComments);
-            if (isLogin) {
-                const user = JSON.parse(window.localStorage.getItem('user'));
-                await api.addRead(postId, user.id, post.location.continent, post.type);
-                await matchPostStatus();
-            } else {
-                await api.addRead(postId, null, post.location.continent, post.type);
+        const getPost = async (postId) => {
+            try {
+                const postRes = await api.getPost(postId);
+                const post = postRes.data.data;
+                setPost(post);
+                const numRes = await api.getPostNumbers(postId);
+                const { read_num, like_num, save_num, comment_num } = numRes.data.data;
+                setReadNum(read_num);
+                setLikeNum(like_num);
+                setSaveNum(save_num);
+                setCommentNum(comment_num);
+                const sortedComments = post.comments.sort(function (a, b) {
+                    return new Date(b.timestamp) - new Date(a.timestamp);
+                });
+                setComments(sortedComments);
+                if (isLogin) {
+                    const user = JSON.parse(window.localStorage.getItem('user'));
+                    await api.addRead(postId, user.id, post.location.continent, post.type);
+                    await matchPostStatus();
+                } else {
+                    await api.addRead(postId, null, post.location.continent, post.type);
+                }
+                const utcDate = new Date(post.dates.post_date);
+                const dateTime = utcDate.toLocaleString();
+                const [date] = dateTime.split(' ');
+                setDate(date);
+                const response = await api.getUserPosts(post.authorId._id, 6);
+                setAuthorPosts(response.data.data);
+                setNewComment(false);
+            } catch (e) {
+                Alerts.serverError();
             }
-            const utcDate = new Date(post.dates.post_date);
-            const dateTime = utcDate.toLocaleString();
-            const [date] = dateTime.split(' ');
-            setDate(date);
-            const response = await api.getUserPosts(post.authorId._id, 6);
-            setAuthorPosts(response.data.data);
-            setNewComment(false);
-        }
+        };
 
         getPost(postId);
         setIsHover(false);
     }, [postId]);
 
     React.useEffect(() => {
-        async function renderNewComment(postId) {
-            const res = await api.getPost(postId);
-            const post = res.data.data;
-            const sortedComments = post.comments.sort(function (a, b) {
-                return new Date(b.timestamp) - new Date(a.timestamp);
-            });
-            setComments(sortedComments);
-            setNewComment(false);
-            // if (isLogin) {
-            //     const user = JSON.parse(window.localStorage.getItem('user'));
-            //     await api.addRead(postId, user.id, post.location.continent, post.type);
-            //     await matchPostStatus();
-            // } else {
-            //     await api.addRead(postId, null, post.location.continent, post.type);
-            // }
-            // const utcDate = new Date(post.dates.post_date);
-            // const dateTime = utcDate.toLocaleString();
-            // const [date] = dateTime.split(' ');
-            // setDate(date);
-            // const response = await api.getUserPosts(post.authorId._id, 6);
-            // setAuthorPosts(response.data.data);
-            // setNewComment(false);
-        }
+        const renderNewComment = async (postId) => {
+            try {
+                const res = await api.getPost(postId);
+                const post = res.data.data;
+                const sortedComments = post.comments.sort(function (a, b) {
+                    return new Date(b.timestamp) - new Date(a.timestamp);
+                });
+                setComments(sortedComments);
+                setNewComment(false);
+            } catch (e) {
+                Alerts.serverError();
+            }
+        };
 
         renderNewComment(postId);
-        // const matchPostStatus = async () => {
-        //     const res = await api.getPostNumbers(postId);
-        //     const { read_num, like_num, save_num, comment_num } = res.data.data;
-
-        //     setReadNum(read_num);
-        //     setLikeNum(like_num);
-        //     setSaveNum(save_num);
-        //     setCommentNum(comment_num);
-        //     const likedPosts = window.localStorage.getItem('likedPosts');
-        //     if (likedPosts.includes(postId)) {
-        //         setLike(true);
-        //     } else {
-        //         setLike(false);
-        //     }
-        //     const savedPosts = window.localStorage.getItem('savedPosts');
-        //     if (savedPosts.includes(postId)) {
-        //         setSave(true);
-        //     } else {
-        //         setSave(false);
-        //     }
-        // };
-        // async function getPost(postId) {
-        //     const res = await api.getPost(postId);
-        //     const post = res.data.data;
-        //     setPost(post);
-        //     const sortedComments = post.comments.sort(function (a, b) {
-        //         return new Date(b.timestamp) - new Date(a.timestamp);
-        //     });
-        //     setComments(sortedComments);
-        //     if (isLogin) {
-        //         const user = JSON.parse(window.localStorage.getItem('user'));
-        //         await api.addRead(postId, user.id, post.location.continent, post.type);
-        //         await matchPostStatus();
-        //     } else {
-        //         await api.addRead(postId, null, post.location.continent, post.type);
-        //     }
-        //     const utcDate = new Date(post.dates.post_date);
-        //     const dateTime = utcDate.toLocaleString();
-        //     const [date] = dateTime.split(' ');
-        //     setDate(date);
-        //     const response = await api.getUserPosts(post.authorId._id, 6);
-        //     setAuthorPosts(response.data.data);
-        //     setNewComment(false);
-        // }
-
-        // getPost(postId);
-        // setIsHover(false);
     }, [newComment]);
 
     if (!post) return null;
