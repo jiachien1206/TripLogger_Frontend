@@ -76,24 +76,22 @@ const Post = ({ post }) => {
     const { jwtToken, logout } = React.useContext(AuthContext);
     const [show, setShow] = React.useState(true);
     const deletePost = async () => {
-        Alerts.deletePost()
-            .then((result) => {
+        try {
+            const result = await Alerts.deletePost();
+            if (result.isConfirmed) {
+                await api.deletePost(post._id, jwtToken);
+                setShow(false);
+            }
+        } catch (e) {
+            if (e.response.status === 401) {
+                const result = await Alerts.unauthorized();
                 if (result.isConfirmed) {
-                    api.deletePost(post._id, jwtToken);
-                    setShow(false);
+                    logout();
                 }
-            })
-            .catch((e) => {
-                if (e.response.status === 401) {
-                    Alerts.unauthorized().then((result) => {
-                        if (result.isConfirmed) {
-                            logout();
-                        }
-                    });
-                } else {
-                    Alerts.serverError();
-                }
-            });
+            } else {
+                Alerts.serverError();
+            }
+        }
     };
     return (
         <>

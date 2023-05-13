@@ -26,11 +26,10 @@ const Posts = () => {
                 setPosts(userPosts);
             } catch (e) {
                 if (e.response.status === 401) {
-                    Alerts.unauthorized().then((result) => {
-                        if (result.isConfirmed) {
-                            logout();
-                        }
-                    });
+                    const result = await Alerts.unauthorized();
+                    if (result.isConfirmed) {
+                        logout();
+                    }
                 } else {
                     Alerts.serverError();
                 }

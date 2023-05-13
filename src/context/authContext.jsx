@@ -67,13 +67,14 @@ export const AuthContextProvider = ({ children }) => {
         } catch (e) {
             if (e.response.status === 401) {
                 setIsLogin(false);
-                Alerts.unauthorized().then((result) => {
-                    if (result.isConfirmed) {
-                        window.localStorage.removeItem('jwtToken');
-                        setJwtToken();
-                        window.location.replace(`/`);
-                    }
-                });
+                const result = await Alerts.unauthorized();
+                if (result.isConfirmed) {
+                    window.localStorage.removeItem('jwtToken');
+                    setJwtToken();
+                    window.location.replace(`/`);
+                }
+            } else {
+                Alerts.serverError();
             }
             setIsLogin(false);
         }
