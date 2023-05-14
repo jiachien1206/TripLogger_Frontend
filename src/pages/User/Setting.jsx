@@ -6,10 +6,23 @@ import Button from '@mui/material/Button';
 import api from '../../utils/api';
 import axios from 'axios';
 import Options from '../../components/PreferenceOptions';
-import Snackbar from '@mui/material/Snackbar';
-import Alert from '@mui/material/Alert';
 import { AuthContext } from '../../context/authContext';
 import CircularProgress from '@mui/material/CircularProgress';
+import Swal from 'sweetalert2';
+import success from '../../images/success.gif';
+import { Alerts } from '../../utils/alerts';
+
+const Toast = Swal.mixin({
+    toast: true,
+    position: 'top-end',
+    showConfirmButton: false,
+    timer: 1000,
+    timerProgressBar: false,
+    didOpen: (toast) => {
+        toast.addEventListener('mouseenter', Swal.stopTimer);
+        toast.addEventListener('mouseleave', Swal.resumeTimer);
+    },
+});
 
 const Label = styled.label`
     margin-bottom: 5px;
@@ -67,27 +80,36 @@ const UploadImgButton = styled.div``;
 const UploadImgInput = styled.input``;
 
 const Setting = () => {
-    const { jwtToken, setUser, user } = React.useContext(AuthContext);
+    const { jwtToken, setUser, user, logout } = React.useContext(AuthContext);
     const [profileImage, setProfileImage] = React.useState();
     const [name, setName] = React.useState('');
     const [email, setEmail] = React.useState('');
     const [file, setFile] = React.useState();
     const [locations, setLocations] = React.useState([]);
     const [types, setTypes] = React.useState([]);
-    const [snackbar, setSnackbar] = React.useState(false);
-    const [success, setSuccess] = React.useState();
     const [progress, setProgress] = React.useState(0);
     React.useEffect(() => {
         const getUserData = async () => {
-            const userId = user.id;
-            const res = await api.getUser(userId, jwtToken);
-            const { name, email, location, type, image } = res.data.data;
-            setName(name);
-            setEmail(email);
-            setLocations(location);
-            setTypes(type);
-            if (image) {
-                setProfileImage(image);
+            try {
+                const userId = user.id;
+                const res = await api.getUser(userId, jwtToken);
+                const { name, email, location, type, image } = res.data.data;
+                setName(name);
+                setEmail(email);
+                setLocations(location);
+                setTypes(type);
+                if (image) {
+                    setProfileImage(image);
+                }
+            } catch (e) {
+                if (e.response.status === 401) {
+                    const result = await Alerts.unauthorized();
+                    if (result.isConfirmed) {
+                        logout();
+                    }
+                } else {
+                    Alerts.serverError();
+                }
             }
         };
         getUserData();
@@ -114,7 +136,7 @@ const Setting = () => {
 
     const submitSetting = async () => {
         if (name.length < 1) {
-            alert('使用者名稱需大於 1 個字元');
+            Alerts.nameLengthTooShort();
             return;
         }
         const userId = user.id;
@@ -124,20 +146,27 @@ const Setting = () => {
             location_pre: locations,
             type_pre: types,
         };
-        const res = await api.editUser(userId, data, jwtToken);
-        if (res.status === 200) {
-            setSuccess(true);
+        try {
+            const res = await api.editUser(userId, data, jwtToken);
+            const { relevantPosts } = res.data.data;
+            window.localStorage.setItem('relevantPosts', JSON.stringify(relevantPosts));
+            Toast.fire({
+                iconHtml: `<div style="width:50px; background-color: #ffffff; display:flex;" ><img width="100%" src="${success}" ></div>`,
+                title: '更新成功',
+            });
             const newUser = { ...user };
             newUser.image = profileImage;
             setUser(newUser);
-        } else {
-            setSuccess(false);
+        } catch (e) {
+            if (e.response.status === 401) {
+                const result = await Alerts.unauthorized();
+                if (result.isConfirmed) {
+                    logout();
+                }
+            } else {
+                Alerts.serverError();
+            }
         }
-        setSnackbar(true);
-    };
-
-    const closeSnackbar = async () => {
-        setSnackbar(false);
     };
 
     React.useEffect(() => {
@@ -147,7 +176,7 @@ const Setting = () => {
                     return;
                 }
                 if (file.size > 2097152) {
-                    alert('檔案須小於2MB');
+                    Alerts.imageTooBig();
                     setFile();
                 } else {
                     const res = await api.getPresignUrl(jwtToken);
@@ -161,8 +190,15 @@ const Setting = () => {
                     const image = url.split('?')[0];
                     setProfileImage(image);
                 }
-            } catch (error) {
-                console.log(error);
+            } catch (e) {
+                if (e.response.status === 401) {
+                    const result = await Alerts.unauthorized();
+                    if (result.isConfirmed) {
+                        logout();
+                    }
+                } else {
+                    Alerts.serverError();
+                }
             }
         };
         uploadImage();
@@ -226,40 +262,6 @@ const Setting = () => {
             >
                 更新資料
             </Button>
-            <Snackbar
-                open={snackbar}
-                autoHideDuration={2000}
-                anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-                onClose={closeSnackbar}
-            >
-                {success ? (
-                    <Alert
-                        variant="filled"
-                        severity="success"
-                        color="success"
-                        sx={{
-                            height: '100%',
-                            padding: '5px 10px',
-                            width: '200px',
-                        }}
-                    >
-                        資料更新成功
-                    </Alert>
-                ) : (
-                    <Alert
-                        variant="filled"
-                        severity="warning"
-                        color="warning"
-                        sx={{
-                            height: '100%',
-                            padding: '5px 10px',
-                            width: '200px',
-                        }}
-                    >
-                        資料更新失敗
-                    </Alert>
-                )}
-            </Snackbar>
         </>
     );
 };

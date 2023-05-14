@@ -49,9 +49,7 @@ const Option = styled(Link)`
         color: var(--white);
     }
 `;
-const OptionIcon = styled.img`
-    height: 21px;
-`;
+
 const OptionTitle = styled.div`
     font-size: 20px;
     font-weight: 500;
@@ -62,8 +60,6 @@ const Section = styled.div`
     display: flex;
     flex-direction: column;
     margin-bottom: 28px;
-    // gap: 10px;
-    // align-items: center;
     color: #5c5c5c;
 `;
 

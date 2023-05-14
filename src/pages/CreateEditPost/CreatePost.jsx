@@ -1,6 +1,6 @@
 import React from 'react';
 import { AuthContext } from '../../context/authContext';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import TextEditor from './Editor';
 import api from '../../utils/api';
 import axios from 'axios';
@@ -20,9 +20,10 @@ import {
 } from './Components';
 import Button from '@mui/material/Button';
 import { countryOptions } from './countryData';
+import { Alerts, Toast } from '../../utils/alerts';
 
 function CreatePost() {
-    const { isLogin, jwtToken } = React.useContext(AuthContext);
+    const { isLogin, jwtToken, logout } = React.useContext(AuthContext);
     const [file, setFile] = React.useState();
     const [mainImg, setMainImg] = React.useState(null);
     const [title, setTitle] = React.useState('');
@@ -32,7 +33,6 @@ function CreatePost() {
     const [startDate, setStartDate] = React.useState(null);
     const [endDate, setEndDate] = React.useState(null);
     const [progress, setProgress] = React.useState(0);
-    const navigate = useNavigate();
 
     const typeOptions = [
         { value: '景點', label: '景點' },
@@ -69,7 +69,7 @@ function CreatePost() {
                     return;
                 }
                 if (file.size > 2097152) {
-                    alert('檔案須小於2MB');
+                    Alerts.imageTooBig();
                     setFile();
                 } else {
                     const res = await api.getPresignUrl(jwtToken);
@@ -83,45 +83,67 @@ function CreatePost() {
                     const mainImage = url.split('?')[0];
                     setMainImg(mainImage);
                 }
-            } catch (error) {
-                console.log(error);
+            } catch (e) {
+                if (e.response.status === 401) {
+                    const result = await Alerts.unauthorized();
+                    if (result.isConfirmed) {
+                        logout();
+                    }
+                } else {
+                    Alerts.serverError();
+                }
             }
         };
         uploadImage();
     }, [file]);
 
-    async function submitPost() {
+    const submitPost = async () => {
         try {
             if (!mainImg) {
-                alert('請上傳首圖');
+                Alerts.noImage();
             } else if (title.length < 1 || title.length > 100) {
-                alert('請填寫 1 至 100 個字元的標題');
-            } else if (startDate === null || endDate === null) {
-                alert('請選擇旅遊日期');
-            } else if (new Date(endDate) - new Date(startDate) < 0) {
-                alert('旅行結束日期需晚於開始日期');
+                Alerts.invalidPostTitle();
+            } else if (
+                startDate === null ||
+                endDate === null ||
+                new Date(endDate) - new Date(startDate) < 0
+            ) {
+                Alerts.invalidDates();
             } else if (content.length < 17 || content.length > 20500) {
-                alert('請撰寫 10 至 20000 個字元的內文');
+                Alerts.invalidPostContent();
             } else {
-                alert('送出文章');
-                const res = await api.createPost(
-                    {
-                        title,
-                        content,
-                        main_image: mainImg,
-                        location: { continent: country[1], country: country[0] },
-                        type,
-                        dates: { start_date: startDate, end_date: endDate },
-                    },
-                    jwtToken
-                );
-                navigate(`/post/${res.data.data}`);
+                try {
+                    const result = await Alerts.submitPost();
+                    if (result.isConfirmed) {
+                        const res = await api.createPost(
+                            {
+                                title,
+                                content,
+                                main_image: mainImg,
+                                location: { continent: country[1], country: country[0] },
+                                type,
+                                dates: { start_date: startDate, end_date: endDate },
+                            },
+                            jwtToken
+                        );
+                        await Toast.submittingPost();
+                        window.location.replace(`/post/${res.data.data}`);
+                    }
+                } catch (e) {
+                    if (e.response.status === 401) {
+                        const result = await Alerts.unauthorized();
+                        if (result.isConfirmed) {
+                            logout();
+                        }
+                    } else {
+                        Alerts.serverError();
+                    }
+                }
             }
         } catch (e) {
-            console.log(e);
-            alert('文章發佈失敗');
+            Alerts.serverError();
         }
-    }
+    };
 
     const ref = React.useRef();
     if (isLogin)
@@ -171,6 +193,7 @@ function CreatePost() {
                         onChange={(e) => {
                             setStartDate(e.target.value);
                         }}
+                        max={new Date().toISOString().split('T')[0]}
                     ></DateInput>
                     <DateInput
                         type="text"
@@ -181,6 +204,7 @@ function CreatePost() {
                         onChange={(e) => {
                             setEndDate(e.target.value);
                         }}
+                        max={new Date().toISOString().split('T')[0]}
                     ></DateInput>
                 </SelectWrap>
                 <BottomWrap>

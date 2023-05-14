@@ -13,6 +13,7 @@ import webSocket from 'socket.io-client';
 import updateNewsfeeds from '../utils/updateUserNewsfeeds.js';
 import { FaBell } from 'react-icons/fa';
 import { FiSearch } from 'react-icons/fi';
+import { Alerts } from '../utils/alerts.js';
 
 const Navigation = styled.div`
     position: fixed;
@@ -196,31 +197,34 @@ const Header = () => {
         window.location.replace(`/search?keyword=${inputValue}`);
     };
 
-    const handleLogout = async () => {
-        logout();
-        const data = { logoutTime: new Date() };
-        await api.logout(data, jwtToken);
-        window.location.reload();
-    };
-
     const handleRead = async (e) => {
-        handleClickN(e);
         await getNotification();
+        handleClickN(e);
         setBadge(0);
         ws.emit('Read notification', { userId: user.userId });
         api.readNotification(jwtToken);
     };
 
     async function getNotification() {
-        const res = await api.getNotification(jwtToken);
-        const result = res.data.data;
-        setNotifications(result);
-
-        const _notifications = result.filter((n) => {
-            return n.read === false;
-        });
-        if (_notifications.length > 0) {
-            setBadge(1);
+        try {
+            const res = await api.getNotification(jwtToken);
+            const result = res.data.data;
+            setNotifications(result);
+            const _notifications = result.filter((n) => {
+                return n.read === false;
+            });
+            if (_notifications.length > 0) {
+                setBadge(1);
+            }
+        } catch (e) {
+            if (e.response.status === 401) {
+                const result = await Alerts.unauthorized();
+                if (result.isConfirmed) {
+                    logout();
+                }
+            } else {
+                Alerts.serverError();
+            }
         }
     }
 
@@ -245,7 +249,16 @@ const Header = () => {
             if (isLogin) {
                 ws.emit('Join user id room', { userId: user.userId });
                 ws.on('Update user newsfeeds', async () => {
-                    await updateNewsfeeds(jwtToken);
+                    try {
+                        await updateNewsfeeds(jwtToken);
+                    } catch (e) {
+                        if (e.response.status === 401) {
+                            const result = await Alerts.unauthorized();
+                            if (result.isConfirmed) {
+                                logout();
+                            }
+                        }
+                    }
                 });
                 ws.on('New notification', (data) => {
                     setBadge(1);
@@ -480,7 +493,7 @@ const Header = () => {
                                 borderRadius: '5px',
                             },
                         }}
-                        onClick={handleLogout}
+                        onClick={() => logout()}
                     >
                         登出
                     </MenuItem>

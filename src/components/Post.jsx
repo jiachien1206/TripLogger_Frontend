@@ -16,6 +16,7 @@ import { AiOutlineHeart, AiFillHeart } from 'react-icons/ai';
 import { FaRegBookmark, FaBookmark } from 'react-icons/fa';
 import { TbMessageCircle2 } from 'react-icons/tb';
 import { RiMapPin2Fill } from 'react-icons/ri';
+import { Alerts } from '../utils/alerts.js';
 
 const PostWrap = styled.div`
     border-radius: 15px;
@@ -233,7 +234,7 @@ const style = {
 };
 
 const Post = ({ post, likedPosts, savedPosts }) => {
-    const { isLogin, user } = React.useContext(AuthContext);
+    const { isLogin, user, jwtToken, logout } = React.useContext(AuthContext);
     const [like, setLike] = React.useState(false);
     const [likeNum, setLikeNum] = React.useState(0);
     const [readNum, setReadNum] = React.useState(0);
@@ -265,69 +266,94 @@ const Post = ({ post, likedPosts, savedPosts }) => {
         matchPostStatus();
     }, [post]);
 
-    function likePost() {
-        const jwtToken = window.localStorage.getItem('jwtToken');
-        let localStorageLikedPosts = window.localStorage.getItem('likedPosts');
-        localStorageLikedPosts = JSON.parse(localStorageLikedPosts);
-        if (!like) {
-            setLikeNum(function (prev) {
-                return prev + 1;
-            });
-            const data = {
-                location: post.location.continent,
-                type: post.type,
-                like: true,
-                authorId: post.authorId,
-                title: post.title,
-                liker: user.name,
-            };
-            api.likePost(post._id, data, jwtToken);
-            localStorageLikedPosts.push(post._id);
-            window.localStorage.setItem('likedPosts', JSON.stringify(localStorageLikedPosts));
-        } else {
-            setLikeNum(function (prev) {
-                return prev - 1;
-            });
-            const data = {
-                location: post.location.continent,
-                type: post.type,
-                like: false,
-                authorId: post.authorId,
-                title: post.title,
-                liker: user.name,
-            };
-            api.likePost(post._id, data, jwtToken);
-            const newLocalStorageLikedPosts = localStorageLikedPosts.filter((p) => {
-                if (p !== post._id) {
-                    return true;
-                }
-                return false;
-            });
-            window.localStorage.setItem('likedPosts', JSON.stringify(newLocalStorageLikedPosts));
-        }
+    const likePost = async () => {
+        try {
+            let localStorageLikedPosts = window.localStorage.getItem('likedPosts');
+            localStorageLikedPosts = JSON.parse(localStorageLikedPosts);
+            if (!like) {
+                const data = {
+                    location: post.location.continent,
+                    type: post.type,
+                    isPositive: true,
+                    authorId: post.authorId,
+                    title: post.title,
+                    liker: user.name,
+                };
+                await api.likePost(post._id, data, jwtToken);
+                setLikeNum(function (prev) {
+                    return prev + 1;
+                });
+                localStorageLikedPosts.push(post._id);
+                window.localStorage.setItem('likedPosts', JSON.stringify(localStorageLikedPosts));
+            } else {
+                const data = {
+                    location: post.location.continent,
+                    type: post.type,
+                    isPositive: false,
+                    authorId: post.authorId,
+                    title: post.title,
+                    liker: user.name,
+                };
+                await api.likePost(post._id, data, jwtToken);
+                setLikeNum(function (prev) {
+                    return prev - 1;
+                });
+                const newLocalStorageLikedPosts = localStorageLikedPosts.filter((p) => {
+                    if (p !== post._id) {
+                        return true;
+                    }
+                    return false;
+                });
+                window.localStorage.setItem(
+                    'likedPosts',
+                    JSON.stringify(newLocalStorageLikedPosts)
+                );
+            }
 
-        setLike(!like);
-    }
-    function savePost() {
-        const jwtToken = window.localStorage.getItem('jwtToken');
-        const localStorageSavedPosts = JSON.parse(window.localStorage.getItem('savedPosts'));
-        if (!save) {
-            api.savePost(post._id, post.location.continent, post.type, true, jwtToken);
-            localStorageSavedPosts.push(post._id);
-            window.localStorage.setItem('savedPosts', JSON.stringify(localStorageSavedPosts));
-        } else {
-            api.savePost(post._id, post.location.continent, post.type, false, jwtToken);
-            const newLocalStorageSavedPosts = localStorageSavedPosts.filter((p) => {
-                if (p !== post._id) {
-                    return true;
+            setLike(!like);
+        } catch (e) {
+            if (e.response.status === 401) {
+                const result = await Alerts.unauthorized();
+                if (result.isConfirmed) {
+                    logout();
                 }
-                return false;
-            });
-            window.localStorage.setItem('savedPosts', JSON.stringify(newLocalStorageSavedPosts));
+            } else {
+                Alerts.serverError();
+            }
         }
-        setSave(!save);
-    }
-
+    };
+    const savePost = async () => {
+        try {
+            const localStorageSavedPosts = JSON.parse(window.localStorage.getItem('savedPosts'));
+            if (!save) {
+                await api.savePost(post._id, post.location.continent, post.type, true, jwtToken);
+                localStorageSavedPosts.push(post._id);
+                window.localStorage.setItem('savedPosts', JSON.stringify(localStorageSavedPosts));
+            } else {
+                await api.savePost(post._id, post.location.continent, post.type, false, jwtToken);
+                const newLocalStorageSavedPosts = localStorageSavedPosts.filter((p) => {
+                    if (p !== post._id) {
+                        return true;
+                    }
+                    return false;
+                });
+                window.localStorage.setItem(
+                    'savedPosts',
+                    JSON.stringify(newLocalStorageSavedPosts)
+                );
+            }
+            setSave(!save);
+        } catch (e) {
+            if (e.response.status === 401) {
+                const result = await Alerts.unauthorized();
+                if (result.isConfirmed) {
+                    logout();
+                }
+            } else {
+                Alerts.serverError();
+            }
+        }
+    };
     return (
         <PostWrap>
             <PostLink to={`/post/${post._id}`}>

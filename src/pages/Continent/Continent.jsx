@@ -6,6 +6,7 @@ import PostList from './PostList';
 import api from '../../utils/api.js';
 import Paging from '../../components/Pagination';
 import { useNavigate } from 'react-router-dom';
+import { Alerts } from '../../utils/alerts.js';
 
 const Banner = styled.div`
     margin-top: 60px;
@@ -111,21 +112,28 @@ const Continent = () => {
         }
     };
     const filterPosts = async (continent, filters) => {
-        const res = await api.getContinentPosts(continent, filters.join(','), page);
-        const { posts, postsNum } = res.data.data;
-        setPosts(posts);
-        setPostNum(Math.ceil(postsNum / 10));
+        try {
+            const res = await api.getContinentPosts(continent, filters.join(','), page);
+            const { posts, postsNum } = res.data.data;
+            setPosts(posts);
+            setPostNum(Math.ceil(postsNum / 10));
+        } catch (e) {
+            Alerts.serverError();
+        }
     };
     const scollToRef = React.useRef();
 
     React.useEffect(() => {
         filterPosts(continent, activeFilter);
+    }, [page, continent, activeFilter]);
+    React.useEffect(() => {
+        if (page !== 1) setPage(1);
+    }, [continent, activeFilter]);
+
+    React.useEffect(() => {
         scollToRef.current.scrollIntoView();
     }, [page]);
-    React.useEffect(() => {
-        filterPosts(continent, activeFilter);
-        setPage(1);
-    }, [continent, activeFilter]);
+
     return (
         <>
             <div ref={scollToRef}></div>

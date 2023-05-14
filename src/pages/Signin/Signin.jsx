@@ -9,6 +9,10 @@ import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
 import Button from '@mui/material/Button';
+import Swal from 'sweetalert2';
+import travel from '../../images/travel.gif';
+import { Alerts, Toast } from '../../utils/alerts';
+
 const Wrap = styled.div`
     background-color: white;
     width: 100%;
@@ -71,8 +75,8 @@ const Password = styled.input`
 
 const Signin = () => {
     const { isLogin, saveUserData } = React.useContext(AuthContext);
-    const [email, setEmail] = React.useState('');
-    const [password, setPassword] = React.useState('');
+    const [email, setEmail] = React.useState('nini@gmail.com');
+    const [password, setPassword] = React.useState('chatchat');
     const navigate = useNavigate();
 
     function isValidEmail(email) {
@@ -81,12 +85,13 @@ const Signin = () => {
     async function signin() {
         try {
             if (!isValidEmail(email) || password.length < 8) {
-                return alert('帳號或密碼輸入錯誤');
+                return Alerts.signinFailed();
             }
             const res = await api.signin({
                 email,
                 password,
             });
+            Toast.signinSuccess();
             const { user, accessToken } = res.data.data;
             const userData = { id: user._id, name: user.name, image: user.image };
             window.localStorage.setItem('jwtToken', accessToken);
@@ -94,10 +99,13 @@ const Signin = () => {
             await updateNewsfeeds(accessToken);
             userData['jwtToken'] = accessToken;
             await saveUserData(userData);
-            window.location.href = '/';
+            navigate('/');
         } catch (e) {
-            console.log(e);
-            alert('帳號或密碼輸入錯誤');
+            if (e.response.status === 401) {
+                Alerts.signinFailed();
+            } else {
+                Alerts.serverError();
+            }
         }
     }
 
@@ -109,7 +117,6 @@ const Signin = () => {
                 aria-labelledby="spring-modal-title"
                 aria-describedby="spring-modal-description"
                 open={open}
-                // onClose={handleClose}
                 closeAfterTransition
                 slots={{ backdrop: Backdrop }}
                 slotProps={{

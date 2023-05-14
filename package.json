@@ -28,13 +28,16 @@
         "react-select": "^5.7.2",
         "socket.io-client": "^4.6.1",
         "styled-components": "^5.3.10",
+        "sweetalert2": "^11.7.5",
         "web-vitals": "^2.1.4"
     },
     "scripts": {
         "start": "react-scripts start",
         "build": "react-scripts build",
         "test": "react-scripts test",
-        "eject": "react-scripts eject"
+        "eject": "react-scripts eject",
+        "sync": "aws s3 sync ./build 's3://chiaproject.com'",
+        "invalidate": "aws cloudfront create-invalidation --distribution-id E3VDBJYZAJYF4 --paths '/*'"
     },
     "eslintConfig": {
         "extends": [

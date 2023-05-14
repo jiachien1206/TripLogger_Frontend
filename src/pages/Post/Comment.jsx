@@ -5,6 +5,7 @@ import { AuthContext } from '../../context/authContext';
 import { TbMessageCircle2 } from 'react-icons/tb';
 import { IoSend } from 'react-icons/io5';
 import Avatar from '@mui/material/Avatar';
+import { Alerts } from '../../utils/alerts.js';
 
 const Wrap = styled.div`
     margin: 0px 30px;
@@ -100,27 +101,50 @@ const CommentTime = styled.div`
     color: #949494;
 `;
 
-const Comments = ({ postId, location, type, comments, setNewComment, authorId, title }) => {
+const Comments = ({
+    postId,
+    location,
+    type,
+    comments,
+    setNewComment,
+    setCommentNum,
+    authorId,
+    title,
+}) => {
     const [comment, setComment] = React.useState('');
-    const { jwtToken, isLogin, user } = React.useContext(AuthContext);
+    const { jwtToken, isLogin, user, logout } = React.useContext(AuthContext);
     const handleKeyDown = (event) => {
         if (event.keyCode === 13 && comment != '') {
             submitComment();
         }
     };
     const submitComment = async () => {
-        const content = {
-            location,
-            type,
-            comment,
-            commenter: user.name,
-            authorId,
-            title,
-            commenterImg: user.image,
-        };
-        await api.writeComment(postId, content, jwtToken);
-        setComment('');
-        setNewComment(true);
+        try {
+            const content = {
+                location,
+                type,
+                comment,
+                commenter: user.name,
+                authorId,
+                title,
+                commenterImg: user.image,
+            };
+            await api.writeComment(postId, content, jwtToken);
+            setComment('');
+            setCommentNum(function (prev) {
+                return prev + 1;
+            });
+            setNewComment(true);
+        } catch (e) {
+            if (e.response.status === 401) {
+                const result = await Alerts.unauthorized();
+                if (result.isConfirmed) {
+                    logout();
+                }
+            } else {
+                Alerts.serverError();
+            }
+        }
     };
     return (
         <Wrap>

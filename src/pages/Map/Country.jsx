@@ -1,7 +1,6 @@
 import { Marker, Popup, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
 import marker from '../../images/marker.svg';
 import { IoEarthSharp } from 'react-icons/io5';
 import { RiBuilding2Fill } from 'react-icons/ri';
@@ -102,11 +101,6 @@ const InfoCatTitle = styled.div`
     gap: 5px;
 `;
 const InfoContent = styled.div``;
-const InfoCoordinate = styled.div``;
-const InfoPhone = styled.div``;
-const InfoCapital = styled.div``;
-
-const InfoCurrency = styled.div``;
 
 function Country({ country, zoom, setPosts, setCountry }) {
     const map = useMap();

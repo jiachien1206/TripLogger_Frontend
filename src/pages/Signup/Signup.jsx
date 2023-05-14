@@ -16,6 +16,7 @@ import StepLabel from '@mui/material/StepLabel';
 import Button from '@mui/material/Button';
 import { Title } from './Components.jsx';
 import styled from 'styled-components';
+import { Alerts, Toast } from '../../utils/alerts.js';
 
 const Wrap = styled.div`
     background-color: white;
@@ -94,6 +95,7 @@ const Signup = () => {
                 location_pre: locations,
                 type_pre: types,
             });
+            Toast.signupSuccess();
             const { user, accessToken } = res.data.data;
             const userData = { id: user._id, name: user.name, image: user.image };
             window.localStorage.setItem('user', JSON.stringify(userData));
@@ -104,8 +106,7 @@ const Signup = () => {
             saveUserData(userData);
             navigate('/');
         } catch (e) {
-            console.log(e);
-            alert('註冊失敗');
+            Alerts.signupServerError();
         }
     }
     if (isLogin) return <Navigate to="/" replace={false} />;

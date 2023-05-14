@@ -9,14 +9,8 @@ import { AiFillPushpin } from 'react-icons/ai';
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
 import mapDemo from '../../../images/mapDemo.gif';
-
-const Wrapper = styled.div`
-    margin: 0 auto;
-    width: 720px;
-    height: 1000px;
-    padding: 5px;
-    background-color: #ffffff;
-`;
+import { Alerts } from '../../../utils/alerts.js';
+import { AuthContext } from '../../../context/authContext';
 
 const Mymap = styled(MapContainer)`
     background-color: #ffffff;
@@ -63,6 +57,7 @@ const style = {
 };
 
 const Map = () => {
+    const { jwtToken, logout } = React.useContext(AuthContext);
     const [visitedcountries, setVistedcountries] = React.useState([]);
     const [isLoaded, setIsloaded] = React.useState(false);
     const [open, setOpen] = React.useState(false);
@@ -70,15 +65,25 @@ const Map = () => {
     const handleClose = () => setOpen(false);
 
     React.useEffect(() => {
-        const fetchUserVisited = async (userId, jwtToken) => {
-            const res = await api.getUserVisited(userId, jwtToken);
-            const userVistied = res.data.data;
-            setVistedcountries(userVistied);
-            setIsloaded(true);
+        const fetchUserVisited = async (userId) => {
+            try {
+                const res = await api.getUserVisited(userId, jwtToken);
+                const userVistied = res.data.data;
+                setVistedcountries(userVistied);
+                setIsloaded(true);
+            } catch (e) {
+                if (e.response.status === 401) {
+                    const result = await Alerts.unauthorized();
+                    if (result.isConfirmed) {
+                        logout();
+                    }
+                } else {
+                    Alerts.serverError();
+                }
+            }
         };
         let user = window.localStorage.getItem('user');
         const userId = JSON.parse(user).id;
-        const jwtToken = window.localStorage.getItem('jwtToken');
         fetchUserVisited(userId, jwtToken);
     }, []);
 

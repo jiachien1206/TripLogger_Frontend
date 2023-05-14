@@ -29,7 +29,7 @@ const api = {
         return axios(`${this.HOST_NAME}/continents/${continent}?types=${types}&paging=${page}`);
     },
     addRead(postId, userId, location, type) {
-        return axios.post(`${this.HOST_NAME}/posts/${postId}/reads`, { userId, location, type });
+        return axios.post(`${this.HOST_NAME}/posts/${postId}/read`, { userId, location, type });
     },
     likePost(postId, data, jwtToken) {
         return axios.post(`${this.HOST_NAME}/posts/${postId}/like`, data, {
@@ -39,10 +39,10 @@ const api = {
             },
         });
     },
-    savePost(postId, location, type, save, jwtToken) {
+    savePost(postId, location, type, isPositive, jwtToken) {
         return axios.post(
             `${this.HOST_NAME}/posts/${postId}/save`,
-            { location, type, save },
+            { location, type, isPositive },
             {
                 headers: {
                     'Content-Type': 'application/json',
@@ -173,8 +173,8 @@ const api = {
             },
         });
     },
-    logout(data, jwtToken) {
-        return axios.post(`${this.HOST_NAME}/user/logout`, data, {
+    logout(userId, data, jwtToken) {
+        return axios.post(`${this.HOST_NAME}/users/${userId}/logout`, data, {
             headers: {
                 'Content-Type': 'application/json',
                 Authorization: `Bearer ${jwtToken}`,

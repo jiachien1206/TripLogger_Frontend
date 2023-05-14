@@ -59,21 +59,6 @@ const ReactionWrapper = styled.div`
         transform: scale(1.2);
         transition: 0.2s;
     }
-    // &:after {
-    //     content: attr(data-reaction-name);
-    //     position: absolute;
-    //     top: -25px;
-    //     left: 50%;
-    //     transform: translateX(-50%);
-
-    //     padding: 5px;
-    //     font-size: 12px;
-    //     background-color: white;
-    //     color: #606770;
-    //     border-radius: 5px;
-    //     text-transform: capitalize;
-    //     font-weight: 400;
-    // }
 `;
 
 const AiOutlineHeartS = styled(AiOutlineHeart)`
