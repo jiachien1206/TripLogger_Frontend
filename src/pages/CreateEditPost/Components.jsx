@@ -5,7 +5,6 @@ import PropTypes from 'prop-types';
 import CircularProgress from '@mui/material/CircularProgress';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
-import Swal from 'sweetalert2';
 
 export const EditorWrap = styled.div`
     margin: 0px auto 10px;
@@ -27,6 +26,7 @@ export const MainImgWrap = styled.div`
 export const MainImg = styled.img`
     max-height: 200px;
     margin-right: 25px;
+    max-width: 600px;
 `;
 export const UploadImg = styled.div``;
 
