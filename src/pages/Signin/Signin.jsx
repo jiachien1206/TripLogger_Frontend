@@ -9,8 +9,6 @@ import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
 import Button from '@mui/material/Button';
-import Swal from 'sweetalert2';
-import travel from '../../images/travel.gif';
 import { Alerts, Toast } from '../../utils/alerts';
 
 const Wrap = styled.div`
@@ -23,6 +21,7 @@ const Wrap = styled.div`
 `;
 
 const Title = styled.div`
+    color: var(--primary-font);
     font-size: 24px;
     margin: 15px auto;
     font-weight: bold;
@@ -50,6 +49,7 @@ const style = {
 };
 
 const Email = styled.input`
+    color: var(--primary-font);
     background-color: #f5f5f5;
     border: none;
     border-radius: 10px;
@@ -62,6 +62,7 @@ const Email = styled.input`
 `;
 
 const Password = styled.input`
+    color: var(--primary-font);
     background-color: #f5f5f5;
     border: none;
     border-radius: 10px;
@@ -71,6 +72,12 @@ const Password = styled.input`
     &:focus-visible {
         outline: none !important;
     }
+`;
+
+const ButtonsWrap = styled.div`
+    display: flex;
+    justify-content: center;
+    gap: 15px;
 `;
 
 const Signin = () => {
@@ -127,7 +134,7 @@ const Signin = () => {
             >
                 <Fade in={open}>
                     <Box sx={style}>
-                        <Title>Welcome</Title>
+                        <Title>登入 TripLogger</Title>
                         <Email
                             placeholder="電子信箱"
                             value={email}
@@ -141,14 +148,24 @@ const Signin = () => {
                             onChange={(e) => setPassword(e.target.value)}
                             type="password"
                         />
-                        <Button
-                            variant="contained"
-                            sx={{ width: '100px', margin: '20px auto' }}
-                            disableElevation
-                            onClick={signin}
-                        >
-                            登入
-                        </Button>
+                        <ButtonsWrap>
+                            <Button
+                                variant="outlined"
+                                sx={{ width: '100px', margin: '20px 0px 10px' }}
+                                disableElevation
+                                onClick={() => navigate(-1)}
+                            >
+                                取消
+                            </Button>
+                            <Button
+                                variant="contained"
+                                sx={{ width: '100px', margin: '20px 0px 10px' }}
+                                disableElevation
+                                onClick={signin}
+                            >
+                                登入
+                            </Button>
+                        </ButtonsWrap>
                     </Box>
                 </Fade>
             </Modal>
