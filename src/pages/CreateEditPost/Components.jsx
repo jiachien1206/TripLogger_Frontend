@@ -150,6 +150,12 @@ export const BottomWrap = styled.div`
     gap: 5px;
 `;
 
+export const ButtonsWrap = styled.div`
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+`;
+
 export const PlaceHolder = styled.div`
     width: 100%;
     height: 20.02px;
