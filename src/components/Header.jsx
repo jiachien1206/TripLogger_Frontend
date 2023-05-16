@@ -199,8 +199,8 @@ const Header = () => {
     };
 
     const handleRead = async (e) => {
-        await getNotification();
         handleClickN(e);
+        await getNotification();
         setBadge(0);
         ws.emit('Read notification', { userId: user.userId });
         api.readNotification(jwtToken);
