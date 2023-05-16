@@ -7,6 +7,7 @@ import { RiBuilding2Fill } from 'react-icons/ri';
 import { GrMoney } from 'react-icons/gr';
 import { FaCompass } from 'react-icons/fa';
 import { BsTelephoneFill } from 'react-icons/bs';
+import { imageUrl } from '../../utils/generateImageUrl';
 
 const MyPopup = styled(Popup)`
     width: 30vw;
@@ -133,7 +134,7 @@ function Country({ country, zoom, setPosts, setCountry }) {
                 <MyPopup>
                     <CountryImage
                         style={{
-                            backgroundImage: `url("${country.main_image}")`,
+                            backgroundImage: `url("${imageUrl(country.main_image)}")`,
                         }}
                     >
                         <CountryImageCover>

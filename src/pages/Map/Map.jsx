@@ -6,6 +6,7 @@ import MapComponent from './MapConponent';
 import 'leaflet/dist/leaflet.css';
 import { Link } from 'react-router-dom';
 import { Alerts } from '../../utils/alerts.js';
+import { imageUrl } from '../../utils/generateImageUrl';
 
 const Wrap = styled.div`
     margin-top: 60px;
@@ -151,7 +152,7 @@ function Map() {
                                     <Rank>{index + 1}</Rank>
                                     <TopPostTitle>{p.title}</TopPostTitle>
                                 </PostLeft>
-                                <PostImg src={p.main_image} />
+                                <PostImg src={imageUrl(p.main_image)} />
                             </Post>
                             <Divider />
                         </>

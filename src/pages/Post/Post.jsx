@@ -17,6 +17,7 @@ import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
 import { Alerts } from '../../utils/alerts.js';
 import Reactions from '../../components/Reaction.jsx';
+import { imageUrl } from '../../utils/generateImageUrl';
 
 const Wrap = styled.div`
     display: flex;
@@ -547,12 +548,12 @@ const Post = () => {
             </ButtonsWrap>
 
             <PostWrap>
-                <PostMainImg src={post.main_image}></PostMainImg>
+                <PostMainImg src={imageUrl(post.main_image)}></PostMainImg>
                 <Buttom>
                     <Upper>
                         <Author>
                             <Avatar
-                                src={post.authorId.image}
+                                src={imageUrl(post.authorId.image)}
                                 sx={{ width: 50, height: 50 }}
                             ></Avatar>
                             <Info>
@@ -588,7 +589,10 @@ const Post = () => {
             <Right>
                 <RightSidebar className="right-sidebar">
                     <RightAuthor>
-                        <Avatar src={post.authorId.image} sx={{ width: 60, height: 60 }} />
+                        <Avatar
+                            src={imageUrl(post.authorId.image)}
+                            sx={{ width: 60, height: 60 }}
+                        />
                         <RightAuthorName>{post.authorId.name}</RightAuthorName>
                     </RightAuthor>
                     <NewPostsTitle>
@@ -597,7 +601,7 @@ const Post = () => {
                     {authorPosts.map((p) => {
                         return (
                             <NewPost key={p._id} to={`/post/${p._id}`}>
-                                <NewPostImg src={p.main_image} />
+                                <NewPostImg src={imageUrl(p.main_image)} />
                                 <NewPostTitle>{p.title}</NewPostTitle>
                             </NewPost>
                         );

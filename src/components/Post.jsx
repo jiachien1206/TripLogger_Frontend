@@ -17,6 +17,7 @@ import { FaRegBookmark, FaBookmark } from 'react-icons/fa';
 import { TbMessageCircle2 } from 'react-icons/tb';
 import { RiMapPin2Fill } from 'react-icons/ri';
 import { Alerts } from '../utils/alerts.js';
+import { imageUrl } from '../utils/generateImageUrl';
 
 const PostWrap = styled.div`
     border-radius: 15px;
@@ -357,13 +358,13 @@ const Post = ({ post, likedPosts, savedPosts }) => {
     return (
         <PostWrap>
             <PostLink to={`/post/${post._id}`}>
-                <PostMainImg src={post.main_image}></PostMainImg>
+                <PostMainImg src={imageUrl(post.main_image)}></PostMainImg>
 
                 <Buttom>
                     <Upper>
                         <Author>
                             <Avatar
-                                src={post.authorId.image}
+                                src={imageUrl(post.authorId.image)}
                                 sx={{ width: 32, height: 32 }}
                             ></Avatar>
                             <Info>
