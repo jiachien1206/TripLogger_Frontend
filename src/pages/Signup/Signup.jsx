@@ -42,7 +42,7 @@ const style = {
     flexDirection: 'column',
     gap: '15px',
     alignItems: 'center',
-    color: '#050505',
+    color: '#4a4a4a',
     fontWeight: 500,
     fontSize: '18px',
     cursor: 'default',
@@ -150,7 +150,11 @@ const Signup = () => {
                                     setPassword={setPassword}
                                 ></EmailPwd>
                                 <Box sx={{ display: 'flex', flexDirection: 'row', pt: 1 }}>
-                                    <Button color="inherit" disabled={true} sx={{ mr: 1 }}>
+                                    <Button
+                                        color="secondary"
+                                        sx={{ mr: 1 }}
+                                        onClick={() => navigate(-1)}
+                                    >
                                         Back
                                     </Button>
                                     <Box sx={{ flex: '1 1 auto' }} />
