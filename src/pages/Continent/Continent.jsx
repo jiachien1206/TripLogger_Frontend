@@ -139,7 +139,7 @@ const Continent = () => {
             <div ref={scollToRef}></div>
             <Banner
                 style={{
-                    backgroundImage: `url(https://triplogger.s3.ap-northeast-1.amazonaws.com/banner/${continent}.jpg)`,
+                    backgroundImage: `url(https://demj1sg6qvpz9.cloudfront.net/banner/${continent}.jpg)`,
                 }}
             >
                 <BannerText>{map[continent]}</BannerText>

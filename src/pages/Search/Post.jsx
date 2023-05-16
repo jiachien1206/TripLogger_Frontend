@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import Highlighter from 'react-highlight-words';
 import { RiMapPin2Fill } from 'react-icons/ri';
+import { imageUrl } from '../../utils/generateImageUrl';
 
 const PostWrap = styled(Link)`
     border-radius: 15px;
@@ -98,7 +99,7 @@ const Post = ({ post, keyword }) => {
 
     return (
         <PostWrap to={post.url}>
-            <PostMainImg src={post.main_image}></PostMainImg>
+            <PostMainImg src={imageUrl(post.main_image)}></PostMainImg>
             <PostText>
                 <PostTitle>
                     <Highlight

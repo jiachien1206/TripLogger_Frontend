@@ -1,6 +1,6 @@
 import React from 'react';
 import { AuthContext } from '../../context/authContext';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import TextEditor from './Editor';
 import api from '../../utils/api';
 import axios from 'axios';
@@ -17,6 +17,7 @@ import {
     DateInput,
     CircularStatic,
     BottomWrap,
+    ButtonsWrap,
 } from './Components';
 import Button from '@mui/material/Button';
 import { countryOptions } from './countryData';
@@ -33,6 +34,7 @@ function CreatePost() {
     const [startDate, setStartDate] = React.useState(null);
     const [endDate, setEndDate] = React.useState(null);
     const [progress, setProgress] = React.useState(0);
+    const navigate = useNavigate();
 
     const typeOptions = [
         { value: '景點', label: '景點' },
@@ -209,14 +211,24 @@ function CreatePost() {
                 </SelectWrap>
                 <BottomWrap>
                     <TextEditor editContent={(value) => setContent(value)} />
-                    <Button
-                        variant="contained"
-                        sx={{ width: '100px', margin: '0px auto' }}
-                        disableElevation
-                        onClick={submitPost}
-                    >
-                        發文
-                    </Button>
+                    <ButtonsWrap>
+                        <Button
+                            variant="outlined"
+                            sx={{ width: '100px' }}
+                            disableElevation
+                            onClick={() => navigate(-1)}
+                        >
+                            取消
+                        </Button>
+                        <Button
+                            variant="contained"
+                            sx={{ width: '100px' }}
+                            disableElevation
+                            onClick={submitPost}
+                        >
+                            發文
+                        </Button>
+                    </ButtonsWrap>
                 </BottomWrap>
             </EditorWrap>
         );

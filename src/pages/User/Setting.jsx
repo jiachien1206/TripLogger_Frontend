@@ -11,6 +11,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Swal from 'sweetalert2';
 import success from '../../images/success.gif';
 import { Alerts } from '../../utils/alerts';
+import { imageUrl } from '../../utils/generateImageUrl';
 
 const Toast = Swal.mixin({
     toast: true,
@@ -99,7 +100,7 @@ const Setting = () => {
                 setLocations(location);
                 setTypes(type);
                 if (image) {
-                    setProfileImage(image);
+                    setProfileImage(imageUrl(image));
                 }
             } catch (e) {
                 if (e.response.status === 401) {

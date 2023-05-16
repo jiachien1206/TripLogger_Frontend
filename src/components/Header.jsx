@@ -14,6 +14,7 @@ import updateNewsfeeds from '../utils/updateUserNewsfeeds.js';
 import { FaBell } from 'react-icons/fa';
 import { FiSearch } from 'react-icons/fi';
 import { Alerts } from '../utils/alerts.js';
+import { imageUrl } from '../utils/generateImageUrl';
 
 const Navigation = styled.div`
     position: fixed;
@@ -198,8 +199,8 @@ const Header = () => {
     };
 
     const handleRead = async (e) => {
-        await getNotification();
         handleClickN(e);
+        await getNotification();
         setBadge(0);
         ws.emit('Read notification', { userId: user.userId });
         api.readNotification(jwtToken);
@@ -385,7 +386,7 @@ const Header = () => {
                                 transformOrigin={{ horizontal: 'right', vertical: 'top' }}
                                 anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
                             >
-                                <Avatar src={user.image} sx={{ width: 43, height: 43 }} />
+                                <Avatar src={imageUrl(user.image)} sx={{ width: 43, height: 43 }} />
                             </Memberlink>
                         </>
                     ) : (

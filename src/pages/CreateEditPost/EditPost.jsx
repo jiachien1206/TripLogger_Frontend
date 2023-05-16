@@ -1,7 +1,7 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import { AuthContext } from '../../context/authContext';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import TextEditor from './Editor';
 import api from '../../utils/api';
 import axios from 'axios';
@@ -18,6 +18,7 @@ import {
     DateInput,
     CircularStatic,
     BottomWrap,
+    ButtonsWrap,
 } from './Components';
 import Button from '@mui/material/Button';
 import { Alerts, Toast } from '../../utils/alerts';
@@ -36,6 +37,7 @@ function EditPost() {
     const [progress, setProgress] = React.useState(0);
     const postId = useParams().id;
     const inputRef = React.useRef(null);
+    const navigate = useNavigate();
 
     const handleUploadClick = () => {
         inputRef.current.click();
@@ -186,14 +188,24 @@ function EditPost() {
             </SelectWrap>
             <BottomWrap>
                 {<TextEditor originContent={content} editContent={(value) => setContent(value)} />}
-                <Button
-                    variant="contained"
-                    sx={{ width: '100px', margin: '0px auto' }}
-                    disableElevation
-                    onClick={submitPost}
-                >
-                    編輯完成
-                </Button>
+                <ButtonsWrap>
+                    <Button
+                        variant="outlined"
+                        sx={{ width: '100px' }}
+                        disableElevation
+                        onClick={() => navigate(-1)}
+                    >
+                        取消
+                    </Button>
+                    <Button
+                        variant="contained"
+                        sx={{ width: '100px' }}
+                        disableElevation
+                        onClick={submitPost}
+                    >
+                        編輯完成
+                    </Button>
+                </ButtonsWrap>
             </BottomWrap>
         </EditorWrap>
     );

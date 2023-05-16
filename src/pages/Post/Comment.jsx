@@ -5,7 +5,8 @@ import { AuthContext } from '../../context/authContext';
 import { TbMessageCircle2 } from 'react-icons/tb';
 import { IoSend } from 'react-icons/io5';
 import Avatar from '@mui/material/Avatar';
-import { Alerts } from '../../utils/alerts.js';
+import { Alerts } from '../../utils/alerts';
+import { imageUrl } from '../../utils/generateImageUrl';
 
 const Wrap = styled.div`
     margin: 0px 30px;
@@ -153,7 +154,7 @@ const Comments = ({
                 <Title>留言板</Title>
             </TitleWrap>
             <CommentArea>
-                <Avatar src={user.image} sx={{ width: 43, height: 43 }}></Avatar>
+                <Avatar src={imageUrl(user.image)} sx={{ width: 43, height: 43 }}></Avatar>
                 {isLogin ? (
                     <CommentBar>
                         <WriteComment
@@ -182,7 +183,10 @@ const Comments = ({
                 const [date] = dateTime.split(' ');
                 return (
                     <CommentWrap key={comment._id}>
-                        <Avatar src={comment.userId.image} sx={{ width: 43, height: 43 }}></Avatar>
+                        <Avatar
+                            src={imageUrl(comment.userId.image)}
+                            sx={{ width: 43, height: 43 }}
+                        ></Avatar>
 
                         <Comment>
                             <CommentBottom>

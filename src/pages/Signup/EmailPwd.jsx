@@ -19,6 +19,7 @@ const InputWrap = styled.div`
     gap: 10px;
 `;
 const Name = styled.input`
+    color: var(--primary-font);
     background-color: #f5f5f5;
     border: none;
     border-radius: 10px;
@@ -38,6 +39,7 @@ const RowlWrap = styled.div`
 `;
 
 const Email = styled.input`
+    color: var(--primary-font);
     background-color: #f5f5f5;
     border: none;
     border-radius: 10px;
@@ -55,6 +57,7 @@ const CheckCircle = styled(CheckCircleRoundedIcon)`
 `;
 
 const Password = styled.input`
+    color: var(--primary-font);
     background-color: #f5f5f5;
     border: none;
     border-radius: 10px;
