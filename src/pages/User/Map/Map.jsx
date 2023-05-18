@@ -83,7 +83,7 @@ const Map = () => {
             }
         };
         let user = window.localStorage.getItem('user');
-        const userId = JSON.parse(user).id;
+        const userId = JSON.parse(user).userId;
         fetchUserVisited(userId, jwtToken);
     }, []);
 

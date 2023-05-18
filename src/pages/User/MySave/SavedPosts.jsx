@@ -56,7 +56,7 @@ const Save = () => {
             try {
                 const user = JSON.parse(window.localStorage.getItem('user'));
                 const postsIds = JSON.parse(window.localStorage.getItem('savedPosts'));
-                const res = await api.getUserSavedPosts(user.id, postsIds, jwtToken);
+                const res = await api.getUserSavedPosts(user.userId, postsIds, jwtToken);
                 const posts = res.data.data;
                 setSavedPosts(posts);
             } catch (e) {

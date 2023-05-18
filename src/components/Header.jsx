@@ -239,37 +239,33 @@ const Header = () => {
             // eslint-disable-next-line no-undef
             const newWs = webSocket(process.env.REACT_APP_SERVER);
             setWs(newWs);
-        }
-        if (isLogin) {
             getNotification();
         }
     }, [isLogin]);
 
     React.useEffect(() => {
-        if (ws) {
-            if (isLogin) {
-                ws.emit('Join user id room', { userId: user.userId });
-                ws.on('Update user newsfeeds', async () => {
-                    try {
-                        await updateNewsfeeds(jwtToken);
-                    } catch (e) {
-                        if (e.response.status === 401) {
-                            const result = await Alerts.unauthorized();
-                            if (result.isConfirmed) {
-                                logout();
-                            }
+        if (ws && isLogin) {
+            ws.emit('Join user id room', { userId: user.userId });
+            ws.on('Update user newsfeeds', async () => {
+                try {
+                    await updateNewsfeeds(jwtToken);
+                } catch (e) {
+                    if (e.response.status === 401) {
+                        const result = await Alerts.unauthorized();
+                        if (result.isConfirmed) {
+                            logout();
                         }
                     }
-                });
-                ws.on('New notification', (data) => {
-                    setBadge(1);
-                });
-                ws.on('Browser read notification', (data) => {
-                    setBadge(0);
-                });
-            }
+                }
+            });
+            ws.on('New notification', (data) => {
+                setBadge(1);
+            });
+            ws.on('Browser read notification', (data) => {
+                setBadge(0);
+            });
         }
-    }, [ws]);
+    }, [ws, isLogin]);
 
     return (
         <Navigation>

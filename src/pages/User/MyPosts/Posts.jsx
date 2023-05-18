@@ -37,7 +37,7 @@ const Posts = () => {
         };
 
         const user = JSON.parse(window.localStorage.getItem('user'));
-        fetchUserPosts(user.id);
+        fetchUserPosts(user.userId);
     }, []);
     return (
         <>

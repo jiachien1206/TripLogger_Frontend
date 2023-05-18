@@ -52,7 +52,7 @@ const style = {
 const steps = ['註冊帳號', '請排序喜歡的旅遊地點', '請排序喜歡的文章類型'];
 
 const Signup = () => {
-    const { isLogin, saveUserData } = React.useContext(AuthContext);
+    const { isLogin, login } = React.useContext(AuthContext);
     const [name, setName] = React.useState('');
     const [email, setEmail] = React.useState('');
     const [inputStatus, setInputStatus] = React.useState(true);
@@ -103,7 +103,7 @@ const Signup = () => {
             await api.createUserNewsfeed(accessToken);
             await updateNewsfeeds(accessToken);
             userData['jwtToken'] = accessToken;
-            saveUserData(userData);
+            login(userData);
             navigate('/');
         } catch (e) {
             Alerts.signupServerError();

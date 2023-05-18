@@ -417,7 +417,7 @@ const Post = () => {
                 setComments(sortedComments);
                 if (isLogin) {
                     const user = JSON.parse(window.localStorage.getItem('user'));
-                    await api.addRead(postId, user.id, post.location.continent, post.type);
+                    await api.addRead(postId, user.userId, post.location.continent, post.type);
                     await matchPostStatus();
                 } else {
                     await api.addRead(postId, null, post.location.continent, post.type);

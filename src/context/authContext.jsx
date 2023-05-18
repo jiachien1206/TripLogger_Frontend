@@ -7,8 +7,7 @@ export const AuthContext = React.createContext({
     user: {},
     loading: false,
     jwtToken: '',
-    signin: () => {},
-    saveUserData: async () => {},
+    login: () => {},
     logout: () => {},
 });
 
@@ -18,15 +17,11 @@ export const AuthContextProvider = ({ children }) => {
     const [loading, setLoading] = React.useState(true);
     const [jwtToken, setJwtToken] = React.useState();
 
-    const saveUserData = async (userData) => {
+    const login = async (userData) => {
         setJwtToken(userData.jwtToken);
         delete userData.jwtToken;
         setUser(userData);
         setIsLogin(true);
-    };
-
-    const signin = async () => {
-        setLoading(true);
     };
 
     const logout = async () => {
@@ -34,7 +29,7 @@ export const AuthContextProvider = ({ children }) => {
             setLoading(true);
             setIsLogin(false);
             const data = { logoutTime: new Date() };
-            await api.logout(user.id, data, jwtToken);
+            await api.logout(user.userId, data, jwtToken);
             setUser({});
             setJwtToken();
             window.localStorage.removeItem('jwtToken');
@@ -96,8 +91,7 @@ export const AuthContextProvider = ({ children }) => {
                 user,
                 loading,
                 jwtToken,
-                signin,
-                saveUserData,
+                login,
                 logout,
                 setUser,
             }}

@@ -92,7 +92,7 @@ const Setting = () => {
     React.useEffect(() => {
         const getUserData = async () => {
             try {
-                const userId = user.id;
+                const userId = user.userId;
                 const res = await api.getUser(userId, jwtToken);
                 const { name, email, location, type, image } = res.data.data;
                 setName(name);
@@ -140,7 +140,7 @@ const Setting = () => {
             Alerts.nameLengthTooShort();
             return;
         }
-        const userId = user.id;
+        const userId = user.userId;
         const data = {
             name,
             image: profileImage,

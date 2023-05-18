@@ -81,7 +81,7 @@ const ButtonsWrap = styled.div`
 `;
 
 const Signin = () => {
-    const { isLogin, saveUserData } = React.useContext(AuthContext);
+    const { isLogin, login } = React.useContext(AuthContext);
     const [email, setEmail] = React.useState('nini@gmail.com');
     const [password, setPassword] = React.useState('chatchat');
     const navigate = useNavigate();
@@ -100,13 +100,12 @@ const Signin = () => {
             });
             Toast.signinSuccess();
             const { user, accessToken } = res.data.data;
-            const userData = { id: user._id, name: user.name, image: user.image };
+            const userData = { userId: user._id, name: user.name, image: user.image };
             window.localStorage.setItem('jwtToken', accessToken);
             window.localStorage.setItem('user', JSON.stringify(userData));
             await updateNewsfeeds(accessToken);
             userData['jwtToken'] = accessToken;
-            await saveUserData(userData);
-            navigate('/');
+            login(userData);
         } catch (e) {
             if (e.response.status === 401) {
                 Alerts.signinFailed();
@@ -115,6 +114,12 @@ const Signin = () => {
             }
         }
     }
+
+    React.useEffect(() => {
+        if (isLogin === true) {
+            navigate('/');
+        }
+    }, [isLogin]);
 
     if (isLogin) return <Navigate to="/" />;
 
