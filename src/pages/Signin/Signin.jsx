@@ -82,8 +82,8 @@ const ButtonsWrap = styled.div`
 
 const Signin = () => {
     const { isLogin, login } = React.useContext(AuthContext);
-    const [email, setEmail] = React.useState('nini@gmail.com');
-    const [password, setPassword] = React.useState('chatchat');
+    const [email, setEmail] = React.useState('triplogger1@gmail.com');
+    const [password, setPassword] = React.useState('triplogger');
     const navigate = useNavigate();
 
     function isValidEmail(email) {
