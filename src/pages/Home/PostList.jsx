@@ -22,11 +22,12 @@ const PostList = ({ setPostNum, filter, setPage, page }) => {
             let pagePosts;
             if (filter === '為你推薦') {
                 let allPostIds = window.localStorage.getItem('relevantPosts');
-                if (!allPostIds) {
+                let postIdsArr = JSON.parse(allPostIds);
+                if (!postIdsArr || postIdsArr.length === 0) {
                     await updateNewsfeeds(jwtToken);
                     allPostIds = window.localStorage.getItem('relevantPosts');
+                    postIdsArr = JSON.parse(allPostIds);
                 }
-                const postIdsArr = JSON.parse(allPostIds);
                 setPostNum(Math.ceil(postIdsArr.length / 10));
                 const pagePostIds = postIdsArr.slice((page - 1) * 10, page * 10);
                 const postIdsStr = pagePostIds.toString();
@@ -51,7 +52,10 @@ const PostList = ({ setPostNum, filter, setPage, page }) => {
                     logout();
                 }
             } else {
-                Alerts.serverError();
+                const result = await Alerts.serverError();
+                if (result.isConfirmed) {
+                    await updateNewsfeeds(jwtToken);
+                }
             }
         }
     };
